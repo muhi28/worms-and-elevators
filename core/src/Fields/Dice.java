@@ -33,11 +33,6 @@ public class Dice {
     public Texture getDice_p() {
         return dice_p;
     }
-
-    public void setDice_p(Texture dice_p) {
-        this.dice_p = dice_p;
-    }
-
     /**
      * The method rollTheDice generates a random number and sets the texture of the dice.
      * @return : the random value
@@ -51,25 +46,25 @@ public class Dice {
          */
         switch (result) {
             case 1:
-                setDice_p(new Texture(Gdx.files.internal("dice_one.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
                 break;
             case 2:
-                setDice_p(new Texture(Gdx.files.internal("dice_two.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_two.png")));
                 break;
             case 3:
-                setDice_p(new Texture(Gdx.files.internal("dice_three.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_three.png")));
                 break;
             case 4:
-                setDice_p(new Texture(Gdx.files.internal("dice_four.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_four.png")));
                 break;
             case 5:
-                setDice_p(new Texture(Gdx.files.internal("dice_five.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_five.png")));
                 break;
             case 6:
-                setDice_p(new Texture(Gdx.files.internal("dice_six.png")));
+                this.dice_p = (new Texture(Gdx.files.internal("dice_six.png")));
                 break;
             default:
-                System.out.println("Falscher Dicevalue uebergeben!");
+                System.out.println("Falscher Value uebergeben!");
 
         }
         return result;
