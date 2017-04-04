@@ -24,7 +24,7 @@ public class Instruction extends Activity{
 
     }
 
-    public void onButtonClickBack(View view){
+    public void onClickGoBack(View view){
 
         intent = new Intent(this, MainMenu.class);
         startActivity(intent);

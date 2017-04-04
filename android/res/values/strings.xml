@@ -2,12 +2,18 @@
 <resources>
 
     <string name="app_name">Wuermer-und-Aufzuege</string>
-    <string name="start_game">Start Game</string>
+    <string name="start_game">Starte Spiel</string>
     <string name="gamename">Würmer und Aufzüge</string>
     <string name="start_menu">Start Menü</string>
     <string name="einleitung">Einleitung</string>
     <string name="zurueck">Zurück</string>
     <string name="instructions">Instructions</string>
     <string name="logotext">Würmer und Aufzüge</string>
+    <string name="spielerauswahl">Spielerauswahl</string>
+    <string name="blueplayer">Blau</string>
+    <string name="yellowPlayer">Gelb</string>
+    <string name="greenPlayer">Grün</string>
+    <string name="redPlayer">Rot</string>
+    <string name="back">Zurück</string>
 
 </resources>

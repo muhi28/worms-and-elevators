@@ -28,7 +28,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="49dp"
-        android:onClick="onButtonClickBack"
+        android:onClick="onClickGoBack"
         android:text="@string/zurueck"
         android:textAlignment="center"
         android:textColor="#ffffff"
