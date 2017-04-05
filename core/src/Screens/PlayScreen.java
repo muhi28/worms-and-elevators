@@ -45,7 +45,7 @@ public class PlayScreen implements Screen{
 
         //Änderung der Kameraposition
 
-        cam.position.set(gameport.getWorldWidth()/2,gameport.getWorldHeight()/2,0);
+        cam.position.set(gameport.getWorldWidth(),gameport.getWorldHeight(),0);
     }
 
 
@@ -57,6 +57,7 @@ public class PlayScreen implements Screen{
             System.out.println("TOUCHED !!!");
         }
     }
+
     public void update(float deltatime){
 
         handleInput(deltatime);
@@ -82,9 +83,9 @@ public class PlayScreen implements Screen{
     @Override
     public void show() {
 
-        //map = new TmxMapLoader().load("Maps/Spielbrett.tmx");
+        map = new TmxMapLoader().load("Spielbrett1.tmx");
 
-        //renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map);
     }
 
     @Override

@@ -8,26 +8,28 @@
     tools:targetApi="ice_cream_sandwich">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textfield_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="248dp"
-        android:text="@string/einleitung"
+        android:fontFamily="casual"
+        android:text="@string/spielbeschreibung"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="40sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/back"
+        android:id="@+id/button_back"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="49dp"
+        android:fontFamily="casual"
         android:onClick="onClickGoBack"
         android:text="@string/zurueck"
         android:textAlignment="center"

@@ -34,7 +34,7 @@
    <init>(com.badlogic.gdx.Application, android.content.Context, java.lang.Object, com.badlogic.gdx.backends.android.AndroidApplicationConfiguration);
 }
 
--keepclassmembers class com.badlogic.gdx.physics.box2d.World {
+-keepclassmembers class com.badlogic.gdx.physics.box2d.com.mygdx.game.MyWorld {
    boolean contactFilter(long, long);
    void    beginContact(long);
    void    endContact(long);

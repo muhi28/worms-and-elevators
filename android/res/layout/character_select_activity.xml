@@ -8,51 +8,59 @@
     tools:targetApi="ice_cream_sandwich">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/blue_worm_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="casual"
+        android:onClick="blueButtonclicked"
         android:text="@string/blueplayer"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:layout_below="@+id/imageView3"
-        android:layout_alignRight="@+id/button5"
-        android:layout_alignEnd="@+id/button5" />
+        android:layout_below="@+id/blue_worm"
+        android:layout_alignLeft="@+id/red_worm_button"
+        android:layout_alignStart="@+id/red_worm_button" />
 
     <Button
-        android:id="@+id/PlayerGreen"
+        android:id="@+id/green_worm_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button"
-        android:layout_alignBottom="@+id/button"
-        android:layout_alignEnd="@+id/imageView4"
-        android:layout_alignRight="@+id/imageView4"
+        android:layout_alignBaseline="@+id/blue_worm_button"
+        android:layout_alignBottom="@+id/blue_worm_button"
+        android:layout_alignEnd="@+id/green_worm"
+        android:layout_alignRight="@+id/green_worm"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:fontFamily="casual"
+        android:onClick="greenButtonclicked"
         android:text="@string/greenPlayer"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/PlayerRed"
+        android:id="@+id/red_worm_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_below="@+id/imageView5"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="casual"
+        android:onClick="redButtonclicked"
         android:text="@string/redPlayer"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@+id/red_worm"
+        android:layout_alignRight="@+id/back_button"
+        android:layout_alignEnd="@+id/back_button"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/blue_worm"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="98dp"
         android:contentDescription=""
         android:src="@drawable/player_blau"
         tools:ignore="ContentDescription"
@@ -61,11 +69,11 @@
         android:layout_alignParentStart="true" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/green_worm"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/player_green"
-        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignTop="@+id/blue_worm"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="39dp"
@@ -73,62 +81,107 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/red_worm"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/player_red"
-        android:layout_below="@+id/button"
-        android:layout_alignRight="@+id/imageView3"
-        android:layout_alignEnd="@+id/imageView3"
-        android:layout_marginTop="20dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:layout_below="@+id/blue_worm_button"
+        android:layout_alignLeft="@+id/blue_worm"
+        android:layout_alignStart="@+id/blue_worm"
+        android:layout_marginTop="11dp" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/yellow_worm"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/player_yellow"
-        android:layout_alignTop="@+id/imageView5"
-        android:layout_alignLeft="@+id/imageView4"
-        android:layout_alignStart="@+id/imageView4"
+        android:layout_alignTop="@+id/red_worm"
+        android:layout_alignLeft="@+id/green_worm"
+        android:layout_alignStart="@+id/green_worm"
         tools:ignore="ContentDescription" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/yellow_worm_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/PlayerGreen"
-        android:layout_alignRight="@+id/PlayerGreen"
-        android:layout_alignTop="@+id/PlayerRed"
+        android:layout_alignEnd="@+id/green_worm_button"
+        android:layout_alignRight="@+id/green_worm_button"
+        android:layout_alignTop="@+id/red_worm_button"
+        android:fontFamily="casual"
+        android:onClick="yellowButtonclicked"
         android:text="@string/yellowPlayer"
         android:textAlignment="center"
         android:textStyle="bold" />
 
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/back_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignLeft="@+id/red_worm"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/imageView5"
+        android:layout_alignStart="@+id/red_worm"
         android:layout_marginBottom="13dp"
+        android:fontFamily="casual"
         android:onClick="onClickGoBackToMenu"
         android:text="@string/back"
         android:textAlignment="center"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/start_game_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:onClick="onClickStartGame"
         android:text="@string/start_game"
-        android:layout_alignBaseline="@+id/button5"
-        android:layout_alignBottom="@+id/button5"
-        android:layout_alignLeft="@+id/imageView6"
-        android:layout_alignStart="@+id/imageView6" />
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/back_button"
+        android:layout_alignBottom="@+id/back_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
+
+    <TextView
+        android:id="@+id/chosen_player_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yellow_worm_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/blue_worm_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/blue_worm_button"
+        android:layout_marginTop="39dp"
+        android:fontFamily="casual"
+        android:text="@string/spielername"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/spielername_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="casual"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
 
 </RelativeLayout>

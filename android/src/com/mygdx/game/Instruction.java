@@ -12,10 +12,18 @@ import static android.R.attr.button;
  * Created by Muhi on 04.04.2017.
  */
 
+/**
+ *
+ */
 public class Instruction extends Activity{
 
     private  Intent intent;
 
+    /**
+     * The onCreate-Method is used to set the content view of the class to the main menu activity.
+     *
+     * @param savedInstanceState ... Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,6 +32,11 @@ public class Instruction extends Activity{
 
     }
 
+    /**
+     * This method is used to switch the current screen back to the main menu screen if the back button is pressed.
+     *
+     * @param view ... View
+     */
     public void onClickGoBack(View view){
 
         intent = new Intent(this, MainMenu.class);

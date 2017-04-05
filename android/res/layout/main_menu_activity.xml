@@ -6,13 +6,14 @@
     android:background="@drawable/background2">
 
     <Button
-        android:id="@+id/start_game"
+        android:id="@+id/character_selection_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="129dp"
+        android:layout_marginBottom="97dp"
+        android:fontFamily="casual"
         android:onClick="onClickChangeToCharacterSelect"
         android:text="@string/spielerauswahl"
         android:textColor="#ffffff"
@@ -20,12 +21,13 @@
         tools:targetApi="honeycomb" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textview_wuermer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/instr_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="109dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="casual"
         android:text="@string/gamename"
         android:textAlignment="center"
         android:textColor="#ffffff"
@@ -33,34 +35,58 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textview_start_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="71dp"
+        android:layout_below="@+id/textview_wuermer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:fontFamily="casual"
         android:text="@string/start_menu"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/instr_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
         android:layout_marginTop="14dp"
-        android:layout_toLeftOf="@+id/textView2"
-        android:layout_toStartOf="@+id/textView2"
+        android:fontFamily="casual"
         android:onClick="onButtonClickCreateInstr"
         android:text="@string/instructions"
         android:textAlignment="center"
         android:textSize="14sp"
         android:textStyle="bold"
-        tools:ignore="NewApi,RelativeOverlap" />
+        tools:ignore="NewApi,RelativeOverlap"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textview_start_menu"
+        android:layout_toStartOf="@+id/textview_start_menu" />
+
+    <EditText
+        android:id="@+id/inputname_edittxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/character_selection_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="Bitte Namen eingeben:"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_above="@+id/inputname_edittxt"
+        android:layout_alignLeft="@+id/inputname_edittxt"
+        android:layout_alignStart="@+id/inputname_edittxt" />
 
 </RelativeLayout>

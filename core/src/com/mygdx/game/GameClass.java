@@ -4,8 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import Screens.PlayScreen;
+import Screens.TiledTest;
 
 public class GameClass extends Game {
+
 	public SpriteBatch batch;
 
 	public static final int WIDTH = 400;
@@ -17,7 +19,7 @@ public class GameClass extends Game {
 
 		batch = new SpriteBatch();
 
-		setScreen(new PlayScreen(this));
+	//	setScreen(new Game());
 
 	}
 
@@ -25,7 +27,7 @@ public class GameClass extends Game {
 	public void render () {
 		super.render();
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();

@@ -15,5 +15,7 @@
     <string name="greenPlayer">Grün</string>
     <string name="redPlayer">Rot</string>
     <string name="back">Zurück</string>
+    <string name="spielername">Spielername:</string>
+    <string name="spielbeschreibung">Spielbeschreibung</string>
 
 </resources>

@@ -5,23 +5,45 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.mygdx.game.Player.Player;
 
 /**
  * Created by Muhi on 03.04.2017.
  */
 
+/**
+ * Main Menu is the start screen of the game, in which the player has the option to choose their player
+ * and start the game or read the instructions of the game itself.
+ */
 public class MainMenu extends Activity {
 
 
     private Intent intent;
    // private Button button;
+    private EditText text;
+    private Player player;
 
+    private CharacterSelect characterSelect;
+
+    /**
+     *  onCreate-Method is used to set the content view of the class to the main menu activity.
+     *
+     * @param savedInstanceState ... Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main_menu_activity);
 
+        text = (EditText)findViewById(R.id.inputname_edittxt);
+
+        player = new Player();
+        player.setSpielername(text.getText().toString());
         //button = (Button)findViewById(R.id.instr_button);
 
         //onChangetoInstruction(button);
@@ -41,15 +63,30 @@ public class MainMenu extends Activity {
 
     }*/
 
+    /**
+     * This method is used to switch from the Main Menu into the Instruction Screen
+     * if the instruction button is pressed.
+     *
+     * @param v ... View
+     *
+     */
    public void onButtonClickCreateInstr(View v){
 
        intent = new Intent(this, Instruction.class);
         startActivity(intent);
    }
 
+    /**
+     * This method is also used to switch from the Main Menu into the Character
+     * Selection Screen if the character selection button is pressed.
+     *
+     * @param v ... View
+     *
+     */
    public void onClickChangeToCharacterSelect(View v){
 
        intent = new Intent(this, CharacterSelect.class);
+
        startActivity(intent);
    }
 

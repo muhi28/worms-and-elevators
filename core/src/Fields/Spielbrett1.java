@@ -8,7 +8,7 @@ import Screens.PlayScreen;
  * Created by Muhi on 03.04.2017.
  */
 
-public class Speilbrett extends Game {
+public class Spielbrett1 extends Game {
 
 
     @Override
