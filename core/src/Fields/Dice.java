@@ -84,7 +84,7 @@ public class Dice {
         int result = 0;
 
         /*
-            The paths from the dice texture are saved, in the String Array pathOfDices i
+            The paths from the dice texture are saved, in the String Array pathOfDices..
          */
 
         String[] pathOfDices =  {
