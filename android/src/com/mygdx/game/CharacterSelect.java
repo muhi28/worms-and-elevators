@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mygdx.game.Player.Player;
+import com.mygdx.game.Players.Player;
 
 import Screens.PlayScreen;
 
