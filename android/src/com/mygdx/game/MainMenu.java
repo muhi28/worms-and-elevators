@@ -1,12 +1,20 @@
 package com.mygdx.game;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.mygdx.game.Players.Player;
+
+import java.io.IOException;
 
 /**
  * Created by Muhi on 03.04.2017.
@@ -23,6 +31,8 @@ public class MainMenu extends Activity {
    // private Button button;
     private EditText text;
     private Player player;
+    //private MusicManager music = new MusicManager();
+
 
     private CharacterSelect characterSelect;
 
@@ -35,13 +45,16 @@ public class MainMenu extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main_menu_activity);
 
         text = (EditText)findViewById(R.id.inputname_edittxt);
 
         player = new Player();
         player.setSpielername(text.getText().toString());
+     //   music.getMainMusic().play();
+
+
+
         //button = (Button)findViewById(R.id.instr_button);
 
         //onChangetoInstruction(button);
