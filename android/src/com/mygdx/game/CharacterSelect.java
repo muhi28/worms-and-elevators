@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mygdx.game.Players.Player;
-
 import Screens.PlayScreen;
 
 /**
@@ -23,7 +21,6 @@ public class CharacterSelect extends Activity {
 
     private TextView textView;
 
-    private Player player;
 
 
     /**
@@ -82,10 +79,6 @@ public class CharacterSelect extends Activity {
 
         textView.setText("Es wurde die blaue Spielfigur gewählt.");
         textView.setVisibility(View.VISIBLE);
-
-        intent = new Intent(this,GameClass.class);
-        startActivity(intent);
-
 
     }
 

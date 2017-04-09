@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.mygdx.game.Players.Player;
+import logic.Spieler;
 
 /**
  * Created by Muhi on 03.04.2017.
@@ -22,7 +22,7 @@ public class MainMenu extends Activity {
     private Intent intent;
    // private Button button;
     private EditText text;
-    private Player player;
+    private Spieler player;
 
     private CharacterSelect characterSelect;
 
@@ -40,8 +40,6 @@ public class MainMenu extends Activity {
 
         text = (EditText)findViewById(R.id.inputname_edittxt);
 
-        player = new Player();
-        player.setSpielername(text.getText().toString());
         //button = (Button)findViewById(R.id.instr_button);
 
         //onChangetoInstruction(button);
