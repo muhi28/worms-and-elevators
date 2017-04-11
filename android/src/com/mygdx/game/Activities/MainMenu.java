@@ -95,5 +95,10 @@ public class MainMenu extends Activity {
 
         startActivity(intent);
     }
+    public void onButtonClickStartNetworking(View view) {
+        intent = new Intent(this, Network.class);
 
+        startActivity(intent);
+
+    }
 }
