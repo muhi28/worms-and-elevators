@@ -27,7 +27,7 @@ public class MainMenu extends Activity {
     // private Button button;
     private EditText text;
     private Player player;
-
+    private NetworkUtils networkUtils;
     //private MusicManager music = new MusicManager();
 
 
@@ -43,6 +43,7 @@ public class MainMenu extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
+        networkUtils = new NetworkUtils(this.getApplicationContext());
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
         player = new Player();
@@ -93,13 +94,5 @@ public class MainMenu extends Activity {
 
         startActivity(intent);
     }
-
-    public void onButtonClickStartNetworking(View view) {
-        intent = new Intent(this, Network.class);
-
-        startActivity(intent);
-
-    }
-
 
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Players.Player;
 
 import Screens.PlayScreen;
@@ -54,8 +56,7 @@ public class CharacterSelect extends Activity {
      *
      */
     public void onClickStartGame(View view){
-
-        intent = new Intent(this, PlayScreen.class);
+        intent = new Intent(this, MainGameActivity.class);
         startActivity(intent);
     }
 
