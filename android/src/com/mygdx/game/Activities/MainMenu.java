@@ -1,15 +1,16 @@
-package com.mygdx.game;
+package com.mygdx.game.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.mygdx.game.Activities.CharacterSelect;
+import com.mygdx.game.Activities.Instruction;
 import com.mygdx.game.Players.Player;
+import com.mygdx.game.R;
 import com.mygdx.game.netwoking.NetworkUtils;
-import com.mygdx.game.netwoking.Server;
 
 
 /**

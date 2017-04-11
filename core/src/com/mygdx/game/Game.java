@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -31,6 +33,8 @@ public class Game extends ApplicationAdapter {
 
     TiledMapRenderer tiledMapRenderer;
 
+    SpriteBatch batch;
+
     Stage stage;
 
     private float actorX = 0, actorY = 0;
@@ -44,6 +48,8 @@ public class Game extends ApplicationAdapter {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
+
+
             batch.draw(player,160,35);
         }
     }
@@ -56,15 +62,19 @@ public class Game extends ApplicationAdapter {
 
         camera = new OrthographicCamera();
 
+        camera.setToOrtho(true,w ,h );
+        camera.update();
+        batch = new SpriteBatch();
+
         stage = new Stage();
 
         MyActor myActor = new MyActor();
 
+        myActor.scaleBy(5,5);
         stage.addActor(myActor);
 
 
-        camera.setToOrtho(true,w + 230,h + 250);
-        camera.update();
+
 
         tiledMap = new TmxMapLoader().load("Spielbrett1.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);

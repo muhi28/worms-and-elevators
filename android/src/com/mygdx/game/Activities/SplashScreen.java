@@ -1,8 +1,10 @@
-package com.mygdx.game;
+package com.mygdx.game.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.mygdx.game.R;
 
 /**
  * Created by Muhi on 04.04.2017.
