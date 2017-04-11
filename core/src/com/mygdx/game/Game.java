@@ -44,7 +44,7 @@ public class Game extends ApplicationAdapter {
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
-            batch.draw(player,40,40);
+            batch.draw(player,160,35);
         }
     }
 

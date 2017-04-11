@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-/**
- * Created by Muhi on 04.04.2017.
- */
+
 
 /**
  *

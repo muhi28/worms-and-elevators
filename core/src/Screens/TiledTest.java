@@ -28,12 +28,10 @@ public class TiledTest extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
 
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
 
-        camera.setToOrtho(false,100,100);
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         camera.update();
 
         tiledMap = new TmxMapLoader().load("Spielbrett1.tmx");

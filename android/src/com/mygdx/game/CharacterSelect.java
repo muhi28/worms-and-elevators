@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.Players.Player;
+import com.badlogic.gdx.*;
 
 import Screens.PlayScreen;
 
@@ -24,9 +22,6 @@ public class CharacterSelect extends Activity {
     private Intent intent;
 
     private TextView textView;
-
-    private Player player;
-
 
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -56,6 +51,7 @@ public class CharacterSelect extends Activity {
      *
      */
     public void onClickStartGame(View view){
+
         intent = new Intent(this, MainGameActivity.class);
         startActivity(intent);
     }
@@ -83,10 +79,6 @@ public class CharacterSelect extends Activity {
 
         textView.setText("Es wurde die blaue Spielfigur gewählt.");
         textView.setVisibility(View.VISIBLE);
-
-        intent = new Intent(this,GameClass.class);
-        startActivity(intent);
-
 
     }
 
