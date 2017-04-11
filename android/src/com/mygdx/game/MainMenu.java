@@ -27,7 +27,7 @@ public class MainMenu extends Activity {
     // private Button button;
     private EditText text;
     private Player player;
-    private NetworkUtils networkUtils;
+
     //private MusicManager music = new MusicManager();
 
 
@@ -43,7 +43,6 @@ public class MainMenu extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
-        networkUtils = new NetworkUtils(this.getApplicationContext());
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
         player = new Player();
@@ -95,19 +94,12 @@ public class MainMenu extends Activity {
         startActivity(intent);
     }
 
-    public void onButtonClickCreateServer(View view) {
-        if(networkUtils.isPhoneConnectedToWifi()){
-            showToast(String.format("starting server %s on port: %d", networkUtils.wifiIpAddress(), Server.PORT));
-            this.startService(new Intent(this, Server.class));
-        }
-        else {
-            showToast("Please connect to wifi before starting server!");
-        }
+    public void onButtonClickStartNetworking(View view) {
+        intent = new Intent(this, Network.class);
+
+        startActivity(intent);
 
     }
 
-    private void showToast(String toastMessage) {
-        Toast.makeText(this.getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
-    }
 
 }

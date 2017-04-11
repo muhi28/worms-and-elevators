@@ -7,6 +7,7 @@
     <string name="start_menu">Start Menü</string>
     <string name="einleitung">Einleitung</string>
     <string name="zurueck">Zurück</string>
+    <string name="connect">Connect</string>
     <string name="instructions">Instructions</string>
     <string name="network">Network</string>
     <string name="logotext">Würmer und Aufzüge</string>
@@ -18,5 +19,6 @@
     <string name="back">Zurück</string>
     <string name="spielername">Spielername:</string>
     <string name="spielbeschreibung">Spielbeschreibung</string>
+    <string name="start_server">Start Server</string>
 
 </resources>
