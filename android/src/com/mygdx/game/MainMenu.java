@@ -1,20 +1,16 @@
 package com.mygdx.game;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mygdx.game.Players.Player;
+import com.mygdx.game.netwoking.NetworkUtils;
+import com.mygdx.game.netwoking.Server;
 
-import java.io.IOException;
 
 /**
  * Created by Muhi on 03.04.2017.
@@ -28,16 +24,17 @@ public class MainMenu extends Activity {
 
 
     private Intent intent;
-   // private Button button;
+    // private Button button;
     private EditText text;
     private Player player;
+
     //private MusicManager music = new MusicManager();
 
 
     private CharacterSelect characterSelect;
 
     /**
-     *  onCreate-Method is used to set the content view of the class to the main menu activity.
+     * onCreate-Method is used to set the content view of the class to the main menu activity.
      *
      * @param savedInstanceState ... Bundle
      */
@@ -46,13 +43,11 @@ public class MainMenu extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
-
-        text = (EditText)findViewById(R.id.inputname_edittxt);
+        text = (EditText) findViewById(R.id.inputname_edittxt);
 
         player = new Player();
         player.setSpielername(text.getText().toString());
-     //   music.getMainMusic().play();
-
+        //   music.getMainMusic().play();
 
 
         //button = (Button)findViewById(R.id.instr_button);
@@ -79,26 +74,32 @@ public class MainMenu extends Activity {
      * if the instruction button is pressed.
      *
      * @param v ... View
-     *
      */
-   public void onButtonClickCreateInstr(View v){
+    public void onButtonClickCreateInstr(View v) {
 
-       intent = new Intent(this, Instruction.class);
+        intent = new Intent(this, Instruction.class);
         startActivity(intent);
-   }
+    }
 
     /**
      * This method is also used to switch from the Main Menu into the Character
      * Selection Screen if the character selection button is pressed.
      *
      * @param v ... View
-     *
      */
-   public void onClickChangeToCharacterSelect(View v){
+    public void onClickChangeToCharacterSelect(View v) {
 
-       intent = new Intent(this, CharacterSelect.class);
+        intent = new Intent(this, CharacterSelect.class);
 
-       startActivity(intent);
-   }
+        startActivity(intent);
+    }
+
+    public void onButtonClickStartNetworking(View view) {
+        intent = new Intent(this, Network.class);
+
+        startActivity(intent);
+
+    }
+
 
 }

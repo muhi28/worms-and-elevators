@@ -65,6 +65,22 @@
         android:layout_toLeftOf="@+id/textview_start_menu"
         android:layout_toStartOf="@+id/textview_start_menu" />
 
+    <Button
+        android:id="@+id/network_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="casual"
+        android:onClick="onButtonClickStartNetworking"
+        android:text="@string/network"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:ignore="NewApi,RelativeOverlap"
+        android:layout_alignParentTop="false"
+        android:layout_toRightOf="@+id/instr_button"/>
+
     <EditText
         android:id="@+id/inputname_edittxt"
         android:layout_width="wrap_content"
