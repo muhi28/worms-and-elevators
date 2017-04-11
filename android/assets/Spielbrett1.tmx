@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="left-up" width="32" height="32" tilewidth="32" tileheight="32" nextobjectid="126">
  <tileset firstgid="1" name="Hintergrund" tilewidth="32" tileheight="32" tilecount="150" columns="15">
-  <image source="../../../../../../AppData/Local/Packages/microsoft.microsoftedge_8wekyb3d8bbwe/AC/#!001/MicrosoftEdge/Cache/DEHHC85N/179023303[1].jpg" width="504" height="339"/>
+  <image source="179023303[1].jpg" width="504" height="339"/>
  </tileset>
  <tileset firstgid="151" name="Spielbrett-Raster" tilewidth="32" tileheight="32" tilecount="169" columns="13">
-  <image source="../../../../../../AppData/Local/Packages/microsoft.microsoftedge_8wekyb3d8bbwe/AC/#!001/MicrosoftEdge/Cache/DUTT4U64/Schachbrett-bw[1].png" width="445" height="445"/>
+  <image source="Schachbrett-bw.png" width="445" height="445"/>
  </tileset>
  <layer name="Hintergrund" width="32" height="32">
   <data encoding="base64" compression="zlib">
