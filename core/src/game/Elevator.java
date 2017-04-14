@@ -24,7 +24,7 @@ public class Elevator {
         }
     }
 
-    public int moveElevator(int fieldnumber){
+    public static int moveElevator(int fieldnumber){
 
         while(newfield){
 
@@ -39,7 +39,7 @@ public class Elevator {
 
         return random;
     }
-    public int [] getElevatorFields(){
+    public static int [] getElevatorFields(){
 
         return elevatorFields;
     }
