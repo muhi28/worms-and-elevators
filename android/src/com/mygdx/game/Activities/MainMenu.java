@@ -2,6 +2,7 @@ package com.mygdx.game.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -29,7 +30,7 @@ public class MainMenu extends Activity {
     private EditText text;
     private Player player;
     private NetworkUtils networkUtils;
-    //private MusicManager music = new MusicManager();
+    private MediaPlayer mediaPlayer;
 
 
     private CharacterSelect characterSelect;
@@ -47,9 +48,12 @@ public class MainMenu extends Activity {
         networkUtils = new NetworkUtils(this.getApplicationContext());
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
+        mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
+        mediaPlayer.start();
+
         player = new Player();
         player.setSpielername(text.getText().toString());
-        //   music.getMainMusic().play();
+
 
 
         //button = (Button)findViewById(R.id.instr_button);
