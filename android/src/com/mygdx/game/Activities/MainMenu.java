@@ -8,7 +8,6 @@ import android.widget.EditText;
 
 import com.mygdx.game.Activities.CharacterSelect;
 import com.mygdx.game.Activities.Instruction;
-import com.mygdx.game.Players.Player;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.NetworkUtils;
 
@@ -27,7 +26,6 @@ public class MainMenu extends Activity {
     private Intent intent;
     // private Button button;
     private EditText text;
-    private Player player;
     private NetworkUtils networkUtils;
     //private MusicManager music = new MusicManager();
 
@@ -44,11 +42,12 @@ public class MainMenu extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
+
         networkUtils = new NetworkUtils(this.getApplicationContext());
+
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
-        player = new Player();
-        player.setSpielername(text.getText().toString());
+
         //   music.getMainMusic().play();
 
 
@@ -80,6 +79,7 @@ public class MainMenu extends Activity {
     public void onButtonClickCreateInstr(View v) {
 
         intent = new Intent(this, Instruction.class);
+
         startActivity(intent);
     }
 
@@ -92,6 +92,8 @@ public class MainMenu extends Activity {
     public void onClickChangeToCharacterSelect(View v) {
 
         intent = new Intent(this, CharacterSelect.class);
+
+        intent.putExtra("Playername", text.getText().toString());
 
         startActivity(intent);
     }

@@ -1,8 +1,7 @@
-package game_logic;
+package game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Created by Muhi on 11.04.2017.
@@ -12,6 +11,9 @@ public class MainScreen extends Game {
 
 
     private OrthographicCamera camera;
+
+    private GameField gamefield;
+
 
     @Override
     public void create() {
@@ -24,13 +26,6 @@ public class MainScreen extends Game {
 
     }
 
-    private TextureRegion playerTextureRegion, GameFieldTextureRegion;
-
-
-    public void createResources(){
-
-
-    }
     @Override
     public void render() {
 

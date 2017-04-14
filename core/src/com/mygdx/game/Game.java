@@ -27,13 +27,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class Game extends ApplicationAdapter {
 
 
-    Texture image;
     TiledMap tiledMap;
     OrthographicCamera camera;
 
     TiledMapRenderer tiledMapRenderer;
-
-    SpriteBatch batch;
 
     Stage stage;
 
@@ -50,8 +47,12 @@ public class Game extends ApplicationAdapter {
         public void draw(Batch batch, float parentAlpha) {
 
 
-            batch.draw(player,160,35);
+            batch.draw(player,160,35,64,64);
+
+            //batch.draw(player,160,35);
+
         }
+
     }
 
     @Override
@@ -64,13 +65,11 @@ public class Game extends ApplicationAdapter {
 
         camera.setToOrtho(true,w ,h );
         camera.update();
-        batch = new SpriteBatch();
 
         stage = new Stage();
 
         MyActor myActor = new MyActor();
 
-        myActor.scaleBy(5,5);
         stage.addActor(myActor);
 
 
@@ -98,6 +97,10 @@ public class Game extends ApplicationAdapter {
     }
 
 
+    @Override
+    public void dispose() {
 
+        stage.dispose();
 
+    }
 }

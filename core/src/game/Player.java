@@ -1,5 +1,4 @@
-package game_logic;
-
+package game;
 
 
 /**
@@ -17,14 +16,14 @@ public class Player {
         this.currentField = currentField;
     }
 
-    private void move(int steps){
+    public void move(int steps){
 
 
         Field field = currentField;
 
         for (int i = 0; i < steps; i++) {
 
-            field = field.getNextFeld();
+            field = field.getNextField();
         }
 
         this.currentField = field;

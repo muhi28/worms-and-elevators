@@ -20,7 +20,7 @@ public class CharacterSelect extends Activity {
 
     private Intent intent;
 
-    private TextView textView;
+    private TextView chosenPlayer, playername;
 
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -35,7 +35,22 @@ public class CharacterSelect extends Activity {
 
         setContentView(R.layout.character_select_activity);
 
-        textView = (TextView)findViewById(R.id.chosen_player_textview);
+        //Character auswahl
+        chosenPlayer = (TextView)findViewById(R.id.chosen_player_textview);
+
+        //Spielername
+
+        playername = (TextView) findViewById(R.id.spielername_textview);
+
+        Intent intent = getIntent();
+
+        if(intent.hasExtra("Playername")){
+
+            String name =  intent.getStringExtra("Playername");
+
+            playername.setText(String.format(" %s",name));
+            playername.setVisibility(View.VISIBLE);
+        }
 
        // ((TextView)findViewById(R.id.spielername_textview)).setText(player.getSpielername());
 
@@ -69,29 +84,29 @@ public class CharacterSelect extends Activity {
 
     public void redButtonclicked(View view){
 
-        textView.setText("Es wurde die rote Spielfigur gewählt.");
-        textView.setVisibility(View.VISIBLE);
+        chosenPlayer.setText("Es wurde die rote Spielfigur gewählt.");
+        chosenPlayer.setVisibility(View.VISIBLE);
 
     }
 
     public void blueButtonclicked(View view){
 
-        textView.setText("Es wurde die blaue Spielfigur gewählt.");
-        textView.setVisibility(View.VISIBLE);
+        chosenPlayer.setText("Es wurde die blaue Spielfigur gewählt.");
+        chosenPlayer.setVisibility(View.VISIBLE);
 
     }
 
     public void greenButtonclicked(View view){
 
-        textView.setText("Es wurde die grüne Spielfigur gewählt.");
-        textView.setVisibility(View.VISIBLE);
+        chosenPlayer.setText("Es wurde die grüne Spielfigur gewählt.");
+        chosenPlayer.setVisibility(View.VISIBLE);
 
     }
 
     public void yellowButtonclicked(View view){
 
-        textView.setText("Es wurde die gelbe Spielfigur gewählt.");
-        textView.setVisibility(View.VISIBLE);
+        chosenPlayer.setText("Es wurde die gelbe Spielfigur gewählt.");
+        chosenPlayer.setVisibility(View.VISIBLE);
 
     }
 

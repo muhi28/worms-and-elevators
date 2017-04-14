@@ -1,4 +1,4 @@
-package game_logic;
+package game;
 
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Muhi on 11.04.2017.
  */
 
-public class Spielfeld {
+public class GameField {
 
 
     private static final int numberofVerticals = 8;
@@ -17,12 +17,18 @@ public class Spielfeld {
 
     private final List<Field> fields;
 
+    private static int [] fieldnumbers = new int[64];
+
     private final Player player;
 
-    public Spielfeld(List<Field> fields, Player player){
+    public GameField(List<Field> fields, Player player){
 
-       this.fields = fields;
+        createGameField();
+
         this.player = player;
+        this.fields = fields;
+
+
     }
 
    public Field getFieldfromPos(int vertical, int horizontal){
@@ -58,7 +64,7 @@ public class Spielfeld {
         return player.getCurrentField();
     }
 
-    public  Spielfeld createGameField(){
+    public static GameField createGameField(){
 
         List<Field> fields = new ArrayList<Field>();
 
@@ -75,19 +81,34 @@ public class Spielfeld {
                     continue;
                 }
 
-                Field field = new Field(i,j,fields.size()-1);
 
-                field.setNextFeld(fields.get(fields.size() - 1));
+                Field field = new Field(i,j,fields.size());
+
+                field.setNextField(fields.get(fields.size()));
                 fields.add(field);
             }
 
         }
 
+        getFieldNumbers(fields);
+
+        Elevator.generateElevator();
+
         Player spieler = new Player(fields.get(fields.size() - 1));
 
-        return new Spielfeld(fields, spieler);
+        return new GameField(fields, spieler);
 
     }
 
 
+
+    public static int[] getFieldNumbers(List<Field> gameField){
+
+        for (int i = 0; i < gameField.size(); i++){
+
+            fieldnumbers[i] = gameField.get(i).getFeldnummer();
+        }
+
+        return fieldnumbers;
+    }
 }

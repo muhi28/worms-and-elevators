@@ -1,4 +1,4 @@
-package dice_logic;
+package dice;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

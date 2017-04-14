@@ -7,6 +7,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Game;
 
+import game_graphics.LOGIK_Test;
+
 public class MainGameActivity extends AndroidApplication {
 
     @Override
@@ -15,6 +17,6 @@ public class MainGameActivity extends AndroidApplication {
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 
-        initialize(new Game(), cfg);
+        initialize(new LOGIK_Test(), cfg);
     }
 }
