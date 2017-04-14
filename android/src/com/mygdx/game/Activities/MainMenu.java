@@ -2,12 +2,14 @@ package com.mygdx.game.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import com.mygdx.game.Activities.CharacterSelect;
 import com.mygdx.game.Activities.Instruction;
+import com.mygdx.game.Players.Player;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.NetworkUtils;
 
@@ -26,8 +28,9 @@ public class MainMenu extends Activity {
     private Intent intent;
     // private Button button;
     private EditText text;
+    private Player player;
     private NetworkUtils networkUtils;
-    //private MusicManager music = new MusicManager();
+    private MediaPlayer mediaPlayer;
 
 
     private CharacterSelect characterSelect;
@@ -42,13 +45,15 @@ public class MainMenu extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
-
         networkUtils = new NetworkUtils(this.getApplicationContext());
-
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
+        mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
+        mediaPlayer.start();
 
-        //   music.getMainMusic().play();
+        player = new Player();
+        player.setSpielername(text.getText().toString());
+
 
 
         //button = (Button)findViewById(R.id.instr_button);
@@ -79,7 +84,6 @@ public class MainMenu extends Activity {
     public void onButtonClickCreateInstr(View v) {
 
         intent = new Intent(this, Instruction.class);
-
         startActivity(intent);
     }
 
