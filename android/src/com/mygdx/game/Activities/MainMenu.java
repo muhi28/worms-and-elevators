@@ -99,6 +99,7 @@ public class MainMenu extends Activity {
 
         intent.putExtra("Playername", text.getText().toString());
 
+        mediaPlayer.stop();
         startActivity(intent);
     }
     public void onButtonClickStartNetworking(View view) {
