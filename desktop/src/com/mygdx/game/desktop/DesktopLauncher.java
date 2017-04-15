@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.Game;
 
 import GUI.Main;
-import game_graphics.GAME_SCENE;
+
 
 
 public class DesktopLauncher {

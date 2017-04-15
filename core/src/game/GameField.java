@@ -17,11 +17,11 @@ public class GameField {
 
     private final List<Field> fields;
 
-    private static int [] fieldnumbers = new int[64];
+    private static int[] fieldnumbers = new int[64];
 
     private final Player player;
 
-    public GameField(List<Field> fields, Player player){
+    public GameField(List<Field> fields, Player player) {
 
         createGameField();
 
@@ -31,44 +31,44 @@ public class GameField {
 
     }
 
-   public Field getFieldfromPos(int vertical, int horizontal){
+    public Field getFieldfromPos(int vertical, int horizontal) {
 
-       for(Field field : fields){
+        for (Field field : fields) {
 
-           if(field.getPosX() == horizontal && field.getPosY() == vertical){
+            if (field.getPosX() == horizontal && field.getPosY() == vertical) {
 
-               return field;
-           }
-       }
+                return field;
+            }
+        }
 
-       throw new RuntimeException("Field wurde nicht gefunden!");
-   }
-
-    public Field getStartField(){
-
-        return getFieldfromPos(0,0);
+        throw new RuntimeException("Field wurde nicht gefunden!");
     }
 
-    public List<Field> getFields(){
+    public Field getStartField() {
+
+        return getFieldfromPos(0, 0);
+    }
+
+    public List<Field> getFields() {
 
         return fields;
     }
 
-    public Player getPlayer(){
+    public Player getPlayer() {
 
         return player;
     }
 
-    public Field getFieldofPlayer(){
+    public Field getFieldofPlayer() {
 
         return player.getCurrentField();
     }
 
-    public static GameField createGameField(){
+    public GameField createGameField() {
 
         List<Field> fields = new ArrayList<Field>();
 
-        Field goal = new Field(numberofVerticals, numberofHorizontal,fields.size() - 1);
+        Field goal = new Field(numberofVerticals, numberofHorizontal, fields.size() - 1);
 
         fields.add(goal);
 
@@ -76,13 +76,13 @@ public class GameField {
 
             for (int j = 0; j < numberofHorizontal; j++) {
 
-                if(i == 0 && j == 0){
+                if (i == 0 && j == 0) {
 
                     continue;
                 }
 
 
-                Field field = new Field(i,j,fields.size());
+                Field field = new Field(i, j, fields.size());
 
                 field.setNextField(fields.get(fields.size()));
                 fields.add(field);
@@ -101,10 +101,9 @@ public class GameField {
     }
 
 
+    public static int[] getFieldNumbers(List<Field> gameField) {
 
-    public static int[] getFieldNumbers(List<Field> gameField){
-
-        for (int i = 0; i < gameField.size(); i++){
+        for (int i = 0; i < gameField.size(); i++) {
 
             fieldnumbers[i] = gameField.get(i).getFeldnummer();
         }
