@@ -20,8 +20,7 @@ public class Dice {
     /*
       Constructor initializes range with delivered value and dice_p with dice_idle.png
      */
-    public Dice(int range)
-    {
+    public Dice(int range) {
         this.range = range;
         this.dice_p = new Texture(Gdx.files.internal("dice_idle.png"));
     }
@@ -33,16 +32,14 @@ public class Dice {
     public Texture getDice_p() {
         return dice_p;
     }
-    public void setDice_p(Texture dice_p) {
-        this.dice_p = dice_p;
-    }
+
     /**
      * The method rollTheDice generates a random number and sets the texture of the dice.
+     *
      * @return : the random value
      */
-    public int rollTheDice()
-    {
-        int result = (int)(Math.random()*this.range+1);
+    public int rollTheDice() {
+        int result = (int) (Math.random() * this.range + 1);
 
         /*
         sets dice_p on the rolled texture
@@ -75,32 +72,33 @@ public class Dice {
 
     /**
      * The method cheatDice sets the dice_p on the texture the player clicked.
+     *
      * @return : the int value of the dice number
      */
 
 
-    public int cheatDice(Texture dice_p){
+    public int cheatDice(Texture dice_p) {
         int result = 0;
 
         /*
             The paths from the dice texture are saved, in the String Array pathOfDices..
          */
 
-        String[] pathOfDices =  {
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_one.png"))).getTextureData()).getFileHandle().path(),
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_two.png"))).getTextureData()).getFileHandle().path(),
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_three.png"))).getTextureData()).getFileHandle().path(),
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_four.png"))).getTextureData()).getFileHandle().path(),
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_five.png"))).getTextureData()).getFileHandle().path(),
-                ((FileTextureData)(new Texture(Gdx.files.internal("dice_six.png"))).getTextureData()).getFileHandle().path()
+        String[] pathOfDices = {
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_one.png"))).getTextureData()).getFileHandle().path(),
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_two.png"))).getTextureData()).getFileHandle().path(),
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_three.png"))).getTextureData()).getFileHandle().path(),
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_four.png"))).getTextureData()).getFileHandle().path(),
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_five.png"))).getTextureData()).getFileHandle().path(),
+                ((FileTextureData) (new Texture(Gdx.files.internal("dice_six.png"))).getTextureData()).getFileHandle().path()
         };
 
         //Here I get the path from the given texture
-        String pathOfGivenTexture = ((FileTextureData)dice_p.getTextureData()).getFileHandle().path();
+        String pathOfGivenTexture = ((FileTextureData) dice_p.getTextureData()).getFileHandle().path();
 
 
-        for (int i=0;i<pathOfDices.length;i++){
-            if(pathOfDices[i].equals(pathOfGivenTexture)){
+        for (int i = 0; i < pathOfDices.length; i++) {
+            if (pathOfDices[i].equals(pathOfGivenTexture)) {
                 i++;
                 result = i;
             }
@@ -132,9 +130,7 @@ public class Dice {
                 System.out.println("Falscher Value uebergeben!");
 
         }
-
         return result;
+
     }
-
-
 }

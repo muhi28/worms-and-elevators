@@ -1,11 +1,17 @@
 package com.mygdx.game.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mygdx.game.Activities.CharacterSelect;
 import com.mygdx.game.Activities.Instruction;
@@ -33,6 +39,11 @@ public class MainMenu extends Activity {
     private MediaPlayer mediaPlayer;
 
 
+    private SensorManager sm;
+    private float acelVal; //Curent acceleration value and qravity
+    private float acelLast; //Last acceleration value and gravity
+    private float shake; //Acceleration value differ from gravity
+
     private CharacterSelect characterSelect;
 
     /**
@@ -51,6 +62,13 @@ public class MainMenu extends Activity {
         mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
         mediaPlayer.start();
 
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+
+        acelVal = SensorManager.GRAVITY_EARTH;
+        acelLast = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
+
         player = new Player();
         player.setSpielername(text.getText().toString());
 
@@ -60,6 +78,32 @@ public class MainMenu extends Activity {
 
         //onChangetoInstruction(button);
     }
+
+    private final SensorEventListener sensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+
+            acelLast = acelVal;
+            acelVal = (float)Math.sqrt((double)(x*x + y*y +z*z));
+            float delta = acelVal - acelLast;
+            shake = shake *0.9f + delta;
+
+            if(shake > 8){
+
+                Toast toast = Toast.makeText(getApplicationContext(),"Schüttle mich nicht", Toast.LENGTH_LONG);
+                toast.show();
+            }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+    };
 
    /* public void onChangetoInstruction(Button button){
 
