@@ -1,11 +1,11 @@
 package com.mygdx.game.Activities;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.Game;
 
 import GUI.Main;
 
@@ -18,6 +18,15 @@ public class MainGameActivity extends AndroidApplication {
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 
-        initialize(new Main(), cfg);
+        Intent intent = getIntent();
+
+        String color = "";
+
+        if(intent.hasExtra("Player_Color")){
+
+            color = intent.getStringExtra("Player_Color");
+        }
+
+        initialize(new Main(color), cfg);
     }
 }

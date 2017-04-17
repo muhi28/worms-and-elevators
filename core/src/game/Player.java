@@ -19,14 +19,14 @@ public class Player {
     public void move(int steps){
 
 
-        Field field = currentField;
+        //Field field = currentField;
 
         for (int i = 0; i < steps; i++) {
 
-            field = field.getNextField();
+            currentField = currentField.getNextField();
         }
 
-        this.currentField = field;
+        //this.currentField = field;
 
     }
 

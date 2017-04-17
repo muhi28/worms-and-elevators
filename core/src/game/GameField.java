@@ -11,19 +11,19 @@ import java.util.List;
 public class GameField {
 
 
-    private static final int numberofVerticals = 8;
-    private static final int numberofHorizontal = 8;
+    private static final int numberofVerticals = 10;
+    private static final int numberofHorizontal = 10;
 
 
     private final List<Field> fields;
+    private static Field goal;
 
-    private static int[] fieldnumbers = new int[64];
+
+    private static int[] fieldnumbers = new int[numberofVerticals*numberofHorizontal];
 
     private final Player player;
 
     public GameField(List<Field> fields, Player player) {
-
-        createGameField();
 
         this.player = player;
         this.fields = fields;
@@ -64,27 +64,34 @@ public class GameField {
         return player.getCurrentField();
     }
 
-    public GameField createGameField() {
+    public Field getGoal(){
+
+        return goal;
+    }
+
+    public static GameField createGameField() {
 
         List<Field> fields = new ArrayList<Field>();
 
-        Field goal = new Field(numberofVerticals, numberofHorizontal, fields.size() - 1);
+        int number = numberofVerticals * numberofHorizontal;
+
+         goal = new Field(numberofVerticals, numberofHorizontal, number--);
 
         fields.add(goal);
 
-        for (int i = 0; i < numberofVerticals; i++) {
+        for (int i = numberofHorizontal; i > 0; i--) {
 
-            for (int j = 0; j < numberofHorizontal; j++) {
+            for (int j = numberofVerticals; j > 0; j--) {
 
-                if (i == 0 && j == 0) {
+                if (i == numberofHorizontal && j == numberofVerticals) {
 
                     continue;
                 }
 
 
-                Field field = new Field(i, j, fields.size());
+                Field field = new Field(i, j, number--);
 
-                field.setNextField(fields.get(fields.size()));
+                field.setNextField(fields.get(fields.size() - 1));
                 fields.add(field);
             }
 
@@ -100,12 +107,22 @@ public class GameField {
 
     }
 
+    public Field getFieldFrom(int number) {
+        for (Field field : fields) {
+            if (field.getFieldnumber() == number) {
+                return field;
+            }
+        }
+
+        throw new RuntimeException("Field not found!");
+    }
+
 
     public static int[] getFieldNumbers(List<Field> gameField) {
 
         for (int i = 0; i < gameField.size(); i++) {
 
-            fieldnumbers[i] = gameField.get(i).getFeldnummer();
+            fieldnumbers[i] = gameField.get(i).getFieldnumber();
         }
 
         return fieldnumbers;

@@ -29,7 +29,7 @@ public class controler {
 
     public void checkField(){
 
-        int currentFieldnumber = currentField.getFeldnummer();
+        int currentFieldnumber = currentField.getFieldnumber();
         int [] elevatorNumber = Elevator.getElevatorFields();
 
         for (int i = 0; i < 7; i++) {

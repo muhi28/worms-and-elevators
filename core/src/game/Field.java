@@ -13,27 +13,24 @@ public class Field {
         AUFZUG
     }
 
-    private float posX, posY;
+    private int posX, posY;
 
     private Field nextField;
     private Field previousField;
 
     private FieldTyps fieldType;
 
-    private static  final int WIDTH = 64;
-    private static final int HEIGHT = 64;
 
+    private final int fieldnumber;
 
-    private final int feldnummer;
-
-    public Field(float px, float py, int feldnummer){
+    public Field(int py, int px, int fieldnumber){
 
 
         this.posX = px;
         this.posY = py;
        // this.fieldType = fieldTyps;
 
-        this.feldnummer = feldnummer;
+        this.fieldnumber = fieldnumber;
     }
 
 
@@ -55,25 +52,17 @@ public class Field {
 
         return previousField;
     }
-    public int getFeldnummer(){
+    public int getFieldnumber(){
 
-        return feldnummer;
+        return fieldnumber;
     }
 
-    public float getPosX() {
+    public int getPosX() {
         return posX;
     }
 
-    public float getPosY() {
+    public int getPosY() {
         return posY;
-    }
-
-    public static int getWIDTH() {
-        return WIDTH;
-    }
-
-    public static int getHEIGHT() {
-        return HEIGHT;
     }
 
     public FieldTyps getFieldtype() {

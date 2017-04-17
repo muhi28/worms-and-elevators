@@ -2,33 +2,37 @@ package GUI;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.display.RenderPositionCalculator;
-import com.mygdx.game.display.SingleField;
-import com.mygdx.game.display.Worm;
+import display.RenderPositionCalculator;
+import display.SingleField;
+import display.Worm;
 
 import java.util.List;
 
-import logic.Field;
-import logic.GameField;
-import logic.Player;
+import dice.Dice;
+import game.Field;
+import game.GameField;
 
 /**
  * Created by Muhi on 12.04.2017.
  */
 
-public class Main extends ApplicationAdapter {
+public class Main extends ApplicationAdapter implements InputProcessor{
 
     private OrthographicCamera camera;
 
     private SpriteBatch batch;
 
-    private Texture texturePlayer;
-    private Texture textureGrass;
+    private Sprite texturePlayer;
+    private Texture tile1, tile2;
+    private Dice dice;
+    private String color;
 
     private final GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
@@ -36,9 +40,11 @@ public class Main extends ApplicationAdapter {
     Stage stage;
     Worm playerOne;
 
-    public Main() {
+    public Main(String wormcolor) {
         this.gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
+
+        this.color = wormcolor;
     }
 
 
@@ -46,40 +52,32 @@ public class Main extends ApplicationAdapter {
     public void create() {
         stage = new Stage();
         camera = new OrthographicCamera();
+
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
         batch = new SpriteBatch();
 
-        texturePlayer = new Texture(Gdx.files.internal("player_blau_icon.png"));
-        textureGrass = new Texture(Gdx.files.internal("background_grass.png"));
+        texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png",color))));
+
+        tile1 = new Texture(Gdx.files.internal("background_grass.png"));
+
+
+        dice = new Dice(6);
+
+        playerOne = new Worm(texturePlayer, renderPositionCalculator);
+
 
         List<Field> fields = gameField.getFields();
+
         for (int i = 1; i <= fields.size(); i++) {
 
-            SingleField singleField = new SingleField(textureGrass, renderPositionCalculator, i);
+            SingleField singleField = new SingleField(tile1, renderPositionCalculator, i);
             stage.addActor(singleField);
         }
 
 
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    gameField.getPlayer().move(1);
-                    camera.update();
-
-                }
-
-            }
-        };
-        t.start();
-
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -90,15 +88,59 @@ public class Main extends ApplicationAdapter {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
-        playerOne = new Worm(texturePlayer, renderPositionCalculator);
-
         stage.addActor(playerOne);
-
         camera.update();
 
 
         stage.draw();
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if(Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
+
+            gameField.getPlayer().move(dice.rollTheDice());
+
+            camera.update();
+        }
+
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

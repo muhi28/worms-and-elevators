@@ -1,4 +1,4 @@
-package com.mygdx.game.display;
+package display;
 
 /**
  * Created by dog on 11.04.17.

@@ -1,16 +1,17 @@
-package com.mygdx.game.display;
+package display;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
 public class Worm extends Actor {
 
-    private final Texture player;
+    private final Sprite player;
     private final RenderPositionCalculator renderPositionCalculator;
 
-    public Worm(Texture player, RenderPositionCalculator renderPositionCalculator) {
+    public Worm(Sprite player, RenderPositionCalculator renderPositionCalculator) {
+
         this.player = player;
         this.renderPositionCalculator = renderPositionCalculator;
     }

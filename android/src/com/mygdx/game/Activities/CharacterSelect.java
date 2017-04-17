@@ -22,6 +22,8 @@ public class CharacterSelect extends Activity {
 
     private TextView chosenPlayer, playername;
 
+    private String color;
+
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
      *
@@ -67,6 +69,9 @@ public class CharacterSelect extends Activity {
     public void onClickStartGame(View view){
 
         intent = new Intent(this, MainGameActivity.class);
+
+        intent.putExtra("Player_Color",color);
+
         startActivity(intent);
     }
 
@@ -87,6 +92,8 @@ public class CharacterSelect extends Activity {
         chosenPlayer.setText("Es wurde die rote Spielfigur gewählt.");
         chosenPlayer.setVisibility(View.VISIBLE);
 
+        color = "red";
+
     }
 
     public void blueButtonclicked(View view){
@@ -94,6 +101,7 @@ public class CharacterSelect extends Activity {
         chosenPlayer.setText("Es wurde die blaue Spielfigur gewählt.");
         chosenPlayer.setVisibility(View.VISIBLE);
 
+        color = "blau";
     }
 
     public void greenButtonclicked(View view){
@@ -101,6 +109,7 @@ public class CharacterSelect extends Activity {
         chosenPlayer.setText("Es wurde die grüne Spielfigur gewählt.");
         chosenPlayer.setVisibility(View.VISIBLE);
 
+        color = "green";
     }
 
     public void yellowButtonclicked(View view){
@@ -108,6 +117,7 @@ public class CharacterSelect extends Activity {
         chosenPlayer.setText("Es wurde die gelbe Spielfigur gewählt.");
         chosenPlayer.setVisibility(View.VISIBLE);
 
+        color = "yellow";
     }
 
 }
