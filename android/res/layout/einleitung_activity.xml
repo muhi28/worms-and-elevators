@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,33 +11,40 @@
     android:orientation="horizontal"
     tools:targetApi="ice_cream_sandwich">
 
-    <TextView
-        android:id="@+id/textfield_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="248dp"
-        android:fontFamily="casual"
-        android:text="@string/spielbeschreibung"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="40sp"
-        android:textStyle="bold" />
-
     <Button
         android:id="@+id/button_back"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="49dp"
         android:fontFamily="casual"
         android:onClick="onClickGoBack"
         android:text="@string/zurueck"
         android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button_back"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/spielbeschreibung"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </ScrollView>
 
 </RelativeLayout>
