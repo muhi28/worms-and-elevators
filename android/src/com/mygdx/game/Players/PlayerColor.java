@@ -8,7 +8,7 @@ public enum PlayerColor {
 
     @Override
     public String toString() {
-        return this.name();
+        return this.name().toLowerCase();
     }
 
     public static PlayerColor getFromString(String string) {

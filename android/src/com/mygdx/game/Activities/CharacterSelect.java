@@ -76,7 +76,7 @@ public class CharacterSelect extends Activity implements Observer {
 
         intent = new Intent(this, MainGameActivity.class);
 
-        intent.putExtra("Player_Color", color);
+        intent.putExtra("Player_Color", color.toString());
 
         startActivity(intent);
     }
