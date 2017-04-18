@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.mygdx.game.Activities.MainMenu;
 import com.mygdx.game.R;
+import com.mygdx.game.netwoking.Client;
 import com.mygdx.game.netwoking.NetworkUtils;
 import com.mygdx.game.netwoking.Server;
 
@@ -60,31 +61,9 @@ public class Network extends Activity {
 
     public void onClickConnect(View view) {
        final TextView textView = (TextView)findViewById(R.id.ip_address_server);
-        Thread t = new Thread(){
-            @Override
-            public void run(){
-                try {
-                    System.out.println("Starting Connection");
-                    String text = textView.getText().toString();
-                    Socket s = new Socket(text, Server.PORT);
-                    System.out.println("Connection DONE");
-                    GameSync.useMultiplayerGame();
-                    DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-                    dos.writeUTF("This is a message frome the client!");
-                    dos.flush();
-                    dos.close();
-                    s.close();
-                    System.out.println("Closing socket");
-                } catch (UnknownHostException e){
-                    System.out.println("There was an Unknown Erorr:");
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    System.out.println("There was an IOException:");
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
+
+        Client client = new Client(textView.getText().toString());
+        client.start();
         Toast.makeText(this, "Messagge Sent...", Toast.LENGTH_SHORT).show();
     }
 
