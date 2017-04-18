@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.mygdx.game.Activities.CharacterSelect;
-import com.mygdx.game.Activities.Instruction;
 import com.mygdx.game.Players.Player;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.NetworkUtils;

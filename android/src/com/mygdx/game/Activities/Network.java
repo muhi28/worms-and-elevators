@@ -16,13 +16,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Observable;
+import java.util.Observer;
 
+import networking.GameSync;
 
 
 /**
  *
  */
-public class Network extends Activity{
+public class Network extends Activity {
 
     private  Intent intent;
     private NetworkUtils networkUtils;
@@ -65,6 +68,7 @@ public class Network extends Activity{
                     String text = textView.getText().toString();
                     Socket s = new Socket(text, Server.PORT);
                     System.out.println("Connection DONE");
+                    GameSync.useMultiplayerGame();
                     DataOutputStream dos = new DataOutputStream(s.getOutputStream());
                     dos.writeUTF("This is a message frome the client!");
                     dos.flush();
@@ -98,4 +102,5 @@ public class Network extends Activity{
     private void showToast(String toastMessage) {
         Toast.makeText(this.getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
+
 }

@@ -15,6 +15,9 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import networking.GameSync;
+import networking.NetworkObserver;
+
 
 public class Server extends IntentService {
     public static final int PORT = 12345;
@@ -31,7 +34,6 @@ public class Server extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(Server.TAG, "onHandleIntent");
-
         ServerSocket listener = null;
         networkUtils = new NetworkUtils(appContext);
         try {
@@ -41,12 +43,14 @@ public class Server extends IntentService {
                 Log.d(Server.TAG, "waiting for client");
                 Socket socket = listener.accept();
                 showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                GameSync.useMultiplayerGame();
                 Log.d(Server.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintStream out = new PrintStream(socket.getOutputStream());
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
                     Log.d(Server.TAG, "received");
-                    showToast("received: " + inputLine);
+                    NetworkObserver.received(inputLine);
+                 //   showToast("received: " + inputLine);
                     Log.d(Server.TAG, inputLine);
                     StringBuilder outputStringBuilder = new StringBuilder("");
                     char inputLineChars[] = inputLine.toCharArray();

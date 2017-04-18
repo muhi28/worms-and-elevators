@@ -7,7 +7,7 @@ package com.mygdx.game.Players;
 public class Player {
 
     private String spielername;
-    private String farbe;
+    private PlayerColor farbe;
 
 
     public void Player(String name){
@@ -28,11 +28,11 @@ public class Player {
     }
 
 
-    public String getFarbe() {
+    public PlayerColor getFarbe() {
         return farbe;
     }
 
-    public void setFarbe(String farbe) {
+    public void setFarbe(PlayerColor farbe) {
         this.farbe = farbe;
     }
 }

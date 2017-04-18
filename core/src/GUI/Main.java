@@ -14,16 +14,19 @@ import display.SingleField;
 import display.Worm;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import dice.Dice;
 import game.Field;
 import game.GameField;
+import networking.NetworkObserver;
 
 /**
  * Created by Muhi on 12.04.2017.
  */
 
-public class Main extends ApplicationAdapter implements InputProcessor{
+public class Main extends ApplicationAdapter implements InputProcessor, Observer{
 
     private OrthographicCamera camera;
 
@@ -50,6 +53,7 @@ public class Main extends ApplicationAdapter implements InputProcessor{
 
     @Override
     public void create() {
+        NetworkObserver.addNetworkListener(this);
         stage = new Stage();
         camera = new OrthographicCamera();
 
@@ -142,5 +146,12 @@ public class Main extends ApplicationAdapter implements InputProcessor{
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        gameField.getPlayer().move(1);//dice.rollTheDice());
+
+        camera.update();
     }
 }
