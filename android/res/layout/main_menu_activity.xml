@@ -6,7 +6,7 @@
     android:background="@drawable/background2">
 
     <Button
-        android:id="@+id/character_selection_button"
+        android:id="@+id/single_player_button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,22 @@
         android:layout_marginBottom="97dp"
         android:fontFamily="casual"
         android:onClick="onClickChangeToCharacterSelect"
-        android:text="@string/spielerauswahl"
+        android:text="@string/single_player"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        tools:targetApi="honeycomb" />
+
+    <Button
+        android:id="@+id/multi_player_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:fontFamily="casual"
+        android:onClick="onButtonClickStartNetworking"
+        android:text="@string/multi_player"
         android:textColor="#ffffff"
         android:textStyle="bold"
         tools:targetApi="honeycomb" />
@@ -65,27 +80,11 @@
         android:layout_toLeftOf="@+id/textview_start_menu"
         android:layout_toStartOf="@+id/textview_start_menu" />
 
-    <Button
-        android:id="@+id/network_button"
-        style="@android:style/Widget.Holo.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:fontFamily="casual"
-        android:onClick="onButtonClickStartNetworking"
-        android:text="@string/network"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        tools:ignore="NewApi,RelativeOverlap"
-        android:layout_alignParentTop="false"
-        android:layout_toRightOf="@+id/instr_button"/>
-
     <EditText
         android:id="@+id/inputname_edittxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/character_selection_button"
+        android:layout_above="@+id/single_player_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="56dp"
         android:ems="10"

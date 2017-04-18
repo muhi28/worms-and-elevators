@@ -158,7 +158,6 @@ public class MainMenu extends Activity {
     public void onClickChangeToCharacterSelect(View v) {
 
         intent = new Intent(this, CharacterSelect.class);
-
         intent.putExtra("Playername", text.getText().toString());
 
         mediaPlayer.stop();
