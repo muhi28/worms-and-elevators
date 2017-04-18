@@ -105,4 +105,16 @@
         android:layout_alignLeft="@+id/inputname_edittxt"
         android:layout_alignStart="@+id/inputname_edittxt" />
 
+    <Button
+        android:id="@+id/option_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Optionen"
+        android:layout_above="@+id/textview_wuermer"
+        android:layout_alignRight="@+id/textview_wuermer"
+        android:layout_alignEnd="@+id/textview_wuermer"
+        android:onClick="onClickOptionButton"/>
+
+
 </RelativeLayout>

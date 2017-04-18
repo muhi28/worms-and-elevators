@@ -39,5 +39,6 @@
 
     </string>
     <string name="start_server">Start Server</string>
+    <string name="title_activity_option">OptionActivity</string>
 
 </resources>

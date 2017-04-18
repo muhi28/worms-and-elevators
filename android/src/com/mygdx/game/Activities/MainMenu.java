@@ -35,6 +35,7 @@ public class MainMenu extends Activity {
     private Player player;
     private NetworkUtils networkUtils;
     private MediaPlayer mediaPlayer;
+    private Boolean startMusic=true;
 
 
     private SensorManager sm;
@@ -57,8 +58,26 @@ public class MainMenu extends Activity {
         networkUtils = new NetworkUtils(this.getApplicationContext());
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
+        Intent intent = getIntent();
         mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
-        mediaPlayer.start();
+
+            startMusic = intent.getBooleanExtra("music", true);
+
+
+        if(startMusic==true)
+        {
+            mediaPlayer.start();
+        }
+        else
+        {
+
+
+                mediaPlayer.stop();
+
+        }
+
+
+
 
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
@@ -126,6 +145,7 @@ public class MainMenu extends Activity {
     public void onButtonClickCreateInstr(View v) {
 
         intent = new Intent(this, Instruction.class);
+        mediaPlayer.stop();                                                                     //momentane Loesung
         startActivity(intent);
     }
 
@@ -146,6 +166,14 @@ public class MainMenu extends Activity {
     }
     public void onButtonClickStartNetworking(View view) {
         intent = new Intent(this, Network.class);
+        mediaPlayer.stop();                                                                     //momentant Loesung
+
+        startActivity(intent);
+
+    }
+    public void onClickOptionButton(View v){
+        intent = new Intent(this,OptionActivity.class);
+        mediaPlayer.stop();                                                                     //momentane Loesung
 
         startActivity(intent);
 
