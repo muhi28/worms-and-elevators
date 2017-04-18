@@ -3,12 +3,16 @@ package GUI;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import cheat.CheatCountDown;
 import display.RenderPositionCalculator;
 import display.SingleField;
 import display.Worm;
@@ -26,7 +30,7 @@ import networking.NetworkManager;
  * Created by Muhi on 12.04.2017.
  */
 
-public class Main extends ApplicationAdapter implements InputProcessor, Observer{
+public class Main extends ApplicationAdapter implements InputProcessor, Observer {
 
     private OrthographicCamera camera;
 
@@ -36,10 +40,9 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
     private Texture tile1, tile2;
     private Dice dice;
     private String color;
-
     private final GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
-
+    private CheatCountDown cheatCountDown;
     Stage stage;
     Worm playerOne;
 
@@ -53,16 +56,16 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     @Override
     public void create() {
-
+        batch = new SpriteBatch();
+        cheatCountDown = new CheatCountDown();
         stage = new Stage();
         camera = new OrthographicCamera();
 
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
         batch = new SpriteBatch();
 
-        texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png",color))));
+        texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color))));
 
         tile1 = new Texture(Gdx.files.internal("background_grass.png"));
 
@@ -93,6 +96,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.addActor(playerOne);
+        stage.addActor(cheatCountDown);
         camera.update();
 
 
@@ -114,10 +118,16 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
         return false;
     }
 
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.log("Main.touchDown", "X=" + screenX + " Y=" + screenY);
 
-        if(Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
+        if (cheatCountDown.touchDown(screenX, screenY)) {
+            return true;
+        }
+
+        if (Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
 
             gameField.getPlayer().move(dice.rollTheDice());
 
@@ -130,6 +140,13 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (cheatCountDown.cheatingIsActive()) {
+            Integer integer = cheatCountDown.stopCountDown();
+            gameField.getPlayer().move(integer);
+
+            camera.update();
+            return true;
+        }
         return false;
     }
 
@@ -150,8 +167,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     @Override
     public void update(Observable observable, Object o) {
-        gameField.getPlayer().move(1);//dice.rollTheDice());
+        //  gameField.getPlayer().move(1);//dice.rollTheDice());
 
-        camera.update();
+        //  camera.update();
     }
 }
