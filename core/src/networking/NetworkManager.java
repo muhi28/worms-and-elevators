@@ -14,16 +14,31 @@ public class NetworkManager extends Observable {
         NETWORK_LISTENER.notifyObservers(received);
     }
 
-    public static void send(String send) {
+    public static void send(final String send, boolean useOtherThread) {
         NETWORK_SENDER.setChanged();
-        NETWORK_SENDER.notifyObservers(send);
+        if (useOtherThread) {
+            Thread deleayedThread = new Thread() {
+                public void run() {
+                    NetworkManager.send(send);
+                }
+            };
+
+            deleayedThread.start();
+        } else {
+            NETWORK_SENDER.notifyObservers(send);
+        }
     }
 
-    public static void addNetworkListener(Observer add) {
+    public static void send(String send) {
+        send(send, false);
+    }
+
+
+    public static void addNetworkListener(NetworkTrafficReceiver add) {
         NETWORK_LISTENER.addObserver(add);
     }
 
-    public static void addNetworkSender(Observer add) {
+    public static void addNetworkSender(NetworkTrafficSender add) {
         NETWORK_SENDER.addObserver(add);
     }
 

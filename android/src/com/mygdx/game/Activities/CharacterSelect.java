@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.mygdx.game.Players.PlayerColor;
 import com.mygdx.game.R;
 
-import java.util.Observable;
-import java.util.Observer;
-
+import networking.GameSync;
 import networking.NetworkManager;
+import networking.NetworkTrafficReceiver;
+import networking.FromNetworkProcessor;
 
 /**
  * Created by Muhi on 04.04.2017.
@@ -21,11 +21,12 @@ import networking.NetworkManager;
 /**
  * This Class is used to give players the option to choose a specific color for their players.
  */
-public class CharacterSelect extends Activity implements Observer {
+public class CharacterSelect extends Activity {
 
     private Intent intent;
 
     private TextView chosenPlayer, playername;
+    private NetworkTrafficReceiver networkTrafficReceiver;
 
     private PlayerColor color;
     private PlayerColor colorOtherPlayer;
@@ -39,8 +40,15 @@ public class CharacterSelect extends Activity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        final CharacterSelect currentInstance = this;
+        networkTrafficReceiver = new NetworkTrafficReceiver(new FromNetworkProcessor() {
+            public void receiveMessage(String message) {
+                currentInstance.processMessageFromNetwork(message);
+            }
+        });
 
-        NetworkManager.addNetworkListener(this);
+
+        GameSync.getSync().waitForWormSelection();
         setContentView(R.layout.character_select_activity);
 
         //Character auswahl
@@ -73,6 +81,10 @@ public class CharacterSelect extends Activity implements Observer {
      */
     public void onClickStartGame(View view) {
 
+        if (GameSync.isMultiplayerGame() && GameSync.getState() != GameSync.GameState.OTHER_PLAYER_HAS_WORM_SELECTED) {
+            chosenPlayer.setText("Plese wait for other player");
+            chosenPlayer.setVisibility(View.VISIBLE);
+        }
         intent = new Intent(this, MainGameActivity.class);
 
         intent.putExtra("Player_Color", color.toString());
@@ -98,7 +110,7 @@ public class CharacterSelect extends Activity implements Observer {
         chosenPlayer.setVisibility(View.VISIBLE);
 
         color = PlayerColor.RED;
-
+        sendSelectedColor();
     }
 
     public void blueButtonclicked(View view) {
@@ -107,6 +119,7 @@ public class CharacterSelect extends Activity implements Observer {
         chosenPlayer.setVisibility(View.VISIBLE);
 
         color = PlayerColor.BLUE;
+        sendSelectedColor();
     }
 
     public void greenButtonclicked(View view) {
@@ -115,6 +128,7 @@ public class CharacterSelect extends Activity implements Observer {
         chosenPlayer.setVisibility(View.VISIBLE);
 
         color = PlayerColor.GREEN;
+        sendSelectedColor();
     }
 
     public void yellowButtonclicked(View view) {
@@ -123,11 +137,14 @@ public class CharacterSelect extends Activity implements Observer {
         chosenPlayer.setVisibility(View.VISIBLE);
 
         color = PlayerColor.YELLOW;
+        sendSelectedColor();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        final String inputString = String.valueOf(arg);
+    private void sendSelectedColor() {
+        NetworkManager.send(color.toString(), true);
+    }
+
+    public void processMessageFromNetwork(final String inputString) {
 
         PlayerColor colorOtherPlayer = PlayerColor.getFromString(inputString);
 
@@ -141,7 +158,8 @@ public class CharacterSelect extends Activity implements Observer {
             });
 
             this.colorOtherPlayer = colorOtherPlayer;
-            //GameSync.wormSelected();
+            GameSync.getSync().otherPlayerHasSelectedWorm();
+
         }
 
     }

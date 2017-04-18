@@ -53,7 +53,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     @Override
     public void create() {
-        NetworkManager.addNetworkListener(this);
+
         stage = new Stage();
         camera = new OrthographicCamera();
 

@@ -10,19 +10,21 @@ import android.widget.Toast;
 
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.Client;
+import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkUtils;
 import com.mygdx.game.netwoking.Server;
 
-import java.util.Observable;
-import java.util.Observer;
-
+import networking.GameSync;
 import networking.NetworkManager;
+import networking.NetworkTrafficReceiver;
+import networking.FromNetworkProcessor;
 
 
-public class Network extends Activity implements Observer {
+public class Network extends Activity {
 
     private Intent intent;
     private NetworkUtils networkUtils;
+    private NetworkTrafficReceiver networkTrafficReceiver;
 
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -32,8 +34,16 @@ public class Network extends Activity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        GameSync.getSync().startMultiplayerGame();
+
+        final Network currentInstance = this;
+        networkTrafficReceiver = new NetworkTrafficReceiver(new FromNetworkProcessor() {
+            public void receiveMessage(String message) {
+                currentInstance.processMessageFromNetwork(message);
+            }
+        });
+
         super.onCreate(savedInstanceState);
-        NetworkManager.addNetworkListener(this);
         setContentView(R.layout.network_activity);
         networkUtils = new NetworkUtils(this.getApplicationContext());
 
@@ -66,6 +76,7 @@ public class Network extends Activity implements Observer {
 
 
     public void onClickConnectClientToServer(View view) {
+        GameSync.getSync().waitForOtherPlayer();
         final TextView textView = (TextView) findViewById(R.id.ip_address_server);
 
         Client client = new Client(textView.getText().toString());
@@ -77,12 +88,15 @@ public class Network extends Activity implements Observer {
 
     public void onClickStartServer(View view) {
 
+
+        GameSync.getSync().waitForOtherPlayer();
         if (networkUtils.isPhoneConnectedToWifi()) {
             showToast(String.format("starting server %s on port: %d", networkUtils.wifiIpAddress(), Server.PORT));
             this.startService(new Intent(this, Server.class));
             disableControls();
             final TextView textView = (TextView) findViewById(R.id.network_status);
             textView.setText("Waiting for client..");
+
 
         } else {
             showToast("Please connect to wifi before starting server!");
@@ -94,16 +108,13 @@ public class Network extends Activity implements Observer {
         Toast.makeText(this.getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void update(Observable o, final Object arg) {
-
-        final String reveivedFromNetwork = String.valueOf(arg);
+    public void processMessageFromNetwork(final String reveivedFromNetwork) {
 
         //Server receives init message from client
         if (reveivedFromNetwork.equals(Client.INIT_MESSAGE)) {
+            NetworkMonitor.startMonitor(getApplicationContext());
             setNetworkStatus("Client connected");
             NetworkManager.send(Server.INIT_MESSAGE);
-
             intent = new Intent(this, CharacterSelect.class);
             startActivity(intent);
         }
@@ -111,6 +122,7 @@ public class Network extends Activity implements Observer {
 
         //Client receives init message from server
         if (reveivedFromNetwork.equals(Server.INIT_MESSAGE)) {
+            NetworkMonitor.startMonitor(getApplicationContext());
             setNetworkStatus("Server connected");
             intent = new Intent(this, CharacterSelect.class);
             startActivity(intent);

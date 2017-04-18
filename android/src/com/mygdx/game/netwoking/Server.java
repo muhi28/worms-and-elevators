@@ -14,20 +14,22 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Observable;
-import java.util.Observer;
 
-import networking.GameSync;
 import networking.NetworkManager;
+import networking.NetworkTrafficSender;
+import networking.ToNetworkProcessor;
 
 
-public class Server extends IntentService implements Observer {
+public class Server extends IntentService {
     public static final int PORT = 12345;
     static final String TAG = "AndroidServerSocket";
 
     private Context appContext;
     private NetworkUtils networkUtils;
     private PrintStream out;
+
+    private NetworkTrafficSender networkTrafficSender;
+
 
     public static String INIT_MESSAGE = "START_SERVER";
 
@@ -37,7 +39,13 @@ public class Server extends IntentService implements Observer {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        NetworkManager.addNetworkSender(this);
+        final Server currentInstance = this;
+        networkTrafficSender = new NetworkTrafficSender(new ToNetworkProcessor() {
+            public void sendMessage(String message) {
+                currentInstance.sendMessage(message);
+            }
+        });
+
         Log.d(Server.TAG, "onHandleIntent");
         ServerSocket listener = null;
         networkUtils = new NetworkUtils(appContext);
@@ -50,7 +58,6 @@ public class Server extends IntentService implements Observer {
                 synchronized (this) {
                     Socket socket = listener.accept();
                     showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
-                    GameSync.useMultiplayerGame();
                     Log.d(Server.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     out = new PrintStream(socket.getOutputStream());
@@ -58,7 +65,7 @@ public class Server extends IntentService implements Observer {
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
                     Log.d(Server.TAG, "received");
                     NetworkManager.received(inputLine);
-                    showToast("received: " + inputLine);
+                    // showToast("received: " + inputLine);
                     Log.d(Server.TAG, inputLine);
                 }
             }
@@ -88,11 +95,11 @@ public class Server extends IntentService implements Observer {
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+
+    public void sendMessage(String toSend) {
         synchronized (this) {
             if (out != null) {
-                out.println(String.valueOf(arg));
+                out.println(toSend);
                 out.flush();
             }
         }
