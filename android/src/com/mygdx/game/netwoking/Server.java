@@ -14,18 +14,22 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
 import networking.GameSync;
-import networking.NetworkObserver;
+import networking.NetworkManager;
 
 
-public class Server extends IntentService {
+public class Server extends IntentService implements Observer {
     public static final int PORT = 12345;
     static final String TAG = "AndroidServerSocket";
 
     private Context appContext;
     private NetworkUtils networkUtils;
+    private PrintStream out;
 
+    public static String INIT_MESSAGE = "START_SERVER";
 
     public Server() {
         super("Server");
@@ -33,6 +37,7 @@ public class Server extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        NetworkManager.addNetworkSender(this);
         Log.d(Server.TAG, "onHandleIntent");
         ServerSocket listener = null;
         networkUtils = new NetworkUtils(appContext);
@@ -41,22 +46,20 @@ public class Server extends IntentService {
             Log.d(Server.TAG, String.format("listening on port = %s:%d", networkUtils.wifiIpAddress(), PORT));
             while (true) {
                 Log.d(Server.TAG, "waiting for client");
-                Socket socket = listener.accept();
-                showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
-                GameSync.useMultiplayerGame();
-                Log.d(Server.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintStream out = new PrintStream(socket.getOutputStream());
+                BufferedReader in = null;
+                synchronized (this) {
+                    Socket socket = listener.accept();
+                    showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                    GameSync.useMultiplayerGame();
+                    Log.d(Server.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    out = new PrintStream(socket.getOutputStream());
+                }
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
                     Log.d(Server.TAG, "received");
-                    NetworkObserver.received(inputLine);
-                 //   showToast("received: " + inputLine);
+                    NetworkManager.received(inputLine);
+                    showToast("received: " + inputLine);
                     Log.d(Server.TAG, inputLine);
-                    StringBuilder outputStringBuilder = new StringBuilder("");
-                    char inputLineChars[] = inputLine.toCharArray();
-                    for (char c : inputLineChars)
-                        outputStringBuilder.append(Character.toChars(c + 1));
-                    out.println(outputStringBuilder);
                 }
             }
         } catch (IOException e) {
@@ -78,11 +81,20 @@ public class Server extends IntentService {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(appContext, toastMsg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(appContext, toastMsg, Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        synchronized (this) {
+            if (out != null) {
+                out.println(String.valueOf(arg));
+                out.flush();
+            }
+        }
+    }
 }

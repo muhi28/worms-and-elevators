@@ -20,7 +20,7 @@ import java.util.Observer;
 import dice.Dice;
 import game.Field;
 import game.GameField;
-import networking.NetworkObserver;
+import networking.NetworkManager;
 
 /**
  * Created by Muhi on 12.04.2017.
@@ -53,7 +53,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     @Override
     public void create() {
-        NetworkObserver.addNetworkListener(this);
+        NetworkManager.addNetworkListener(this);
         stage = new Stage();
         camera = new OrthographicCamera();
 

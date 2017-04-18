@@ -12,8 +12,7 @@ import com.mygdx.game.R;
 import java.util.Observable;
 import java.util.Observer;
 
-import networking.GameSync;
-import networking.NetworkObserver;
+import networking.NetworkManager;
 
 /**
  * Created by Muhi on 04.04.2017.
@@ -41,7 +40,7 @@ public class CharacterSelect extends Activity implements Observer {
 
         super.onCreate(savedInstanceState);
 
-        NetworkObserver.addNetworkListener(this);
+        NetworkManager.addNetworkListener(this);
         setContentView(R.layout.character_select_activity);
 
         //Character auswahl
