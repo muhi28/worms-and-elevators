@@ -19,13 +19,21 @@
     <string name="redPlayer">Rot</string>
     <string name="back">Zurück</string>
     <string name="spielername">Spielername:</string>
-    <string name="spielbeschreibung">
+    <string name="spielbeschreibung" >
         In dem beliebten Brettspiel "Würmer und Aufzüge" geht es darum, mit seiner
         eigenen Spielfigur so schnell wie möglich vom Startfeld aus über das Spielbrett
-        ins Ziel zu kommen. Auf dem Spielbrett sind zufällig Aufzüge verteilt.
+        ins Ziel zu kommen.
+
+
+        Auf dem Spielbrett sind zufällig Aufzüge verteilt.
+
         Wenn nun die Spielfigur auf ein Feld steigt, wo sich ein Aufzug befindet kann es sein,
-        dass die Spielfigur einige Felder Richtung Ziel wandert, wenn man Glück hat, oder die Spielfigur wandert
-        einige Felder Richtung Start, wenn man Pech hat. Wer als erster seine Spielfigur ins Ziel gebracht hat, gewinnt das Spiel.
+        dass die Spielfigur einige Felder Richtung Ziel wandert,
+        wenn man Glück hat, oder die Spielfigur wandert
+        einige Felder Richtung Start, wenn man Pech hat.
+
+
+        Wer als erster seine Spielfigur ins Ziel gebracht hat, gewinnt das Spiel.
 
         Spielablauf: Bei einem Spiel können maximal 4 Personen im Multiplayermodus teilnehmen bzw. mindestens 1 Person im Singleplayermodus.
         Jeder der 4 Spieler würfelt einmal. Der Spieler der die höchste Augenzahl gewürfelt hat beginnt mit dem ersten Spielzug.
