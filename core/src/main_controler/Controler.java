@@ -14,16 +14,17 @@ import game.Elevator;
 import game.Field;
 import game.GameField;
 import game.Player;
+import sun.security.ssl.Debug;
 
 public class Controler implements InputProcessor {
 
-    Field currentField;
     boolean cheatMode = true;               //Stud for the cheat mode
     private static Sprite diceSprite = Main.getDiceSprite();
     private static Dice dice = Main.getDice();
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
+    private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
 
 
     public Controler(){
@@ -48,7 +49,7 @@ public class Controler implements InputProcessor {
 
         int eyeNumber;
 
-        if(cheatMode = false) {
+        if(cheatMode) {
             eyeNumber = dice.rollTheDice();
         }
         else{
@@ -56,13 +57,13 @@ public class Controler implements InputProcessor {
         }
 
         player.move(eyeNumber);
-        checkField();
+        checkField(player.getCurrentField().getFieldnumber());
 
     }
 
-    public void checkField(){
+    public void checkField(int currentFieldnumber){
 
-        int currentFieldnumber = currentField.getFieldnumber();
+
         int [] elevatorNumber = Elevator.getElevatorFields();
 
         for (int i = 0; i < 7; i++) {
