@@ -2,6 +2,7 @@ package GUI;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,13 +37,14 @@ import java.util.Observer;
 import dice.Dice;
 import game.Field;
 import game.GameField;
+import main_controler.controler;
 import networking.NetworkManager;
 
 /**
  * Created by Muhi on 12.04.2017.
  */
 
-public class Main extends ApplicationAdapter implements InputProcessor, Observer {
+public class Main extends ApplicationAdapter implements Observer {
 
     private OrthographicCamera camera;
 
@@ -50,7 +52,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
     private Sprite texturePlayer;
     private Texture tile1, tile2;
-    private Dice dice;
+    public  static Dice dice;
     private String color;
     private final GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
@@ -137,7 +139,9 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
 
         // hiermit wird das Touchhandling ermöglicht
-        Gdx.input.setInputProcessor(this);
+        controler controler = new controler();
+        controler.getInputProcessor();
+ //       Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
     @Override
@@ -166,7 +170,12 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
         stage.draw();
     }
 
+    public static Dice getDice (){
+        return dice;
+    }
 
+
+/*
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -244,7 +253,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
     public boolean scrolled(int amount) {
         return false;
     }
-
+*/
     @Override
     public void update(Observable observable, Object o) {
         //  gameField.getPlayer().move(1);//dice.rollTheDice());
