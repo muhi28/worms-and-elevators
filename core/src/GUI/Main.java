@@ -2,28 +2,17 @@ package GUI;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import cheat.CheatCountDown;
 import display.RenderPositionCalculator;
@@ -35,10 +24,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import dice.Dice;
+import game.Elevator;
 import game.Field;
 import game.GameField;
-import main_controler.controler;
-import networking.NetworkManager;
+import main_controler.Controler;
 
 /**
  * Created by Muhi on 12.04.2017.
@@ -46,31 +35,31 @@ import networking.NetworkManager;
 
 public class Main extends ApplicationAdapter implements Observer {
 
-    private OrthographicCamera camera;
+    private static OrthographicCamera camera;
 
     private SpriteBatch batch;
 
     private Sprite texturePlayer;
     private Texture tile1, tile2;
-    public  static Dice dice;
+    private static Dice dice;
     private String color;
-    private final GameField gameField;
+    private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
-    private CheatCountDown cheatCountDown;
+    private static CheatCountDown cheatCountDown;
     Stage stage;
     Worm playerOne;
 
 
-    Sprite diceSprite;
+    private static Sprite diceSprite;
     MyActor diceActor;
 
 
-    private class MyActor extends Actor{
+    private class MyActor extends Actor {
 
-        public MyActor(){
+        public MyActor() {
 
-             diceSprite = new Sprite(dice.getDice_p());
-            diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100,Gdx.graphics.getHeight() / 2 - 800,200,200);
+            diceSprite = new Sprite(dice.getDice_p());
+            diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 
         }
 
@@ -91,7 +80,6 @@ public class Main extends ApplicationAdapter implements Observer {
     }
 
 
-
     @Override
     public void create() {
 
@@ -105,7 +93,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-       // batch = new SpriteBatch();
+        // batch = new SpriteBatch();
 
 
         // initialisieren der Textur des Spielers
@@ -113,19 +101,17 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         tile1 = new Texture(Gdx.files.internal("background_grass.png"));
-
+        tile2 = new Texture(Gdx.files.internal("background_elevator.png"));
 
 
         // DICE
         dice = new Dice(6);
-         diceActor = new MyActor();
+        diceActor = new MyActor();
         diceActor.setTouchable(Touchable.enabled);
-
 
 
         // Textur des Wurms
         playerOne = new Worm(texturePlayer, renderPositionCalculator);
-
 
 
         // gibt jedem einzelnen Feld des Spielfelds ein Texture
@@ -137,11 +123,20 @@ public class Main extends ApplicationAdapter implements Observer {
             stage.addActor(singleField);
         }
 
+        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
+        int[] elevatorFields = Elevator.getElevatorFields();
+
+        for (int i = 0; i < elevatorFields.length; i++) {
+
+            SingleField singleField = new SingleField(tile2, renderPositionCalculator, elevatorFields[i]);
+            stage.addActor(singleField);
+        }
+
 
         // hiermit wird das Touchhandling ermöglicht
-        controler controler = new controler();
-        controler.getInputProcessor();
- //       Gdx.input.setInputProcessor(controler.getInputProcessor());
+
+        Controler Controler = new Controler();
+        Gdx.input.setInputProcessor(Controler.getInputProcessor());
     }
 
     @Override
@@ -160,7 +155,6 @@ public class Main extends ApplicationAdapter implements Observer {
         camera.update();
 
 
-
         batch.begin();
 
         diceSprite.draw(batch);
@@ -170,9 +164,26 @@ public class Main extends ApplicationAdapter implements Observer {
         stage.draw();
     }
 
-    public static Dice getDice (){
+    public static Dice getDice() {
         return dice;
     }
+
+    public static GameField getGameField(){
+        return gameField;
+    }
+
+    public static CheatCountDown getCheatCountdown(){
+        return cheatCountDown;
+    }
+
+    public static OrthographicCamera getCamera(){
+        return camera;
+    }
+
+    public static Sprite getDiceSprite(){
+        return diceSprite;
+    }
+
 
 
 /*
@@ -195,16 +206,19 @@ public class Main extends ApplicationAdapter implements Observer {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        return Controler.touchDown(screenX, screenY, pointer, button);
+
+
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
-        if(cheatCountDown.touchDown(screenX,screenY)){
+        if (cheatCountDown.touchDown(screenX, screenY)) {
 
             return true;
         }
 
-        if(Gdx.input.isTouched()){
+        if (Gdx.input.isTouched()) {
 
-            if(gameField.getPlayer().getCurrentField().getNextField() != null) {
+            if (gameField.getPlayer().getCurrentField().getNextField() != null) {
 
                 gameField.getPlayer().move(dice.rollTheDice());
                 diceSprite.setTexture(dice.getDice_p());
@@ -221,12 +235,17 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         return true;
+
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if(cheatCountDown.cheatingIsActive()){
+        return Controler.touchUp(screenX, screenY, pointer, button);
+
+
+
+        if (cheatCountDown.cheatingIsActive()) {
 
             Integer integer = cheatCountDown.stopCountDown();
 
@@ -237,6 +256,8 @@ public class Main extends ApplicationAdapter implements Observer {
             return true;
         }
         return false;
+
+
     }
 
     @Override

@@ -15,19 +15,18 @@ import game.Field;
 import game.GameField;
 import game.Player;
 
-public class controler implements InputProcessor {
+public class Controler implements InputProcessor {
 
-    private CheatCountDown cheatCountDown;
     Field currentField;
     boolean cheatMode = true;               //Stud for the cheat mode
-    private GameField gameField;
-    Sprite diceSprite;
+    private static Sprite diceSprite = Main.getDiceSprite();
     private static Dice dice = Main.getDice();
+    private static GameField gameField = Main.getGameField();
+    private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
+    private static OrthographicCamera camera = Main.getCamera();
 
-    private OrthographicCamera camera;
 
-
-    public controler(){
+    public Controler(){
         setInputProcessor();
     }
 
