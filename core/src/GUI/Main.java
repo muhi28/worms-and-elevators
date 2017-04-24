@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -55,6 +56,8 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
     private final GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
     private CheatCountDown cheatCountDown;
+    private int time =0;
+    private boolean diceAnimationActive= false;
     Stage stage;
     Worm playerOne;
 
@@ -159,8 +162,23 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
         batch.begin();
 
-        diceSprite.draw(batch);
+        float x=Gdx.graphics.getWidth() / 2 - 100;
+        float y=Gdx.graphics.getHeight() / 2 - 500;
+        float i=200;
 
+
+        diceSprite.draw(batch);
+        Animation a= dice.createAnimation();
+
+        if(diceAnimationActive) {
+            batch.draw((TextureRegion)a.getKeyFrame((float)(Math.random() * dice.getRange()+ 1),true), x, y, i, i);
+            time++;
+            if(time>12) {
+                diceAnimationActive = false;
+                time=0;
+            }
+
+        }
         batch.end();
 
         stage.draw();
@@ -197,9 +215,10 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
             if(gameField.getPlayer().getCurrentField().getNextField() != null) {
 
+
                 gameField.getPlayer().move(dice.rollTheDice());
                 diceSprite.setTexture(dice.getDice_p());
-
+                diceAnimationActive =true;
                 camera.update();
 
                 if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {

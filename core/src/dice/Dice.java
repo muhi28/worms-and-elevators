@@ -2,6 +2,8 @@ package dice;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 
 /**
@@ -133,4 +135,18 @@ public class Dice {
         return result;
 
     }
+
+    public Animation createAnimation() {
+        TextureRegion tex1 = new TextureRegion(new Texture(Gdx.files.internal("dice_one.png")));
+        TextureRegion tex2 = new TextureRegion(new Texture(Gdx.files.internal("dice_two.png")));
+        TextureRegion tex3 = new TextureRegion(new Texture(Gdx.files.internal("dice_three.png")));
+        TextureRegion tex4 = new TextureRegion(new Texture(Gdx.files.internal("dice_four.png")));
+        TextureRegion tex5 = new TextureRegion(new Texture(Gdx.files.internal("dice_five.png")));
+        TextureRegion tex6 = new TextureRegion(new Texture(Gdx.files.internal("dice_six.png")));
+
+        Animation diceAnimation = new Animation(0.15f, tex1, tex2, tex3, tex4, tex5, tex6);
+        return diceAnimation;
+    }
+
+
 }

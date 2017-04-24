@@ -26,14 +26,6 @@ public class MusicManager {
         this.finish = Gdx.audio.newSound(Gdx.files.internal("finish.wav"));
     }
 
-    public Music getGameMusic() {
-        return gameMusic;
-    }
-
-    public Sound getDiceSound() {
-        return diceSound;
-    }
-
     public void startMusic()
     {
         this.gameMusic.setLooping(true);
