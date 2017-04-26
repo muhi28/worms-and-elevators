@@ -56,7 +56,7 @@ public class Main extends ApplicationAdapter implements Observer {
     private String color;
     private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
-    private CheatCountDown cheatCountDown;
+    private static CheatCountDown cheatCountDown;
     private int time =0;
     private boolean diceAnimationActive= false;
     Stage stage;
