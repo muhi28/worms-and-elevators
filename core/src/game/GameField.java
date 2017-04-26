@@ -92,7 +92,7 @@ public class GameField {
 
                 Field field = new Field(i, j, number--);
 
-                field.setNextField(fields.get(fields.size() - 1));
+//                field.setNextField(fields.get(fields.size() - 1));
                 fields.add(field);
             }
 
@@ -102,10 +102,18 @@ public class GameField {
 
         Elevator.generateElevator();
         List<Field> sortedFields = snakeOrder(fields);
+        sortNextField(sortedFields);
 
         Player spieler = new Player(sortedFields.get(sortedFields.size() - 1));
 
         return new GameField(sortedFields, spieler);
+
+    }
+
+    public static void sortNextField(List<Field> sortedFields){
+        for (int i = 1; i < sortedFields.size(); i++) {
+            sortedFields.get(i).setNextField(sortedFields.get(i-1));
+        }
 
     }
 
