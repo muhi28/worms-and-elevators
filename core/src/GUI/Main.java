@@ -35,25 +35,26 @@ import java.util.Observable;
 import java.util.Observer;
 
 import dice.Dice;
+import game.Elevator;
 import game.Field;
 import game.GameField;
-import networking.NetworkManager;
+import main_controler.Controler;
 
 /**
  * Created by Muhi on 12.04.2017.
  */
 
-public class Main extends ApplicationAdapter implements InputProcessor, Observer {
+public class Main extends ApplicationAdapter implements Observer {
 
-    private OrthographicCamera camera;
+    private static OrthographicCamera camera;
 
     private SpriteBatch batch;
 
     private Sprite texturePlayer;
     private Texture tile1, tile2;
-    private Dice dice;
+    private static Dice dice;
     private String color;
-    private final GameField gameField;
+    private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
     private CheatCountDown cheatCountDown;
     private int time =0;
@@ -62,16 +63,16 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
     Worm playerOne;
 
 
-    Sprite diceSprite;
+    private static Sprite diceSprite;
     MyActor diceActor;
 
 
-    private class MyActor extends Actor{
+    private class MyActor extends Actor {
 
-        public MyActor(){
+        public MyActor() {
 
-             diceSprite = new Sprite(dice.getDice_p());
-            diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100,Gdx.graphics.getHeight() / 2 - 800,200,200);
+            diceSprite = new Sprite(dice.getDice_p());
+            diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 
         }
 
@@ -92,7 +93,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
     }
 
 
-
     @Override
     public void create() {
 
@@ -106,7 +106,7 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-       // batch = new SpriteBatch();
+        // batch = new SpriteBatch();
 
 
         // initialisieren der Textur des Spielers
@@ -114,19 +114,17 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
 
 
         tile1 = new Texture(Gdx.files.internal("background_grass.png"));
-
+        tile2 = new Texture(Gdx.files.internal("background_elevator.png"));
 
 
         // DICE
         dice = new Dice(6);
-         diceActor = new MyActor();
+        diceActor = new MyActor();
         diceActor.setTouchable(Touchable.enabled);
-
 
 
         // Textur des Wurms
         playerOne = new Worm(texturePlayer, renderPositionCalculator);
-
 
 
         // gibt jedem einzelnen Feld des Spielfelds ein Texture
@@ -138,9 +136,20 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
             stage.addActor(singleField);
         }
 
+        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
+        int[] elevatorFields = Elevator.getElevatorFields();
+
+        for (int i = 0; i < elevatorFields.length; i++) {
+
+            SingleField singleField = new SingleField(tile2, renderPositionCalculator, elevatorFields[i]);
+            stage.addActor(singleField);
+        }
+
 
         // hiermit wird das Touchhandling ermöglicht
-        Gdx.input.setInputProcessor(this);
+
+        Controler Controler = new Controler();
+        Gdx.input.setInputProcessor(Controler.getInputProcessor());
     }
 
     @Override
@@ -157,7 +166,6 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
         //stage.addActor(diceActor);
 
         camera.update();
-
 
 
         batch.begin();
@@ -184,85 +192,26 @@ public class Main extends ApplicationAdapter implements InputProcessor, Observer
         stage.draw();
     }
 
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
+    public static Dice getDice() {
+        return dice;
     }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
+    public static GameField getGameField(){
+        return gameField;
     }
 
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
+    public static CheatCountDown getCheatCountdown(){
+        return cheatCountDown;
     }
 
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
-
-        if(cheatCountDown.touchDown(screenX,screenY)){
-
-            return true;
-        }
-
-        if(Gdx.input.isTouched()){
-
-            if(gameField.getPlayer().getCurrentField().getNextField() != null) {
-
-
-                gameField.getPlayer().move(dice.rollTheDice());
-                diceSprite.setTexture(dice.getDice_p());
-                diceAnimationActive =true;
-                camera.update();
-
-                if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
-
-                    System.out.println("YOU ARE A WINNER !!!");
-                }
-            }
-
-        }
-
-
-        return true;
+    public static OrthographicCamera getCamera(){
+        return camera;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        if(cheatCountDown.cheatingIsActive()){
-
-            Integer integer = cheatCountDown.stopCountDown();
-
-            gameField.getPlayer().move(integer);
-
-            camera.update();
-
-            return true;
-        }
-        return false;
+    public static Sprite getDiceSprite(){
+        return diceSprite;
     }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 
     @Override
     public void update(Observable observable, Object o) {
