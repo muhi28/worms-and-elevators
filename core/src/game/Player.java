@@ -1,6 +1,8 @@
 package game;
 
 
+import main_controler.Controler;
+
 /**
  * Created by Muhi on 11.04.2017.
  */
@@ -33,6 +35,10 @@ public class Player {
     public Field getCurrentField(){
 
         return currentField;
+    }
+
+    public void setCurrentField(Field field){
+        currentField = field;
     }
 
     /*public void update(){

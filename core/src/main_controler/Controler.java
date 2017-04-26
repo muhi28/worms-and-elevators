@@ -1,7 +1,6 @@
 package main_controler;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,17 +13,19 @@ import game.Elevator;
 import game.Field;
 import game.GameField;
 import game.Player;
-import sun.security.ssl.Debug;
+
 
 public class Controler implements InputProcessor {
 
-    boolean cheatMode = true;               //Stud for the cheat mode
+//    boolean cheatMode = true;               //Stud for the cheat mode
     private static Sprite diceSprite = Main.getDiceSprite();
     private static Dice dice = Main.getDice();
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
     private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    private Field goal = gameField.getGoal();
+
 
 
     public Controler(){
@@ -47,32 +48,64 @@ public class Controler implements InputProcessor {
 
     public void movement(Player player, Dice dice){
 
-        int eyeNumber;
+        int eyeNumber = dice.rollTheDice();
+        player.move(eyeNumber);
+        updateCurrentField();
+        checkField(player);
 
-        if(cheatMode) {
+
+ /*       if(cheatMode) {
             eyeNumber = dice.rollTheDice();
         }
         else{
             eyeNumber = dice.cheatDice(dice.getDice_p());
         }
-
-        player.move(eyeNumber);
-        checkField(player.getCurrentField().getFieldnumber());
+*/
 
     }
 
-    public void checkField(int currentFieldnumber){
+    public void cheatMovement (Player player, Integer cheatCountdown){
+
+        player.move(cheatCountdown);
+        updateCurrentField();
+        checkField(player);
 
 
+    }
+
+    public void updateCurrentField(){
+        currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    }
+
+    public static  void updateCamera(){
+        camera.update();
+    }
+
+
+    public void checkField(Player player){
+
+        currentFieldnumber = player.getCurrentField().getFieldnumber();
+        System.out.println(currentFieldnumber);                 //test to determine if the method works
         int [] elevatorNumber = Elevator.getElevatorFields();
 
         for (int i = 0; i < 7; i++) {
+            System.out.println(elevatorNumber[i]);          //test to determine if the method works
             if (currentFieldnumber == elevatorNumber[i]){
-                Elevator.moveElevator(currentFieldnumber);
+                int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(currentFieldnumber);
+                i = 7;                                       //if a field is found, the loop should stop
+                System.out.println("Übereinstimmung");      //test to determine if the method works
+                port(newElevatorFieldnumber, player);
+
             }
+
         }
 
 
+    }
+
+    public void port(int fieldnumber, Player player){
+        Field newCurrentField = gameField.getFieldFrom(fieldnumber);
+        player.setCurrentField(newCurrentField);
     }
 
 
@@ -115,6 +148,12 @@ public class Controler implements InputProcessor {
 
                     System.out.println("YOU ARE A WINNER !!!");
                 }
+
+/*                if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
+
+                    System.out.println("YOU ARE A WINNER !!!");
+                }
+                */
             }
 
         }
@@ -130,7 +169,7 @@ public class Controler implements InputProcessor {
 
             Integer integer = cheatCountDown.stopCountDown();
 
-            gameField.getPlayer().move(integer);
+            cheatMovement(gameField.getPlayer(), integer);
 
             camera.update();
 

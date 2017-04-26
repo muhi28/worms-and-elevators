@@ -127,4 +127,9 @@ public class GameField {
 
         return fieldnumbers;
     }
+
+    public List<Field> snakeOrder(List<Field> originalList){            //this method changes the order of our List of fields, so that the players "slither" across the board instead of the sequential movement
+
+        return originalList;
+    }
 }
