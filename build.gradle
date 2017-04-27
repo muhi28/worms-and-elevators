@@ -31,7 +31,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
-/*
+
 project(":desktop") {
     apply plugin: "java"
 
@@ -43,7 +43,7 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     }
 }
-*/
+
 
 project(":android") {
     apply plugin: "android"
