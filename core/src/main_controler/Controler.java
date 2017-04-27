@@ -49,8 +49,10 @@ public class Controler implements InputProcessor {
     public void movement(Player player, Dice dice){
 
         int eyeNumber = dice.rollTheDice();
-        player.move(eyeNumber);
-        updateCurrentField();
+        for (int i = 0; i < eyeNumber ; i++) {
+            player.move();
+        }
+        updateCurrentFieldnumber();
         checkField(player);
 
 
@@ -66,20 +68,21 @@ public class Controler implements InputProcessor {
 
     public void cheatMovement (Player player, Integer cheatCountdown){
 
-        player.move(cheatCountdown);
-        updateCurrentField();
+        for (int i = 0; i < cheatCountdown; i++) {
+            player.move();
+        }
+
+//        player.move(cheatCountdown);
+        updateCurrentFieldnumber();
         checkField(player);
 
 
     }
 
-    public void updateCurrentField(){
+    public void updateCurrentFieldnumber(){
         currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
     }
 
-    public static  void updateCamera(){
-        camera.update();
-    }
 
 
     public void checkField(Player player){
