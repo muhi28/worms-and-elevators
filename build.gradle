@@ -75,12 +75,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
 
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        destinationDir = file("../javadoc/")
-        failOnError false
-    }
 
 
     apply plugin: 'jacoco'
@@ -117,6 +111,8 @@ project(":core") {
             html.enabled = true
         }
     }
+
+
 }
 
 tasks.eclipse.doLast {
