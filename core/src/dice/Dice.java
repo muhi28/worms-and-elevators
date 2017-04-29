@@ -17,16 +17,24 @@ public class Dice {
     private Texture dice_p;
 
 
+
+    private int result;
+
+
     /*
       Constructor initializes range with delivered value and dice_p with dice_idle.png
      */
     public Dice(int range) {
         this.range = range;
-        this.dice_p = new Texture(Gdx.files.internal("dice_idle.png"));
+       // this.dice_p = new Texture(Gdx.files.internal("dice_idle.png"));
     }
 
     public int getRange() {
         return range;
+    }
+
+    public int getResult() {
+        return result;
     }
 
     public Texture getDice_p() {
@@ -39,12 +47,12 @@ public class Dice {
      * @return : the random value
      */
     public int rollTheDice() {
-        int result = (int) (Math.random() * this.range + 1);
+         result = (int) (Math.random() * this.range + 1);
 
         /*
         sets dice_p on the rolled texture
          */
-        switch (result) {
+        /*switch (result) {
             case 1:
                 this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
                 break;
@@ -66,7 +74,7 @@ public class Dice {
             default:
                 System.out.println("Falscher Value uebergeben!");
 
-        }
+        }*/
         return result;
     }
 

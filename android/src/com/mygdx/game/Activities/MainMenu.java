@@ -157,6 +157,12 @@ public class MainMenu extends Activity {
      */
     public void onClickChangeToCharacterSelect(View v) {
 
+        if(text.getText().toString().equals("")){
+
+            text.setError("Bitte geben Sie einen Namen ein");
+
+            return;
+        }
         intent = new Intent(this, CharacterSelect.class);
         intent.putExtra("Playername", text.getText().toString());
 
@@ -164,6 +170,15 @@ public class MainMenu extends Activity {
         startActivity(intent);
     }
     public void onButtonClickStartNetworking(View view) {
+
+        if(text.getText().toString().equals("")){
+
+            text.setError("Bitte geben Sie einen Namen ein");
+
+            return;
+        }
+
+
         intent = new Intent(this, Network.class);
         mediaPlayer.stop();                                                                     //momentant Loesung
 
