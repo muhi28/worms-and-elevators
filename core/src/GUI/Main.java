@@ -137,7 +137,7 @@ public class Main extends ApplicationAdapter implements Observer {
         }
 
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
-        int[] elevatorFields = Elevator.getElevatorFields();
+        int[] elevatorFields = Controler.getElevatorFields();
 
         for (int i = 0; i < elevatorFields.length; i++) {
 

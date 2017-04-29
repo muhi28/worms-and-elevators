@@ -1,6 +1,8 @@
 package game;
 
 
+import main_controler.Controler;
+
 /**
  * Created by Muhi on 11.04.2017.
  */
@@ -16,7 +18,11 @@ public class Player {
         this.currentField = currentField;
     }
 
-    public void move(int steps){
+    public void move(){
+        currentField = currentField.getNextField();
+    }
+
+/*    public void move(int steps){
 
 
         //Field field = currentField;
@@ -24,15 +30,20 @@ public class Player {
         for (int i = 0; i < steps; i++) {
 
             currentField = currentField.getNextField();
+
         }
 
         //this.currentField = field;
 
     }
-
+*/
     public Field getCurrentField(){
 
         return currentField;
+    }
+
+    public void setCurrentField(Field field){
+        currentField = field;
     }
 
     /*public void update(){

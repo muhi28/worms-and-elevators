@@ -2,6 +2,7 @@ package game;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class GameField {
     private static Field goal;
 
 
-    private static int[] fieldnumbers = new int[numberofVerticals*numberofHorizontal];
+    private static int[] fieldnumbers = new int[numberofVerticals * numberofHorizontal];
 
     private final Player player;
 
@@ -64,7 +65,7 @@ public class GameField {
         return player.getCurrentField();
     }
 
-    public Field getGoal(){
+    public Field getGoal() {
 
         return goal;
     }
@@ -75,7 +76,7 @@ public class GameField {
 
         int number = numberofVerticals * numberofHorizontal;
 
-         goal = new Field(numberofVerticals, numberofHorizontal, number--);
+        goal = new Field(numberofVerticals, numberofHorizontal, number--);
 
         fields.add(goal);
 
@@ -91,7 +92,7 @@ public class GameField {
 
                 Field field = new Field(i, j, number--);
 
-                field.setNextField(fields.get(fields.size() - 1));
+//                field.setNextField(fields.get(fields.size() - 1));
                 fields.add(field);
             }
 
@@ -100,10 +101,19 @@ public class GameField {
         getFieldNumbers(fields);
 
         Elevator.generateElevator();
+        List<Field> sortedFields = snakeOrder(fields);
+        sortNextField(sortedFields);
 
-        Player spieler = new Player(fields.get(fields.size() - 1));
+        Player spieler = new Player(sortedFields.get(sortedFields.size() - 1));
 
-        return new GameField(fields, spieler);
+        return new GameField(sortedFields, spieler);
+
+    }
+
+    public static void sortNextField(List<Field> sortedFields){
+        for (int i = 1; i < sortedFields.size(); i++) {
+            sortedFields.get(i).setNextField(sortedFields.get(i-1));
+        }
 
     }
 
@@ -126,5 +136,45 @@ public class GameField {
         }
 
         return fieldnumbers;
+    }
+
+    public static List<Field> snakeOrder(List<Field> originalList) {            //this method changes the order of our List of fields, so
+        //that the players "slither" across the board instead of
+        //the sequential
+
+        List<Field> subList1 = originalList.subList(0, 10);               //generation of sublists, so that i can change the order
+        List<Field> subList2 = originalList.subList(10, 20);
+        List<Field> subList3 = originalList.subList(20, 30);
+        List<Field> subList4 = originalList.subList(30, 40);
+        List<Field> subList5 = originalList.subList(40, 50);
+        List<Field> subList6 = originalList.subList(50, 60);
+        List<Field> subList7 = originalList.subList(60, 70);
+        List<Field> subList8 = originalList.subList(70, 80);
+        List<Field> subList9 = originalList.subList(80, 90);
+        List<Field> subList10 = originalList.subList(90, 100);
+        System.out.println(originalList.get(1).getFieldnumber());
+        System.out.println(subList1.get(1).getFieldnumber());
+
+        Collections.reverse(subList1);                                  //reversing the order of every 2nd list
+        Collections.reverse(subList3);
+        Collections.reverse(subList5);
+        Collections.reverse(subList7);
+        Collections.reverse(subList9);
+
+        List<Field> newList = new ArrayList<Field>();                   //generate a new list
+
+        newList.addAll(subList1);                                       //add all subLists into the new list
+        newList.addAll(subList2);
+        newList.addAll(subList3);
+        newList.addAll(subList4);
+        newList.addAll(subList5);
+        newList.addAll(subList6);
+        newList.addAll(subList7);
+        newList.addAll(subList8);
+        newList.addAll(subList9);
+        newList.addAll(subList10);
+
+
+        return newList;
     }
 }
