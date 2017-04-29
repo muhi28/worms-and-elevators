@@ -111,6 +111,14 @@ public class Controler implements InputProcessor {
         player.setCurrentField(newCurrentField);
     }
 
+//The following methods exist, so that the logic classes are seperated from each other and from the GUI classes. Architectual porpuses
+
+    public static int[] getElevatorFields(){
+        int [] elevatorFields = Elevator.getElevatorFields();
+        return elevatorFields;
+    }
+
+
 
     @Override
     public boolean keyDown(int keycode) {
