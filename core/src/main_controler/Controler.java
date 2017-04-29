@@ -152,6 +152,7 @@ public class Controler implements InputProcessor {
 
                 movement(gameField.getPlayer(), dice);
                 diceSprite.setTexture(dice.getDice_p());
+                Main.setDiceAnimationTrue();
 
                 camera.update();
 
