@@ -8,6 +8,7 @@ import org.junit.Test;
 import dice.Dice;
 import game.Field;
 import game.GameField;
+import game.Player;
 import main_controler.Controler;
 
 import static org.junit.Assert.assertEquals;
@@ -21,34 +22,20 @@ import static org.junit.Assert.assertEquals;
 public class FieldTest {
 
     private GameField gameField;
-    private Dice dice;
-    private Controler controler;
 
     @Before
-    public void createGameFields(){
-
+    public void createGameFields() {
         gameField = GameField.createGameField();
-        dice = new Dice(6);
-
-
-    }
-
-    @After
-    public void clearGameField(){
-
-        gameField = null;
-
     }
 
     @Test
-    public void testCurrentField(){
+    public void testCurrentField() {
+        Player player = gameField.getPlayer();
+        int fieldNumberBeforeMove = player.getCurrentField().getFieldnumber();
+        player.move();
+        player.move();
+        player.move();
 
-        controler = new Controler();
-
-        controler.movement(gameField.getPlayer(),dice);
-
-        int fieldnumber = gameField.getFieldofPlayer().getFieldnumber();
-
-        assertEquals(gameField.getPlayer().getCurrentField().getFieldnumber(),fieldnumber);
+        assertEquals(fieldNumberBeforeMove + 3, player.getCurrentField().getFieldnumber());
     }
 }
