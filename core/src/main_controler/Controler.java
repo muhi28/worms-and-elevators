@@ -95,10 +95,11 @@ public class Controler implements InputProcessor {
             System.out.println(elevatorNumber[i]);          //test to determine if the method works
             if (currentFieldnumber == elevatorNumber[i]){
                 int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(currentFieldnumber);
-                i = 7;                                       //if a field is found, the loop should stop
+                //i = 7;                                       //if a field is found, the loop should stop
 //                System.out.println("Übereinstimmung");      //test to determine if the method works
                 port(newElevatorFieldnumber, player);
 
+                break;
             }
 
         }
