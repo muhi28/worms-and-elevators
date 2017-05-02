@@ -14,17 +14,16 @@ public class CheatCountThread extends Thread {
 
     public void run() {
         Gdx.app.log("CheatCountThread", "Start thread");
-        boolean stopThread = false;
-        while (!isInterrupted() && !stopThread) {
-            try {
+
+        try {
+            while (!isInterrupted()) {
                 Thread.sleep(1500);
                 Gdx.app.log("CheatCountThread", "Increase dice");
                 cheatCountDown.increaseCurrentDiceValue();
-            } catch (InterruptedException e) {
-                Gdx.app.log("CheatCountThread", "Interrupt thread");
-                stopThread = true;
             }
-
+        } catch (InterruptedException e) {
+            Gdx.app.log("CheatCountThread", "Interrupt thread");
+            Thread.currentThread().interrupt();
         }
     }
 

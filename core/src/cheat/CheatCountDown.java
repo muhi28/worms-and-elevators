@@ -68,12 +68,9 @@ public class CheatCountDown extends Actor {
     }
 
     public Integer stopCountDown() {
-        if (visible) {
-            stopCount();
-            return currentDiceValue;
-        }
+        stopCount();
+        return currentDiceValue;
 
-        throw new RuntimeException("Cheating ist nicht aktiviert!");
     }
 
 }
