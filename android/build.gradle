@@ -11,7 +11,11 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
         }
+
+        instrumentTest.setRoot('src/androidTest')
     }
+
+
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
