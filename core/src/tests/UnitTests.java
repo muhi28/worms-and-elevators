@@ -21,7 +21,7 @@ public class UnitTests {
     @Before
     public void createDice(){
 
-        dice = new Dice(6);
+        dice = new Dice(6, false);
 
     }
 
