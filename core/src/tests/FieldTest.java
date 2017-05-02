@@ -2,17 +2,12 @@ package tests;
 
 
 import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
 
-import dice.Dice;
-import game.Field;
 import game.GameField;
 import game.Player;
-import main_controler.Controler;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 /**

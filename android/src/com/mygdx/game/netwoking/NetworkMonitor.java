@@ -6,13 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.mygdx.game.Activities.CharacterSelect;
-import com.mygdx.game.Activities.Network;
-
 import networking.FromNetworkProcessor;
 import networking.NetworkManager;
 import networking.NetworkTrafficReceiver;
-import networking.NetworkTrafficSender;
 
 public class NetworkMonitor extends Thread {
 

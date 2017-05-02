@@ -1,14 +1,7 @@
 package androidTest;
 
 
-import com.mygdx.game.Activities.MainMenu;
-
-
-import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 
 
 

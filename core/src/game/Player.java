@@ -1,8 +1,6 @@
 package game;
 
 
-import main_controler.Controler;
-
 /**
  * Created by Muhi on 11.04.2017.
  */

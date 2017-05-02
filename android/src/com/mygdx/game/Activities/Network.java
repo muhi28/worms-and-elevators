@@ -14,10 +14,10 @@ import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkUtils;
 import com.mygdx.game.netwoking.Server;
 
+import networking.FromNetworkProcessor;
 import networking.GameSync;
 import networking.NetworkManager;
 import networking.NetworkTrafficReceiver;
-import networking.FromNetworkProcessor;
 
 
 public class Network extends Activity {
