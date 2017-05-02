@@ -17,12 +17,11 @@ public class SplashScreen extends Activity {
 
 
     /**
-     *  onCreate-Method is used to set the content view of the class to the main menu activity.
+     * onCreate-Method is used to set the content view of the class to the main menu activity.
      * Further the thread which is within the method is used to make the splash screen sleep for 3000
      * milliseconds before it switches to the main menu screen.
      *
      * @param savedInstanceState ... Bundle
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +30,19 @@ public class SplashScreen extends Activity {
 
         Thread timerThread = new Thread() {
 
-            public void run(){
+            public void run() {
 
-                try{
+                try {
 
                     sleep(3000);
 
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
 
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
 
 
-                    intent = new Intent(SplashScreen.this,MainMenu.class);
+                    intent = new Intent(SplashScreen.this, MainMenu.class);
                     startActivity(intent);
                 }
             }

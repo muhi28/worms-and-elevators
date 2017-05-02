@@ -28,6 +28,6 @@
         android:layout_alignStart="@+id/mySwitch"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:onClick="onClickBackButton"/>
+        android:onClick="onClickBackButton" />
 
 </RelativeLayout>

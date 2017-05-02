@@ -14,9 +14,9 @@ import com.mygdx.game.R;
 /**
  *
  */
-public class Instruction extends Activity{
+public class Instruction extends Activity {
 
-    private  Intent intent;
+    private Intent intent;
 
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -36,7 +36,7 @@ public class Instruction extends Activity{
      *
      * @param view ... View
      */
-    public void onClickGoBack(View view){
+    public void onClickGoBack(View view) {
 
         intent = new Intent(this, MainMenu.class);
         startActivity(intent);

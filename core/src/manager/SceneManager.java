@@ -10,9 +10,9 @@ public class SceneManager {
 
     private static Screen currentScreen;
 
-    public static void setScreen(Screen screen){
+    public static void setScreen(Screen screen) {
 
-        if(currentScreen != null) {
+        if (currentScreen != null) {
             currentScreen.dispose();
         }
 
@@ -21,7 +21,7 @@ public class SceneManager {
         currentScreen.show();
     }
 
-    public static Screen getCurrentScreen(){
+    public static Screen getCurrentScreen() {
 
         return currentScreen;
     }

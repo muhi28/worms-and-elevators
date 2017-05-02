@@ -14,7 +14,8 @@ public class OptionActivity extends Activity {
 
     private Switch mySwitch;
     private Intent intent;
-    private boolean test=true;
+    private boolean test = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +25,7 @@ public class OptionActivity extends Activity {
         mySwitch.setChecked(true);
 
         //attach a listener to check for changes in state
-        mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener()
-        {
+        mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
@@ -38,17 +38,17 @@ public class OptionActivity extends Activity {
                    // switchStatus.setText("Switch is currently OFF");
                     }*/
 
-                test=isChecked;
-
+                test = isChecked;
 
 
             }
         });
 
     }
-    public void onClickBackButton(View v){
 
-        intent = new Intent(this,MainMenu.class);
+    public void onClickBackButton(View v) {
+
+        intent = new Intent(this, MainMenu.class);
         intent.putExtra("music", test);
 
         startActivity(intent);

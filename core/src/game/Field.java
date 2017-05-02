@@ -23,36 +23,38 @@ public class Field {
 
     private final int fieldnumber;
 
-    public Field(int py, int px, int fieldnumber){
+    public Field(int py, int px, int fieldnumber) {
 
 
         this.posX = px;
         this.posY = py;
-       // this.fieldType = fieldTyps;
+        // this.fieldType = fieldTyps;
 
         this.fieldnumber = fieldnumber;
     }
 
 
-    public void setNextField(Field nextField){
+    public void setNextField(Field nextField) {
 
         this.nextField = nextField;
     }
 
-    public Field getNextField(){
+    public Field getNextField() {
 
         return nextField;
     }
 
-    public void setPreviousField(Field previousField){
+    public void setPreviousField(Field previousField) {
 
         this.previousField = previousField;
     }
-    public Field getPrevious(){
+
+    public Field getPrevious() {
 
         return previousField;
     }
-    public int getFieldnumber(){
+
+    public int getFieldnumber() {
 
         return fieldnumber;
     }

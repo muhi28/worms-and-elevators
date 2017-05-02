@@ -8,11 +8,10 @@ import GUI.Main;
 //import com.mygdx.game.Game;
 
 
-
 public class DesktopLauncher {
 
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Main("blau"), config);
-	}
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        new LwjglApplication(new Main("blau"), config);
+    }
 }

@@ -110,9 +110,9 @@ public class GameField {
 
     }
 
-    public static void sortNextField(List<Field> sortedFields){
+    public static void sortNextField(List<Field> sortedFields) {
         for (int i = 1; i < sortedFields.size(); i++) {
-            sortedFields.get(i).setNextField(sortedFields.get(i-1));
+            sortedFields.get(i).setNextField(sortedFields.get(i - 1));
         }
 
     }

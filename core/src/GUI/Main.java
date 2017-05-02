@@ -45,8 +45,8 @@ public class Main extends ApplicationAdapter implements Observer {
     private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
     private static CheatCountDown cheatCountDown;
-    private static int time =0;
-    private static boolean diceAnimationActive= false;
+    private static int time = 0;
+    private static boolean diceAnimationActive = false;
     Stage stage;
     Worm playerOne;
 
@@ -169,39 +169,39 @@ public class Main extends ApplicationAdapter implements Observer {
         return dice;
     }
 
-    public static GameField getGameField(){
+    public static GameField getGameField() {
         return gameField;
     }
 
-    public static CheatCountDown getCheatCountdown(){
+    public static CheatCountDown getCheatCountdown() {
         return cheatCountDown;
     }
 
-    public static OrthographicCamera getCamera(){
+    public static OrthographicCamera getCamera() {
         return camera;
     }
 
-    public static Sprite getDiceSprite(){
+    public static Sprite getDiceSprite() {
         return diceSprite;
     }
 
-    public static void setDiceAnimationTrue(){
+    public static void setDiceAnimationTrue() {
         diceAnimationActive = true;
     }
 
-    public  static void doDiceAnimation(SpriteBatch batch){
-        float x=Gdx.graphics.getWidth() / 2 - 100;
-        float y=Gdx.graphics.getHeight() / 2 - 800;
-        float i=200;
+    public static void doDiceAnimation(SpriteBatch batch) {
+        float x = Gdx.graphics.getWidth() / 2 - 100;
+        float y = Gdx.graphics.getHeight() / 2 - 800;
+        float i = 200;
         diceSprite.draw(batch);
-        Animation a= dice.createAnimation();
+        Animation a = dice.createAnimation();
 
-        if(diceAnimationActive) {
-            batch.draw((TextureRegion)a.getKeyFrame((float)(Math.random() * dice.getRange()+ 1),true), x, y, i, i);
+        if (diceAnimationActive) {
+            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), x, y, i, i);
             time++;
-            if(time>12) {
+            if (time > 12) {
                 diceAnimationActive = false;
-                time=0;
+                time = 0;
             }
 
         }

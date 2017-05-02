@@ -1,8 +1,7 @@
 package networking;
 
 
-
 public interface ToNetworkProcessor {
 
-     void sendMessage(String message);
+    void sendMessage(String message);
 }

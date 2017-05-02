@@ -48,7 +48,7 @@ public final class GameSync {
         if (gameState == GameState.MULTIPLAYER_GAME_STARTED) {
             gameState = GameState.WAIT_FOR_OTHER_PLAYER;
         } else {
-          //  throw new RuntimeException("Invalid state");
+            //  throw new RuntimeException("Invalid state");
         }
 
 
@@ -58,7 +58,7 @@ public final class GameSync {
         if (gameState == GameState.WAIT_FOR_OTHER_PLAYER) {
             gameState = GameState.WAIT_FOR_WORM_SELECTION;
         } else {
-          //  throw new RuntimeException("Invalid state");
+            //  throw new RuntimeException("Invalid state");
         }
     }
 
@@ -66,7 +66,7 @@ public final class GameSync {
         if (gameState == GameState.WAIT_FOR_WORM_SELECTION || gameState == OTHER_PLAYER_HAS_WORM_SELECTED) {
             gameState = OTHER_PLAYER_HAS_WORM_SELECTED;
         } else {
-          //  throw new RuntimeException("Invalid state");
+            //  throw new RuntimeException("Invalid state");
         }
     }
 
@@ -74,7 +74,7 @@ public final class GameSync {
         if (gameState == OTHER_PLAYER_HAS_WORM_SELECTED) {
             gameState = GameState.GAME_STARTED;
         } else {
-        //    throw new RuntimeException("Invalid state");
+            //    throw new RuntimeException("Invalid state");
         }
     }
 

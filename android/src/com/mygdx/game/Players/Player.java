@@ -10,19 +10,19 @@ public class Player {
     private PlayerColor farbe;
 
 
-    public void Player(String name){
+    public void Player(String name) {
 
         this.spielername = name;
 
     }
 
-    public void setSpielername(String spielername){
+    public void setSpielername(String spielername) {
 
         this.spielername = spielername;
 
     }
 
-    public String getSpielername(){
+    public String getSpielername() {
 
         return spielername;
     }

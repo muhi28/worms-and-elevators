@@ -113,7 +113,7 @@
         android:layout_above="@+id/textview_wuermer"
         android:layout_alignRight="@+id/textview_wuermer"
         android:layout_alignEnd="@+id/textview_wuermer"
-        android:onClick="onClickOptionButton"/>
+        android:onClick="onClickOptionButton" />
 
 
 </RelativeLayout>

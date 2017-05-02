@@ -22,7 +22,7 @@ public class MainGameActivity extends AndroidApplication {
 
         String color = "";
 
-        if(intent.hasExtra("Player_Color")){
+        if (intent.hasExtra("Player_Color")) {
 
             color = intent.getStringExtra("Player_Color");
         }

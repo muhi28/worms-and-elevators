@@ -76,6 +76,7 @@
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textStyle="bold" />
+
     <Button
         android:id="@+id/button_back"
         style="@android:style/Widget.Holo.Button"

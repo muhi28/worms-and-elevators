@@ -35,7 +35,7 @@ public class MainMenu extends Activity {
     private Player player;
     private NetworkUtils networkUtils;
     private MediaPlayer mediaPlayer;
-    private Boolean startMusic=true;
+    private Boolean startMusic = true;
 
 
     private SensorManager sm;
@@ -61,26 +61,21 @@ public class MainMenu extends Activity {
         Intent intent = getIntent();
         mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
 
-            startMusic = intent.getBooleanExtra("music", true);
+        startMusic = intent.getBooleanExtra("music", true);
 
 
-        if(startMusic==true)
-        {
+        if (startMusic == true) {
             mediaPlayer.start();
-        }
-        else
-        {
+        } else {
 
 
-                mediaPlayer.stop();
+            mediaPlayer.stop();
 
         }
-
-
 
 
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+        sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         acelVal = SensorManager.GRAVITY_EARTH;
         acelLast = SensorManager.GRAVITY_EARTH;
@@ -88,7 +83,6 @@ public class MainMenu extends Activity {
 
         player = new Player();
         player.setSpielername(text.getText().toString());
-
 
 
         //button = (Button)findViewById(R.id.instr_button);
@@ -104,13 +98,13 @@ public class MainMenu extends Activity {
             float z = sensorEvent.values[2];
 
             acelLast = acelVal;
-            acelVal = (float)Math.sqrt((double)(x*x + y*y +z*z));
+            acelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
             float delta = acelVal - acelLast;
-            shake = shake *0.9f + delta;
+            shake = shake * 0.9f + delta;
 
-            if(shake > 8){
+            if (shake > 8) {
 
-                Toast toast = Toast.makeText(getApplicationContext(),"Schüttle mich nicht", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), "Schüttle mich nicht", Toast.LENGTH_LONG);
                 toast.show();
             }
 
@@ -157,7 +151,7 @@ public class MainMenu extends Activity {
      */
     public void onClickChangeToCharacterSelect(View v) {
 
-        if(text.getText().toString().equals("")){
+        if (text.getText().toString().equals("")) {
 
             text.setError("Bitte geben Sie einen Namen ein");
 
@@ -169,9 +163,10 @@ public class MainMenu extends Activity {
         mediaPlayer.stop();
         startActivity(intent);
     }
+
     public void onButtonClickStartNetworking(View view) {
 
-        if(text.getText().toString().equals("")){
+        if (text.getText().toString().equals("")) {
 
             text.setError("Bitte geben Sie einen Namen ein");
 
@@ -185,8 +180,9 @@ public class MainMenu extends Activity {
         startActivity(intent);
 
     }
-    public void onClickOptionButton(View v){
-        intent = new Intent(this,OptionActivity.class);
+
+    public void onClickOptionButton(View v) {
+        intent = new Intent(this, OptionActivity.class);
         mediaPlayer.stop();                                                                     //momentane Loesung
 
         startActivity(intent);

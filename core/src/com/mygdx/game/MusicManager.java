@@ -20,26 +20,25 @@ public class MusicManager {
     public MusicManager() {
 
         this.gameMusic = Gdx.audio.newMusic(Gdx.files.internal("m.mp3"));
-       this.diceSound = Gdx.audio.newSound(Gdx.files.internal("roll.wav"));
+        this.diceSound = Gdx.audio.newSound(Gdx.files.internal("roll.wav"));
         this.move = Gdx.audio.newSound(Gdx.files.internal("wormSound.wav"));
         this.finish = Gdx.audio.newSound(Gdx.files.internal("finish.wav"));
     }
 
-    public void startMusic()
-    {
+    public void startMusic() {
         this.gameMusic.setLooping(true);
         this.gameMusic.play();
     }
-    public void shuffle()
-    {
+
+    public void shuffle() {
         this.diceSound.play();
     }
-    public void wormSound()
-    {
+
+    public void wormSound() {
         this.move.play();
     }
-    public void finishSound()
-    {
+
+    public void finishSound() {
         this.finish.play();
     }
 }

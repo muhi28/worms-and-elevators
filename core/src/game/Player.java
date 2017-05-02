@@ -11,36 +11,36 @@ public class Player {
     private Field currentField;
 
 
-    public Player(Field currentField){
+    public Player(Field currentField) {
 
         this.currentField = currentField;
     }
 
-    public void move(){
+    public void move() {
         currentField = currentField.getNextField();
     }
 
-/*    public void move(int steps){
+    /*    public void move(int steps){
 
 
-        //Field field = currentField;
+            //Field field = currentField;
 
-        for (int i = 0; i < steps; i++) {
+            for (int i = 0; i < steps; i++) {
 
-            currentField = currentField.getNextField();
+                currentField = currentField.getNextField();
+
+            }
+
+            //this.currentField = field;
 
         }
-
-        //this.currentField = field;
-
-    }
-*/
-    public Field getCurrentField(){
+    */
+    public Field getCurrentField() {
 
         return currentField;
     }
 
-    public void setCurrentField(Field field){
+    public void setCurrentField(Field field) {
         currentField = field;
     }
 

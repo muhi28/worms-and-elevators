@@ -18,44 +18,44 @@ public class UnitTests {
     private Dice dice;
 
     @Before
-    public void createDice(){
+    public void createDice() {
 
         dice = new Dice(6, false);
 
     }
 
     @After
-    public void deleteDice(){
+    public void deleteDice() {
 
         dice = null;
     }
 
 
     @Test
-    public void testMinDiceResult(){
+    public void testMinDiceResult() {
 
         int range = dice.rollTheDice();
 
-        assertEquals(dice.getResult(),range);
+        assertEquals(dice.getResult(), range);
 
     }
 
     @Test
-    public void testMaxDiceResult(){
+    public void testMaxDiceResult() {
 
         int range = dice.rollTheDice();
 
-        assertEquals(dice.getResult(),range);
+        assertEquals(dice.getResult(), range);
 
-        assertNotEquals(89,dice.getResult());
+        assertNotEquals(89, dice.getResult());
 
     }
 
     @Test(expected = AssertionError.class)
-    public void testZeroResult(){
+    public void testZeroResult() {
 
         int range = dice.rollTheDice();
 
-        assertEquals(0,range);
+        assertEquals(0, range);
     }
 }

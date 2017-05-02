@@ -95,7 +95,6 @@ project(":core") {
     }
 
 
-
 }
 
 tasks.eclipse.doLast {
