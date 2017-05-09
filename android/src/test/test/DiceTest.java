@@ -14,7 +14,7 @@ import static junit.framework.Assert.assertEquals;
  * Created by Muhi on 28.04.2017.
  */
 
-public class UnitTests {
+public class DiceTest {
 
     private Dice dice;
 
