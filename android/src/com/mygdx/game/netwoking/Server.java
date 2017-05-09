@@ -27,7 +27,7 @@ public class Server extends IntentService {
     private NetworkTrafficSender networkTrafficSender;
 
 
-    public static String INIT_MESSAGE = "START_SERVER";
+    public static final String INIT_MESSAGE = "START_SERVER";
 
     public Server() {
         super("Server");
@@ -43,14 +43,14 @@ public class Server extends IntentService {
         });
 
         Log.d(Server.TAG, "onHandleIntent");
-        ServerSocket listener = null;
+        ServerSocket listener;
         networkUtils = new NetworkUtils(appContext);
         try {
             listener = new ServerSocket(PORT);
             Log.d(Server.TAG, String.format("listening on port = %s:%d", networkUtils.wifiIpAddress(), PORT));
             while (true) {
                 Log.d(Server.TAG, "waiting for client");
-                BufferedReader in = null;
+                BufferedReader in;
                 synchronized (this) {
                     Socket socket = listener.accept();
                     showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
@@ -61,12 +61,12 @@ public class Server extends IntentService {
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
                     Log.d(Server.TAG, "received");
                     NetworkManager.received(inputLine);
-                    // showToast("received: " + inputLine);
+
                     Log.d(Server.TAG, inputLine);
                 }
             }
         } catch (IOException e) {
-            Log.d(Server.TAG, e.toString());
+            Log.d(Server.TAG, e.toString(),e);
         }
     }
 

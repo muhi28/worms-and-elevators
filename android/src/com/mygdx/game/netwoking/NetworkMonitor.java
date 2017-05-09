@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 public class NetworkMonitor extends Thread {
 
-    public final String CONNECTION_MONITOR_MESSAGE = "beep";
+    public static final String CONNECTION_MONITOR_MESSAGE = "beep";
 
 
     private Context appContext;
@@ -53,7 +53,8 @@ public class NetworkMonitor extends Thread {
 
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
+
             }
         }
     }

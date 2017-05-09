@@ -17,6 +17,8 @@ public class NetworkManager extends Observable {
         NETWORK_SENDER.setChanged();
         if (useOtherThread) {
             Thread deleayedThread = new Thread() {
+
+                @Override
                 public void run() {
                     NetworkManager.send(send);
                 }
@@ -47,6 +49,8 @@ public class NetworkManager extends Observable {
 
     public static void sendWithDelay(final String send) {
         Thread deleayedThread = new Thread() {
+
+            @Override
             public void run() {
                 try {
                     Thread.sleep(1000);

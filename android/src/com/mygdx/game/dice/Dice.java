@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.glutils.FileTextureData;
 /**
  * Created by Patrick on 05.04.2017.
  * <p>
- * Class Dice has two variables rang and dice_p
+ * Class Dice has two variables rang and diceTexture
  * Until now only one relevant method is implemented (rollTheDice).
  */
 
 public class Dice {
 
     private int range;
-    private Texture dice_p;
+    private Texture diceTexture;
     private final boolean loadPictures;
 
 
@@ -24,12 +24,12 @@ public class Dice {
 
 
     /*
-      Constructor initializes range with delivered value and dice_p with dice_idle.png
+      Constructor initializes range with delivered value and diceTexture with dice_idle.png
      */
     public Dice(int range, boolean loadPictures) {
         this.range = range;
         if (loadPictures) {
-            this.dice_p = new Texture(Gdx.files.internal("dice_idle.png"));
+            this.diceTexture = new Texture(Gdx.files.internal("dice_idle.png"));
         }
         this.loadPictures = loadPictures;
     }
@@ -46,8 +46,8 @@ public class Dice {
         return result;
     }
 
-    public Texture getDice_p() {
-        return dice_p;
+    public Texture getDiceTexture() {
+        return diceTexture;
     }
 
     /**
@@ -59,27 +59,27 @@ public class Dice {
         result = (int) (Math.random() * this.range + 1);
 
         /*
-        sets dice_p on the rolled texture
+        sets diceTexture on the rolled texture
          */
         if (loadPictures) {
             switch (result) {
                 case 1:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_one.png")));
                     break;
                 case 2:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_two.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_two.png")));
                     break;
                 case 3:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_three.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_three.png")));
                     break;
                 case 4:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_four.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_four.png")));
                     break;
                 case 5:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_five.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_five.png")));
                     break;
                 case 6:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_six.png")));
+                    this.diceTexture = (new Texture(Gdx.files.internal("dice_six.png")));
                     break;
                 default:
                     System.out.println("Falscher Value uebergeben!");
@@ -90,14 +90,14 @@ public class Dice {
     }
 
     /**
-     * The method cheatDice sets the dice_p on the texture the player clicked.
+     * The method cheatDice sets the diceTexture on the texture the player clicked.
      *
      * @return : the int value of the dice number
      */
 
 
     public int cheatDice(Texture dice_p) {
-        int result = 0;
+         result = 0;
 
         /*
             The paths from the dice texture are saved, in the String Array pathOfDices..
@@ -124,26 +124,26 @@ public class Dice {
         }
 
         /*
-        sets dice_p depending on the given texture
+        sets diceTexture depending on the given texture
          */
         switch (result) {
             case 1:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_one.png")));
                 break;
             case 2:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_two.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_two.png")));
                 break;
             case 3:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_three.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_three.png")));
                 break;
             case 4:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_four.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_four.png")));
                 break;
             case 5:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_five.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_five.png")));
                 break;
             case 6:
-                this.dice_p = (new Texture(Gdx.files.internal("dice_six.png")));
+                this.diceTexture = (new Texture(Gdx.files.internal("dice_six.png")));
                 break;
             default:
                 System.out.println("Falscher Value uebergeben!");

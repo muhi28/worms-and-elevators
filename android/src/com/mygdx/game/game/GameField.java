@@ -1,6 +1,8 @@
 package com.mygdx.game.game;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,19 +14,21 @@ import java.util.List;
 public class GameField {
 
 
-    private static final int numberofVerticals = 10;
-    private static final int numberofHorizontal = 10;
+    private static final int NUMBEROF_VERTICALS = 10;
+    private static final int NUMBEROF_HORIZONTAL = 10;
+    private static final String TAG = "GameField OriginalList";
+    private static final String TAG2 = "GameField SubList";
 
 
-    private final List<com.mygdx.game.game.Field> fields;
-    private static com.mygdx.game.game.Field goal;
+    private final List<Field> fields;
+    private static Field goal;
 
 
-    private static int[] fieldnumbers = new int[numberofVerticals * numberofHorizontal];
+    private static int[] fieldnumbers = new int[NUMBEROF_VERTICALS * NUMBEROF_HORIZONTAL];
 
     private final Player player;
 
-    public GameField(List<com.mygdx.game.game.Field> fields, Player player) {
+    public GameField(List<Field> fields, Player player) {
 
         this.player = player;
         this.fields = fields;
@@ -32,9 +36,9 @@ public class GameField {
 
     }
 
-    public com.mygdx.game.game.Field getFieldfromPos(int vertical, int horizontal) {
+    public Field getFieldfromPos(int vertical, int horizontal) throws RuntimeException {
 
-        for (com.mygdx.game.game.Field field : fields) {
+        for (Field field : fields) {
 
             if (field.getPosX() == horizontal && field.getPosY() == vertical) {
 
@@ -45,12 +49,12 @@ public class GameField {
         throw new RuntimeException("Field wurde nicht gefunden!");
     }
 
-    public com.mygdx.game.game.Field getStartField() {
+    public Field getStartField() {
 
         return getFieldfromPos(0, 0);
     }
 
-    public List<com.mygdx.game.game.Field> getFields() {
+    public List<Field> getFields() {
 
         return fields;
     }
@@ -60,39 +64,37 @@ public class GameField {
         return player;
     }
 
-    public com.mygdx.game.game.Field getFieldofPlayer() {
+    public Field getFieldofPlayer() {
 
         return player.getCurrentField();
     }
 
-    public com.mygdx.game.game.Field getGoal() {
+    public Field getGoal() {
 
         return goal;
     }
 
     public static GameField createGameField() {
 
-        List<com.mygdx.game.game.Field> fields = new ArrayList<com.mygdx.game.game.Field>();
+        List<Field> fields = new ArrayList<>();
 
-        int number = numberofVerticals * numberofHorizontal;
+        int number = NUMBEROF_VERTICALS * NUMBEROF_HORIZONTAL;
 
-        goal = new com.mygdx.game.game.Field(numberofVerticals, numberofHorizontal, number--);
+        goal = new Field(NUMBEROF_VERTICALS, NUMBEROF_HORIZONTAL, number--);
 
         fields.add(goal);
 
-        for (int i = numberofHorizontal; i > 0; i--) {
+        for (int i = NUMBEROF_HORIZONTAL; i > 0; i--) {
 
-            for (int j = numberofVerticals; j > 0; j--) {
+            for (int j = NUMBEROF_VERTICALS; j > 0; j--) {
 
-                if (i == numberofHorizontal && j == numberofVerticals) {
+                if (i == NUMBEROF_HORIZONTAL && j == NUMBEROF_VERTICALS) {
 
                     continue;
                 }
 
 
-                com.mygdx.game.game.Field field = new com.mygdx.game.game.Field(i, j, number--);
-
-//                field.setNextField(fields.get(fields.size() - 1));
+                Field field = new Field(i, j, number--);
                 fields.add(field);
             }
 
@@ -101,7 +103,7 @@ public class GameField {
         getFieldNumbers(fields);
 
         Elevator.generateElevator();
-        List<com.mygdx.game.game.Field> sortedFields = snakeOrder(fields);
+        List<Field> sortedFields = snakeOrder(fields);
         sortNextField(sortedFields);
 
         Player spieler = new Player(sortedFields.get(sortedFields.size() - 1));
@@ -110,15 +112,15 @@ public class GameField {
 
     }
 
-    public static void sortNextField(List<com.mygdx.game.game.Field> sortedFields) {
+    public static void sortNextField(List<Field> sortedFields) {
         for (int i = 1; i < sortedFields.size(); i++) {
             sortedFields.get(i).setNextField(sortedFields.get(i - 1));
         }
 
     }
 
-    public com.mygdx.game.game.Field getFieldFrom(int number) {
-        for (com.mygdx.game.game.Field field : fields) {
+    public Field getFieldFrom(int number) throws RuntimeException {
+        for (Field field : fields) {
             if (field.getFieldnumber() == number) {
                 return field;
             }
@@ -128,7 +130,7 @@ public class GameField {
     }
 
 
-    public static int[] getFieldNumbers(List<com.mygdx.game.game.Field> gameField) {
+    public static int[] getFieldNumbers(List<Field> gameField) {
 
         for (int i = 0; i < gameField.size(); i++) {
 
@@ -138,22 +140,23 @@ public class GameField {
         return fieldnumbers;
     }
 
-    public static List<com.mygdx.game.game.Field> snakeOrder(List<com.mygdx.game.game.Field> originalList) {            //this method changes the order of our List of fields, so
+    public static List<Field> snakeOrder(List<Field> originalList) {            //this method changes the order of our List of fields, so
         //that the players "slither" across the board instead of
         //the sequential
 
-        List<com.mygdx.game.game.Field> subList1 = originalList.subList(0, 10);               //generation of sublists, so that i can change the order
-        List<com.mygdx.game.game.Field> subList2 = originalList.subList(10, 20);
-        List<com.mygdx.game.game.Field> subList3 = originalList.subList(20, 30);
-        List<com.mygdx.game.game.Field> subList4 = originalList.subList(30, 40);
-        List<com.mygdx.game.game.Field> subList5 = originalList.subList(40, 50);
-        List<com.mygdx.game.game.Field> subList6 = originalList.subList(50, 60);
-        List<com.mygdx.game.game.Field> subList7 = originalList.subList(60, 70);
-        List<com.mygdx.game.game.Field> subList8 = originalList.subList(70, 80);
-        List<com.mygdx.game.game.Field> subList9 = originalList.subList(80, 90);
-        List<com.mygdx.game.game.Field> subList10 = originalList.subList(90, 100);
-        System.out.println(originalList.get(1).getFieldnumber());
-        System.out.println(subList1.get(1).getFieldnumber());
+        List<Field> subList1 = originalList.subList(0, 10);               //generation of sublists, so that i can change the order
+        List<Field> subList2 = originalList.subList(10, 20);
+        List<Field> subList3 = originalList.subList(20, 30);
+        List<Field> subList4 = originalList.subList(30, 40);
+        List<Field> subList5 = originalList.subList(40, 50);
+        List<Field> subList6 = originalList.subList(50, 60);
+        List<Field> subList7 = originalList.subList(60, 70);
+        List<Field> subList8 = originalList.subList(70, 80);
+        List<Field> subList9 = originalList.subList(80, 90);
+        List<Field> subList10 = originalList.subList(90, 100);
+
+        Log.d(TAG,Integer.toString(originalList.get(1).getFieldnumber()));
+        Log.d(TAG2,Integer.toString(subList1.get(1).getFieldnumber()));
 
         Collections.reverse(subList1);                                  //reversing the order of every 2nd list
         Collections.reverse(subList3);
@@ -161,7 +164,7 @@ public class GameField {
         Collections.reverse(subList7);
         Collections.reverse(subList9);
 
-        List<com.mygdx.game.game.Field> newList = new ArrayList<com.mygdx.game.game.Field>();                   //generate a new list
+        List<Field> newList = new ArrayList<>();                   //generate a new list
 
         newList.addAll(subList1);                                       //add all subLists into the new list
         newList.addAll(subList2);

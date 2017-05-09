@@ -10,6 +10,7 @@ import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
+
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 
@@ -23,8 +24,8 @@ public class Controler implements InputProcessor {
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
     private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
-    private Field goal = gameField.getGoal();
 
+    private static final String TAG = "Controler";
 
     public Controler() {
         setInputProcessor();
@@ -50,15 +51,6 @@ public class Controler implements InputProcessor {
         updateCurrentFieldnumber();
         checkField(player);
 
-
- /*       if(cheatMode) {
-            eyeNumber = dice.rollTheDice();
-        }
-        else{
-            eyeNumber = dice.cheatDice(dice.getDice_p());
-        }
-*/
-
     }
 
     public void cheatMovement(Player player, Integer cheatCountdown) {
@@ -67,30 +59,30 @@ public class Controler implements InputProcessor {
             player.move();
         }
 
-//        player.move(cheatCountdown);
         updateCurrentFieldnumber();
         checkField(player);
 
 
     }
 
-    public void updateCurrentFieldnumber() {
+    public static void updateCurrentFieldnumber() {
         currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
     }
 
 
-    public void checkField(Player player) {
+    public static void checkField(Player player) {
 
         currentFieldnumber = player.getCurrentField().getFieldnumber();
-        System.out.println(currentFieldnumber);                 //test to determine if the method works
+
+        Gdx.app.log(TAG, Integer.toString(currentFieldnumber)); //test to determine if the method works
+
         int[] elevatorNumber = Elevator.getElevatorFields();
 
         for (int i = 0; i < 7; i++) {
-            System.out.println(elevatorNumber[i]);          //test to determine if the method works
+
             if (currentFieldnumber == elevatorNumber[i]) {
+
                 int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(currentFieldnumber);
-                //i = 7;                                       //if a field is found, the loop should stop
-//                System.out.println("Übereinstimmung");      //test to determine if the method works
                 port(newElevatorFieldnumber, player);
 
                 break;
@@ -101,7 +93,7 @@ public class Controler implements InputProcessor {
 
     }
 
-    public void port(int fieldnumber, Player player) {
+    public static void port(int fieldnumber, Player player) {
         Field newCurrentField = gameField.getFieldFrom(fieldnumber);
         player.setCurrentField(newCurrentField);
     }
@@ -109,8 +101,7 @@ public class Controler implements InputProcessor {
 //The following methods exist, so that the logic classes are seperated from each other and from the GUI classes. Architectual porpuses
 
     public static int[] getElevatorFields() {
-        int[] elevatorFields = Elevator.getElevatorFields();
-        return elevatorFields;
+        return Elevator.getElevatorFields();
     }
 
 
@@ -139,28 +130,22 @@ public class Controler implements InputProcessor {
             return true;
         }
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
 
 
-            if (gameField.getPlayer().getCurrentField().getNextField() != null) {
 
                 movement(gameField.getPlayer(), dice);
-                diceSprite.setTexture(dice.getDice_p());
+                diceSprite.setTexture(dice.getDiceTexture());
                 Main.setDiceAnimationTrue();
 
                 camera.update();
 
                 if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
 
-                    System.out.println("YOU ARE A WINNER !!!");
+                    Gdx.app.log(TAG,"YOU ARE A WINNER !!");
                 }
 
-/*                if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
 
-                    System.out.println("YOU ARE A WINNER !!!");
-                }
-                */
-            }
 
         }
 

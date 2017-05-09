@@ -44,7 +44,7 @@ public final class GameSync {
 
     }
 
-    public void waitForOtherPlayer() {
+    public void waitForOtherPlayer() throws RuntimeException {
         if (gameState == GameState.MULTIPLAYER_GAME_STARTED) {
             gameState = GameState.WAIT_FOR_OTHER_PLAYER;
         } else {

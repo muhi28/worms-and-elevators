@@ -30,7 +30,6 @@ public class MainMenu extends Activity {
 
 
     private Intent intent;
-    // private Button button;
     private EditText text;
     private Player player;
     private NetworkUtils networkUtils;
@@ -42,9 +41,6 @@ public class MainMenu extends Activity {
     private float acelVal; //Curent acceleration value and qravity
     private float acelLast; //Last acceleration value and gravity
     private float shake; //Acceleration value differ from gravity
-
-    private CharacterSelect characterSelect;
-
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
      *
@@ -58,13 +54,13 @@ public class MainMenu extends Activity {
         networkUtils = new NetworkUtils(this.getApplicationContext());
         text = (EditText) findViewById(R.id.inputname_edittxt);
 
-        Intent intent = getIntent();
+        Intent in = getIntent();
         mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
 
-        startMusic = intent.getBooleanExtra("music", true);
+        startMusic = in.getBooleanExtra("music", true);
 
 
-        if (startMusic == true) {
+        if (startMusic) {
             mediaPlayer.start();
         } else {
 
@@ -81,13 +77,7 @@ public class MainMenu extends Activity {
         acelLast = SensorManager.GRAVITY_EARTH;
         shake = 0.00f;
 
-        player = new Player();
-        player.setSpielername(text.getText().toString());
-
-
-        //button = (Button)findViewById(R.id.instr_button);
-
-        //onChangetoInstruction(button);
+        player = new Player(text.getText().toString());
     }
 
     private final SensorEventListener sensorListener = new SensorEventListener() {
@@ -116,20 +106,6 @@ public class MainMenu extends Activity {
         }
     };
 
-   /* public void onChangetoInstruction(Button button){
-
-        button.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-
-                intent = new Intent(MainMenu.this,Instruction.class);
-                startActivity(intent);
-            }
-        });
-
-    }*/
-
     /**
      * This method is used to switch from the Main Menu into the Instruction Screen
      * if the instruction button is pressed.
@@ -151,7 +127,7 @@ public class MainMenu extends Activity {
      */
     public void onClickChangeToCharacterSelect(View v) {
 
-        if (text.getText().toString().equals("")) {
+        if ("".equals(text.getText().toString())) {
 
             text.setError("Bitte geben Sie einen Namen ein");
 
@@ -166,7 +142,7 @@ public class MainMenu extends Activity {
 
     public void onButtonClickStartNetworking(View view) {
 
-        if (text.getText().toString().equals("")) {
+        if ("".equals(text.getText().toString())) {
 
             text.setError("Bitte geben Sie einen Namen ein");
 

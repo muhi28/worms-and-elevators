@@ -1,5 +1,7 @@
 package com.mygdx.game.game;
 
+import android.util.Log;
+
 import java.util.Random;
 
 /**
@@ -11,8 +13,11 @@ public class Elevator {
     private static int[] elevatorFields = new int[7];
 
     private static int randomElevatorFieldnumber;
-    static Random rn = new Random();
+    private static Random rn = new Random();
+    private static final String TAG = "New Elevator Field";
 
+
+    private Elevator(){}
 
     public static void generateElevator() {
 
@@ -28,8 +33,6 @@ public class Elevator {
 
         while (true) {
 
-//             randomElevatorFieldnumber = (int) (Math.randomElevatorFieldnumber() * elevatorFields.length);
-
             int randomNumber = rn.nextInt(6 - 0 + 1) + 0;         //(max - min + 1) + min
             randomElevatorFieldnumber = elevatorFields[randomNumber];
 
@@ -40,7 +43,7 @@ public class Elevator {
 
         }
 
-        System.out.println("new elavator field" + randomElevatorFieldnumber);             //show the value of randomElevatorFieldnumber to see if there is a mistake
+        Log.d(TAG,"New Elevator Field: " + randomElevatorFieldnumber); //show the value of randomElevatorFieldnumber to see if there is a mistake
 
         return randomElevatorFieldnumber;
     }

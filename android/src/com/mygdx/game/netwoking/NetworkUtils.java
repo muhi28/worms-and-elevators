@@ -39,7 +39,7 @@ public final class NetworkUtils {
         try {
             ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
         } catch (UnknownHostException ex) {
-            Log.e("WIFIIP", "Unable to get host address.");
+            Log.e("WIFIIP", "Unable to get host address.", ex);
             ipAddressString = null;
         }
 

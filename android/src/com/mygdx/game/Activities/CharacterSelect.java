@@ -25,7 +25,8 @@ public class CharacterSelect extends Activity {
 
     private Intent intent;
 
-    private TextView chosenPlayer, playername;
+    private TextView chosenPlayer;
+    private TextView playername;
     private NetworkTrafficReceiver networkTrafficReceiver;
 
     private PlayerColor color;
@@ -58,19 +59,15 @@ public class CharacterSelect extends Activity {
 
         playername = (TextView) findViewById(R.id.spielername_textview);
 
-        Intent intent = getIntent();
+        Intent in = getIntent();
 
-        if (intent.hasExtra("Playername")) {
+        if (in.hasExtra("Playername")) {
 
-            String name = intent.getStringExtra("Playername");
+            String name = in.getStringExtra("Playername");
 
             playername.setText(String.format(" %s", name));
             playername.setVisibility(View.VISIBLE);
         }
-
-        // ((TextView)findViewById(R.id.spielername_textview)).setText(player.getSpielername());
-
-
     }
 
     /**
@@ -146,9 +143,9 @@ public class CharacterSelect extends Activity {
 
     public void processMessageFromNetwork(final String inputString) {
 
-        PlayerColor colorOtherPlayer = PlayerColor.getFromString(inputString);
+        PlayerColor playerColor = PlayerColor.getFromString(inputString);
 
-        if (colorOtherPlayer != null) {
+        if (playerColor != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -157,7 +154,7 @@ public class CharacterSelect extends Activity {
                 }
             });
 
-            this.colorOtherPlayer = colorOtherPlayer;
+            this.colorOtherPlayer = playerColor;
             GameSync.getSync().otherPlayerHasSelectedWorm();
 
         }

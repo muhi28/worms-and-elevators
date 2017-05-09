@@ -9,11 +9,11 @@ import com.mygdx.game.game.GameField;
 
 public class RenderPositionCalculator {
 
-    public final static int FIELD_SIZE = 108;
+    public static final int FIELD_SIZE = 108;
 
     private final GameField game;
-    private final int xStartOfField = -108;
-    private final int yStartOfField = 600;
+    private static final int xStartOfField = -108;
+    private static final int yStartOfField = 600;
 
 
     public RenderPositionCalculator(GameField game) {

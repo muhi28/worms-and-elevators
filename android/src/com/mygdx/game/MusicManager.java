@@ -7,7 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 /**
  * Created by Patrick on 09.04.2017.
  * Music and Sound are handled the same way. The difference is, that soundfiles are loaded into the ram (only for small files) and musicfiles are streamed.
- * Only for the game not for the activities.
+ * Only for the game not for the Activities.
  */
 
 public class MusicManager {

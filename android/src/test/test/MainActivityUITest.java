@@ -10,5 +10,4 @@ package test;
 public class MainActivityUITest {
 
 
-
 }

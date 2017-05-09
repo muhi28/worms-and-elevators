@@ -10,7 +10,7 @@ public class Player {
     private PlayerColor farbe;
 
 
-    public void Player(String name) {
+    public Player(String name) {
 
         this.spielername = name;
 

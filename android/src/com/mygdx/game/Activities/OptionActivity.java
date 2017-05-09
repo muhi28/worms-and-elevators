@@ -29,18 +29,7 @@ public class OptionActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-
-              /*  if(isChecked){
-                  //  switchStatus.setText("Switch is currently ON");
-
-
-                }else{
-                   // switchStatus.setText("Switch is currently OFF");
-                    }*/
-
                 test = isChecked;
-
-
             }
         });
 

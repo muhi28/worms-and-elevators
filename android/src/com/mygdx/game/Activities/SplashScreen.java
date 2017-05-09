@@ -3,6 +3,7 @@ package com.mygdx.game.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.mygdx.game.R;
 
@@ -15,6 +16,7 @@ public class SplashScreen extends Activity {
 
     private Intent intent;
 
+    private static final String TAG = "SplashScreenActivity";
 
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -30,6 +32,7 @@ public class SplashScreen extends Activity {
 
         Thread timerThread = new Thread() {
 
+            @Override
             public void run() {
 
                 try {
@@ -38,7 +41,9 @@ public class SplashScreen extends Activity {
 
                 } catch (InterruptedException e) {
 
-                    e.printStackTrace();
+                    Log.d(TAG,"Interrupted Thread !", e);
+                    Thread.currentThread().interrupt();
+
                 } finally {
 
 

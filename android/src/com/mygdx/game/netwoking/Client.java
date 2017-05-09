@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 public class Client extends Thread {
 
     static final String TAG = "ClientSocket";
-    public static String INIT_MESSAGE = "START_CLIENT";
+    public static final String INIT_MESSAGE = "START_CLIENT";
 
     private final String ipAddress;
 
@@ -55,11 +55,9 @@ public class Client extends Thread {
 
 
         } catch (UnknownHostException e) {
-            System.out.println("There was an Unknown Erorr:");
-            e.printStackTrace();
+            Log.d(TAG,"There was an Unknown Error: ",e);
         } catch (IOException e) {
-            System.out.println("There was an IOException:");
-            e.printStackTrace();
+            Log.d(TAG,"There was an IOException: ",e);
         }
 
     }

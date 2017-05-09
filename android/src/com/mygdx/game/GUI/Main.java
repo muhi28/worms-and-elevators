@@ -6,14 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 
 import java.util.List;
 import java.util.Observable;
@@ -37,9 +33,10 @@ public class Main extends ApplicationAdapter implements Observer {
     private static OrthographicCamera camera;
 
     private SpriteBatch batch;
-
+    private Controler controler;
     private Sprite texturePlayer;
-    private Texture tile1, tile2;
+    private Texture tile1;
+    private Texture tile2;
     private static Dice dice;
     private String color;
     private static GameField gameField;
@@ -50,31 +47,13 @@ public class Main extends ApplicationAdapter implements Observer {
     Stage stage;
     Worm playerOne;
 
-
     private static Sprite diceSprite;
-    MyActor diceActor;
 
 
-    private class MyActor extends Actor {
 
-        public MyActor() {
-
-            diceSprite = new Sprite(dice.getDice_p());
-            diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
-
-        }
-
-        @Override
-        public void draw(Batch batch, float parentAlpha) {
-
-            diceSprite.draw(batch);
-        }
-
-
-    }
 
     public Main(String wormcolor) {
-        this.gameField = GameField.createGameField();
+        gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
 
         this.color = wormcolor;
@@ -87,19 +66,15 @@ public class Main extends ApplicationAdapter implements Observer {
         batch = new SpriteBatch();
         cheatCountDown = new CheatCountDown();
 
-        stage = new Stage(new FillViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        stage = new Stage();
 
 
         camera = new OrthographicCamera();
 
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // batch = new SpriteBatch();
-
-
-        // initialisieren der Textur des Spielers
+        //initialisieren der Textur der Spielfigur
         texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color))));
-
 
         tile1 = new Texture(Gdx.files.internal("background_grass.png"));
         tile2 = new Texture(Gdx.files.internal("background_elevator.png"));
@@ -107,22 +82,39 @@ public class Main extends ApplicationAdapter implements Observer {
 
         // DICE
         dice = new Dice(6);
-        diceActor = new MyActor();
-        diceActor.setTouchable(Touchable.enabled);
+        diceSprite = new Sprite(dice.getDiceTexture());
+        diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 
 
-        // Textur des Wurms
+        //Texture des Wurms
         playerOne = new Worm(texturePlayer, renderPositionCalculator);
 
 
         // gibt jedem einzelnen Feld des Spielfelds ein Texture
         List<Field> fields = gameField.getFields();
+        setFieldTextures(fields);
+
+        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
+        generateElevatorFieldTextures();
+
+
+        //setzen des InputProcessors der GUI
+         controler = new Controler();
+        Gdx.input.setInputProcessor(controler.getInputProcessor());
+    }
+
+    private void setFieldTextures(List<Field> fields){
 
         for (int i = 1; i <= fields.size(); i++) {
+
 
             SingleField singleField = new SingleField(tile1, renderPositionCalculator, i);
             stage.addActor(singleField);
         }
+
+    }
+
+    private void generateElevatorFieldTextures(){
 
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
         int[] elevatorFields = Controler.getElevatorFields();
@@ -133,12 +125,8 @@ public class Main extends ApplicationAdapter implements Observer {
             stage.addActor(singleField);
         }
 
-
-        // hiermit wird das Touchhandling ermöglicht
-
-        Controler Controler = new Controler();
-        Gdx.input.setInputProcessor(Controler.getInputProcessor());
     }
+
 
     @Override
     public void render() {
@@ -151,7 +139,6 @@ public class Main extends ApplicationAdapter implements Observer {
         stage.addActor(playerOne);
 
         stage.addActor(cheatCountDown);
-        //stage.addActor(diceActor);
 
         camera.update();
 
@@ -212,8 +199,5 @@ public class Main extends ApplicationAdapter implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        //  gameField.getPlayer().move(1);//dice.rollTheDice());
-
-        //  camera.update();
     }
 }

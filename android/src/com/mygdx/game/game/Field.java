@@ -13,23 +13,17 @@ public class Field {
         AUFZUG
     }
 
-    private int posX, posY;
+    private int posX;
+    private int posY;
 
     private Field nextField;
     private Field previousField;
-
-    private FieldTyps fieldType;
-
-
     private final int fieldnumber;
 
     public Field(int py, int px, int fieldnumber) {
 
-
         this.posX = px;
         this.posY = py;
-        // this.fieldType = fieldTyps;
-
         this.fieldnumber = fieldnumber;
     }
 
@@ -65,11 +59,6 @@ public class Field {
 
     public int getPosY() {
         return posY;
-    }
-
-    public FieldTyps getFieldtype() {
-
-        return fieldType;
     }
 
 }
