@@ -141,7 +141,6 @@ jacoco {
 // Edit covered scope if needed
 // For my part I like having the coverage of both application and tests
 def coverageSourceDirs = [
-        '../core/src',
         'src'
 ]
 
@@ -151,7 +150,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
     description = "Generate Jacoco coverage reports "
 
     classDirectories = fileTree(
-            dir: '../core/build/intermediates/classes',
+            dir: 'build/intermediates/classes',
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
@@ -161,7 +160,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
 
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../core/build/jacoco/jacoco.exec')
+    executionData = files('build/jacoco/jacoco.exec')
 
     reports {
         xml.enabled = true
