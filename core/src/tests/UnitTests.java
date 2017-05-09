@@ -26,7 +26,6 @@ public class UnitTests {
 
     @After
     public void deleteDice() {
-
         dice = null;
     }
 
