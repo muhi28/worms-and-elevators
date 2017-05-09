@@ -29,6 +29,11 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
     }
+    lintOptions {
+        textReport true
+        textOutput 'stdout'
+        disable 'InvalidPackage'
+    }
 }
 
 // called every time gradle gets executed, takes the native dependencies of
@@ -131,10 +136,6 @@ idea {
             }
         }
     }
-}
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
-    compile 'junit:junit:4.12'
 }
 
 

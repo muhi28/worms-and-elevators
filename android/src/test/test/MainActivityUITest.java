@@ -1,6 +1,6 @@
 package test;
 
-import org.junit.Test;
+
 
 
 /**
@@ -10,11 +10,5 @@ import org.junit.Test;
 public class MainActivityUITest {
 
 
-    @Test
-    public void testNoInput() {
-
-
-
-    }
 
 }
