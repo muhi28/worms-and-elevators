@@ -57,34 +57,12 @@ public class Dice {
      */
     public int rollTheDice() {
         result = (int) (Math.random() * this.range + 1);
-
         /*
         sets dice_p on the rolled texture
          */
         if (loadPictures) {
-            switch (result) {
-                case 1:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
-                    break;
-                case 2:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_two.png")));
-                    break;
-                case 3:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_three.png")));
-                    break;
-                case 4:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_four.png")));
-                    break;
-                case 5:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_five.png")));
-                    break;
-                case 6:
-                    this.dice_p = (new Texture(Gdx.files.internal("dice_six.png")));
-                    break;
-                default:
-                    System.out.println("Falscher Value uebergeben!");
 
-            }
+            this.dice_p = (new Texture(Gdx.files.internal("dice_"+result+".png")));
         }
         return result;
     }
@@ -94,15 +72,9 @@ public class Dice {
      *
      * @return : the int value of the dice number
      */
-
-
     public int cheatDice(Texture dice_p) {
         int result = 0;
-
-        /*
-            The paths from the dice texture are saved, in the String Array pathOfDices..
-         */
-
+    /*
         String[] pathOfDices = {
                 ((FileTextureData) (new Texture(Gdx.files.internal("dice_one.png"))).getTextureData()).getFileHandle().path(),
                 ((FileTextureData) (new Texture(Gdx.files.internal("dice_two.png"))).getTextureData()).getFileHandle().path(),
@@ -110,22 +82,32 @@ public class Dice {
                 ((FileTextureData) (new Texture(Gdx.files.internal("dice_four.png"))).getTextureData()).getFileHandle().path(),
                 ((FileTextureData) (new Texture(Gdx.files.internal("dice_five.png"))).getTextureData()).getFileHandle().path(),
                 ((FileTextureData) (new Texture(Gdx.files.internal("dice_six.png"))).getTextureData()).getFileHandle().path()
-        };
+        };*/
 
         //Here I get the path from the given texture
         String pathOfGivenTexture = ((FileTextureData) dice_p.getTextureData()).getFileHandle().path();
 
-
+        /*
         for (int i = 0; i < pathOfDices.length; i++) {
             if (pathOfDices[i].equals(pathOfGivenTexture)) {
                 i++;
                 result = i;
+            }
+        }*/
+        for(int i =1 ; i<=this.getRange();i++)
+        {
+            String vgl = ((FileTextureData) (new Texture(Gdx.files.internal("dice_"+i+".png"))).getTextureData()).getFileHandle().path();
+
+            if(vgl.equals(pathOfGivenTexture))
+            {
+                result=i;
             }
         }
 
         /*
         sets dice_p depending on the given texture
          */
+        /*
         switch (result) {
             case 1:
                 this.dice_p = (new Texture(Gdx.files.internal("dice_one.png")));
@@ -148,22 +130,21 @@ public class Dice {
             default:
                 System.out.println("Falscher Value uebergeben!");
 
-        }
+        }*/
         return result;
 
     }
 
     public Animation createAnimation() {
-        TextureRegion tex1 = new TextureRegion(new Texture(Gdx.files.internal("dice_one.png")));
-        TextureRegion tex2 = new TextureRegion(new Texture(Gdx.files.internal("dice_two.png")));
-        TextureRegion tex3 = new TextureRegion(new Texture(Gdx.files.internal("dice_three.png")));
-        TextureRegion tex4 = new TextureRegion(new Texture(Gdx.files.internal("dice_four.png")));
-        TextureRegion tex5 = new TextureRegion(new Texture(Gdx.files.internal("dice_five.png")));
-        TextureRegion tex6 = new TextureRegion(new Texture(Gdx.files.internal("dice_six.png")));
+        TextureRegion [] text = new TextureRegion[this.getRange()];
 
-        Animation diceAnimation = new Animation(0.15f, tex1, tex2, tex3, tex4, tex5, tex6);
+        for(int i=0;i<=this.getRange()-1;i++)
+        {
+            text[i]= new TextureRegion(new Texture(Gdx.files.internal("dice_"+(i+1)+".png")));
+        }
+
+        //Cast to Object because of warning.
+        Animation diceAnimation= new Animation(0.15f,(Object[])text);
         return diceAnimation;
     }
-
-
 }
