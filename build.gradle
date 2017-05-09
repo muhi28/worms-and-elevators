@@ -49,7 +49,6 @@ project(":android") {
     apply plugin: "android"
 
     configurations { natives }
-//    sourceSets.test.java.srcDirs = ["test/"]
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
@@ -87,7 +86,8 @@ project(":core") {
         }
     }
 
-    sourceSets.test.java.srcDirs = ["src/tests/"]
+    sourceSets.test.java.srcDirs = ["src/"]
+    sourceSets.main.java.srcDirs = ["src/tests/"]
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
