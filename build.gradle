@@ -81,7 +81,7 @@ project(":core") {
 
     jacocoTestReport {
         reports {
-            xml.enabled true
+            xml.enabled false
             csv.enabled true
             html.destination "${buildDir}/jacocoHtml"
         }
