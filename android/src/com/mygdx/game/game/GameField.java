@@ -155,9 +155,6 @@ public class GameField {
         List<Field> subList9 = originalList.subList(80, 90);
         List<Field> subList10 = originalList.subList(90, 100);
 
-        Log.d(TAG,Integer.toString(originalList.get(1).getFieldnumber()));
-        Log.d(TAG2,Integer.toString(subList1.get(1).getFieldnumber()));
-
         Collections.reverse(subList1);                                  //reversing the order of every 2nd list
         Collections.reverse(subList3);
         Collections.reverse(subList5);
