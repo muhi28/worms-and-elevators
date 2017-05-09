@@ -3,7 +3,7 @@ package com.mygdx.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import GUI.Main;
+import core.assets.assets.GUI.Main;
 
 //import com.mygdx.game.Game;
 

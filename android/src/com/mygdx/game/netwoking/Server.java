@@ -15,9 +15,9 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import networking.NetworkManager;
-import networking.NetworkTrafficSender;
-import networking.ToNetworkProcessor;
+import core.assets.assets.networking.NetworkManager;
+import core.assets.assets.networking.NetworkTrafficSender;
+import core.assets.assets.networking.ToNetworkProcessor;
 
 
 public class Server extends IntentService {

@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.mygdx.game.Players.PlayerColor;
 import com.mygdx.game.R;
 
-import networking.FromNetworkProcessor;
-import networking.GameSync;
-import networking.NetworkManager;
-import networking.NetworkTrafficReceiver;
+import core.assets.assets.networking.FromNetworkProcessor;
+import core.assets.assets.networking.GameSync;
+import core.assets.assets.networking.NetworkManager;
+import core.assets.assets.networking.NetworkTrafficReceiver;
 
 /**
  * Created by Muhi on 04.04.2017.
