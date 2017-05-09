@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
 
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
+configurations { natives }
 sourceSets {
     main {
         java.srcDirs = ['src/']
@@ -24,6 +24,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+
+apply plugin: 'jacoco'
 
 jacoco {
     toolVersion = '0.7.6.201602180812'
