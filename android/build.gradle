@@ -12,8 +12,13 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
+        test {
+            java.srcDirs = ['src/androidTest']
+        }
+
         instrumentTest.setRoot('src/androidTest')
     }
+
 
 
     packagingOptions {
@@ -150,7 +155,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
     description = "Generate Jacoco coverage reports "
 
     classDirectories = fileTree(
-            dir: 'build/intermediates/classes',
+            dir: '../android/build/intermediates/classes',
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
@@ -160,7 +165,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
 
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('build/jacoco/jacoco.exec')
+    executionData = files('../android/build/jacoco/testReleaseUnitTest.exec ')
 
     reports {
         xml.enabled = true

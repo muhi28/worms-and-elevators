@@ -44,7 +44,7 @@ test {
 
     jacoco {
         append = true
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        destinationFile = file("$buildDir/android/build/jacoco/testReleaseUnitTest.exec")
     }
 }
 
@@ -64,7 +64,7 @@ jacocoTestReport {
 
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../android/build/jacoco/jacoco.exec')
+    executionData = files('../android/build/jacoco/testReleaseUnitTest.exec')
 
     reports {
         xml.enabled = true
