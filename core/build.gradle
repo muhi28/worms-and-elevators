@@ -43,7 +43,7 @@ test {
     finalizedBy jacocoTestReport
 
     jacoco {
-        append = false
+        append = true
         destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
     }
 }

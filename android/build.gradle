@@ -4,9 +4,9 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src', '../core/src']
-            aidl.srcDirs = ['src', '../core/src']
-            renderscript.srcDirs = ['src', '../core/src']
+            java.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
@@ -129,4 +129,42 @@ idea {
 }
 dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'
+}
+
+
+
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = '0.7.6.201602180812'
+}
+
+// Edit covered scope if needed
+// For my part I like having the coverage of both application and tests
+def coverageSourceDirs = [
+        '../core/src',
+        'src'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports "
+
+    classDirectories = fileTree(
+            dir: '../core/build/intermediates/classes',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
+
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('../core/build/jacoco/jacoco.exec')
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 }
