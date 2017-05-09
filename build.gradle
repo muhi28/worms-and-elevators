@@ -32,17 +32,7 @@ allprojects {
     }
 }
 
-project(":desktop") {
-    apply plugin: "java"
 
-
-    dependencies {
-        compile project(":android")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    }
-}
 
 
 project(":android") {
@@ -67,6 +57,17 @@ project(":android") {
     }
 }
 
+project(":desktop") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":android")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    }
+}
 //project(":core") {
 //    apply plugin: "java"
 //    apply plugin: "jacoco"
