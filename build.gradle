@@ -48,7 +48,7 @@ project(":desktop") {
 project(":android") {
     apply plugin: "android"
 
-
+    configurations { natives }
 
     dependencies {
         compile project(":core")

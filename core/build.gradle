@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
 
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-configurations { natives }
+
 sourceSets {
     main {
         java.srcDirs = ['src/']
