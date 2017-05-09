@@ -5,12 +5,11 @@ sourceCompatibility = 1.6
 
 sourceSets {
     main {
-        java.srcDirs = ['src']
+        java.srcDirs = ['src/']
     }
-
-//    test{
-//        java.srcDirs = ['src/tests']
-//    }
+    test{
+        java.srcDirs = ['src/tests']
+    }
 }
 
 eclipse.project {
