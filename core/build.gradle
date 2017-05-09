@@ -36,7 +36,7 @@ jacoco {
 // Edit covered scope if needed
 // For my part I like having the coverage of both application and tests
 def coverageSourceDirs = [
-        '../core/src'
+        '../android/src'
 ]
 
 test {
@@ -54,7 +54,7 @@ jacocoTestReport {
     description = "Generate Jacoco coverage reports "
 
     classDirectories = fileTree(
-            dir: '../core/build/intermediates/classes',
+            dir: '../android/build/intermediates/classes',
             excludes: ['**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
@@ -64,7 +64,7 @@ jacocoTestReport {
 
     additionalSourceDirs = files(coverageSourceDirs)
     sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../core/build/jacoco/jacoco.exec')
+    executionData = files('../android/build/jacoco/jacoco.exec')
 
     reports {
         xml.enabled = true
