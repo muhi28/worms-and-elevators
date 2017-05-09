@@ -67,41 +67,45 @@ project(":android") {
     }
 }
 
-project(":core") {
-    apply plugin: "java"
-    apply plugin: "jacoco"
-
-    test {
-        finalizedBy jacocoTestReport
-
-        jacoco {
-            append = false
-            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        }
-    }
-
-    jacoco {
-        toolVersion = "0.7.7.201606060606"
-        reportsDir = file("$buildDir/reports/jacoco")
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled true
-            csv.enabled true
-            html.destination "${buildDir}/jacocoHtml"
-        }
-
-        additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-    }
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        testCompile 'junit:junit:4.12'
-    }
-}
+//project(":core") {
+//    apply plugin: "java"
+//    apply plugin: "jacoco"
+//
+//    test {
+//        finalizedBy jacocoTestReport
+//
+//        jacoco {
+//            append = false
+//            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+//        }
+//    }
+//
+//    jacoco {
+//        toolVersion = "0.7.7.201606060606"
+//        reportsDir = file("$buildDir/reports/jacoco")
+//    }
+//
+//    jacocoTestReport {
+//        reports {
+//            xml.enabled true
+//            csv.enabled true
+//            html.destination "${buildDir}/jacocoHtml"
+//        }
+//
+//        additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+//    }
+//
+//    dependencies {
+//        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+//        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+//        testCompile 'junit:junit:4.12'
+//    }
+//}
 
 tasks.eclipse.doLast {
     delete ".project"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
