@@ -69,24 +69,24 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
-//    apply plugin: "jacoco"
+    apply plugin: "jacoco"
 
-//    test {
-//        finalizedBy jacocoTestReport
-//    }
-//
-//    jacoco {
-//        toolVersion = "0.7.7.201606060606"
-//    }
-//
-//    jacocoTestReport {
-//        reports {
-//            xml.enabled true
-//            csv.enabled true
-//            html.destination "${buildDir}/jacocoHtml"
-//        }
-//    }
-//
+    test {
+        finalizedBy jacocoTestReport
+    }
+
+    jacoco {
+        toolVersion = "0.7.7.201606060606"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            csv.enabled true
+            html.destination "${buildDir}/jacocoHtml"
+        }
+    }
+
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
