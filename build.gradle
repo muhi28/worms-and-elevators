@@ -85,6 +85,8 @@ project(":core") {
             csv.enabled true
             html.destination "${buildDir}/jacocoHtml"
         }
+
+        additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
     }
 
     dependencies {
