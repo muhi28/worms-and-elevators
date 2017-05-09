@@ -73,10 +73,16 @@ project(":core") {
 
     test {
         finalizedBy jacocoTestReport
+
+        jacoco {
+            append = false
+            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        }
     }
 
     jacoco {
         toolVersion = "0.7.7.201606060606"
+        reportsDir = file("$buildDir/reports/jacoco")
     }
 
     jacocoTestReport {
@@ -94,8 +100,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         testCompile 'junit:junit:4.12'
     }
-
-
 }
 
 tasks.eclipse.doLast {
