@@ -10,10 +10,6 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import core.assets.assets.networking.NetworkManager;
-import core.assets.assets.networking.NetworkTrafficSender;
-import core.assets.assets.networking.ToNetworkProcessor;
-
 public class Client extends Thread {
 
     static final String TAG = "ClientSocket";

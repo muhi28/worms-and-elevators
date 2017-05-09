@@ -6,10 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
-import core.assets.assets.networking.FromNetworkProcessor;
-import core.assets.assets.networking.NetworkManager;
-import core.assets.assets.networking.NetworkTrafficReceiver;
-
 public class NetworkMonitor extends Thread {
 
     public final String CONNECTION_MONITOR_MESSAGE = "beep";
