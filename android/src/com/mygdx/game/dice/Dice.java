@@ -61,30 +61,11 @@ public class Dice {
         sets diceTexture on the rolled texture
          */
         if (loadPictures) {
-            switch (result) {
-                case 1:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_one.png")));
-                    break;
-                case 2:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_two.png")));
-                    break;
-                case 3:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_three.png")));
-                    break;
-                case 4:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_four.png")));
-                    break;
-                case 5:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_five.png")));
-                    break;
-                case 6:
-                    this.diceTexture = (new Texture(Gdx.files.internal("dice_six.png")));
-                    break;
-                default:
-                    System.out.println("Falscher Value uebergeben!");
 
-            this.dice_p = (new Texture(Gdx.files.internal("dice_"+result+".png")));
+            this.diceTexture = new Texture(Gdx.files.internal("dice_"+result+".png"));
+
         }
+
         return result;
     }
 
