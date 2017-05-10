@@ -69,6 +69,7 @@ public class CheatCountDown extends Actor {
 
     public Integer stopCountDown() {
         stopCount();
+        countThread = new CheatCountThread(this);
         return currentDiceValue;
 
     }

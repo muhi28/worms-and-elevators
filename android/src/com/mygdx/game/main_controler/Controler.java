@@ -50,6 +50,8 @@ public class Controler implements InputProcessor {
         }
         updateCurrentFieldnumber();
         checkField(player);
+        Player.increaseCounter();
+        Player.switchPlayer();
 
     }
 
@@ -125,10 +127,13 @@ public class Controler implements InputProcessor {
 
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
-        if (cheatCountDown.touchDown(screenX, screenY)) {
+        if (Player.getCounter() >= 3){
 
-            return true;
-        }
+            if (cheatCountDown.touchDown(screenX, screenY)) {
+
+                return true;
+            }
+    }
 
         if (Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
 
@@ -161,6 +166,7 @@ public class Controler implements InputProcessor {
             Integer integer = cheatCountDown.stopCountDown();
 
             cheatMovement(gameField.getPlayer(), integer);
+            Player.resetCounter();
 
             camera.update();
 

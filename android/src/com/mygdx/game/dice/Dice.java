@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
+import com.badlogic.gdx.math.Interpolation;
+
+import java.util.Random;
 
 /**
  * Created by Patrick on 05.04.2017.
@@ -18,6 +21,7 @@ public class Dice {
     private int range;
     private Texture diceTexture;
     private final boolean loadPictures;
+    private static Random random = new Random();
 
 
     private int result;
@@ -56,7 +60,9 @@ public class Dice {
      * @return : the random value
      */
     public int rollTheDice() {
-        result = (int) (Math.random() * this.range + 1);
+
+        result = random.nextInt(this.range - 1 + 1) + 1;         //(max - min + 1) + min
+//        result = (int) (Math.random() * this.range + 1);
         /*
         sets diceTexture on the rolled texture
          */
