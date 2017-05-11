@@ -61,7 +61,7 @@ public class NetworkTest {
         String testMessage = "ThisWillBeSended";
         NetworkManager.sendWithDelay(testMessage);
 
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         synchronized (this) {
             Assert.assertEquals(testMessage, receivedFromNetwork);
         }
