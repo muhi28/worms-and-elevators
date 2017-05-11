@@ -41,6 +41,7 @@ public class MainMenu extends Activity {
     private float acelVal; //Curent acceleration value and qravity
     private float acelLast; //Last acceleration value and gravity
     private float shake; //Acceleration value differ from gravity
+
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
      *
@@ -140,6 +141,11 @@ public class MainMenu extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * On button click start networking.
+     *
+     * @param view the view
+     */
     public void onButtonClickStartNetworking(View view) {
 
         if ("".equals(text.getText().toString())) {
@@ -157,6 +163,11 @@ public class MainMenu extends Activity {
 
     }
 
+    /**
+     * On click option button.
+     *
+     * @param v the v
+     */
     public void onClickOptionButton(View v) {
         intent = new Intent(this, OptionActivity.class);
         mediaPlayer.stop();                                                                     //momentane Loesung

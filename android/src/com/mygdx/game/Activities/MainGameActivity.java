@@ -10,6 +10,9 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.GUI.Main;
 
 
+/**
+ * The type Main game activity.
+ */
 public class MainGameActivity extends AndroidApplication {
 
     @Override

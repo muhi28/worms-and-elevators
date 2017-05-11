@@ -10,7 +10,6 @@ import com.mygdx.game.R;
 /**
  * Created by Muhi on 04.04.2017.
  */
-
 public class SplashScreen extends Activity {
 
 

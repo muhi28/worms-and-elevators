@@ -20,6 +20,9 @@ import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 
+/**
+ * The type Network.
+ */
 public class Network extends Activity {
 
     private Intent intent;
@@ -75,6 +78,11 @@ public class Network extends Activity {
     }
 
 
+    /**
+     * On click connect client to server.
+     *
+     * @param view the view
+     */
     public void onClickConnectClientToServer(View view) {
         GameSync.getSync().waitForOtherPlayer();
         final TextView textView = (TextView) findViewById(R.id.ip_address_server);
@@ -86,6 +94,11 @@ public class Network extends Activity {
         NetworkManager.sendWithDelay(Client.INIT_MESSAGE);
     }
 
+    /**
+     * On click start server.
+     *
+     * @param view the view
+     */
     public void onClickStartServer(View view) {
 
 
@@ -108,6 +121,11 @@ public class Network extends Activity {
         Toast.makeText(this.getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Process message from network.
+     *
+     * @param reveivedFromNetwork the reveived from network
+     */
     public void processMessageFromNetwork(final String reveivedFromNetwork) {
 
         //Server receives init message from client

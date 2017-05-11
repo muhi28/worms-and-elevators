@@ -10,6 +10,9 @@ import android.widget.Switch;
 
 import com.mygdx.game.R;
 
+/**
+ * The type Option activity.
+ */
 public class OptionActivity extends Activity {
 
     private Switch mySwitch;
@@ -35,6 +38,11 @@ public class OptionActivity extends Activity {
 
     }
 
+    /**
+     * On click back button.
+     *
+     * @param v the v
+     */
     public void onClickBackButton(View v) {
 
         intent = new Intent(this, MainMenu.class);

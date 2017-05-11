@@ -12,7 +12,7 @@ import com.mygdx.game.R;
  */
 
 /**
- *
+ * The type Instruction.
  */
 public class Instruction extends Activity {
 

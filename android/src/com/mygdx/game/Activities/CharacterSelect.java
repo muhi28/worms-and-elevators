@@ -93,7 +93,7 @@ public class CharacterSelect extends Activity {
      * onClickGoBackToMenu switches from the character selection screen back
      * to the main menu screen if the button is pressed.
      *
-     * @param view
+     * @param view the view
      */
     public void onClickGoBackToMenu(View view) {
 
@@ -101,6 +101,11 @@ public class CharacterSelect extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * Red buttonclicked.
+     *
+     * @param view the view
+     */
     public void redButtonclicked(View view) {
 
         chosenPlayer.setText("Es wurde die rote Spielfigur gewählt.");
@@ -110,6 +115,11 @@ public class CharacterSelect extends Activity {
         sendSelectedColor();
     }
 
+    /**
+     * Blue buttonclicked.
+     *
+     * @param view the view
+     */
     public void blueButtonclicked(View view) {
 
         chosenPlayer.setText("Es wurde die blaue Spielfigur gewählt.");
@@ -119,6 +129,11 @@ public class CharacterSelect extends Activity {
         sendSelectedColor();
     }
 
+    /**
+     * Green buttonclicked.
+     *
+     * @param view the view
+     */
     public void greenButtonclicked(View view) {
 
         chosenPlayer.setText("Es wurde die grüne Spielfigur gewählt.");
@@ -128,6 +143,11 @@ public class CharacterSelect extends Activity {
         sendSelectedColor();
     }
 
+    /**
+     * Yellow buttonclicked.
+     *
+     * @param view the view
+     */
     public void yellowButtonclicked(View view) {
 
         chosenPlayer.setText("Es wurde die gelbe Spielfigur gewählt.");
@@ -141,6 +161,11 @@ public class CharacterSelect extends Activity {
         NetworkManager.send(color.toString(), true);
     }
 
+    /**
+     * Process message from network.
+     *
+     * @param inputString the input string
+     */
     public void processMessageFromNetwork(final String inputString) {
 
         PlayerColor playerColor = PlayerColor.getFromString(inputString);
