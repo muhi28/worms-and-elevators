@@ -13,11 +13,13 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Created by Muhi on 28.04.2017.
  */
-
 public class DiceTest {
 
     private Dice dice;
 
+    /**
+     * Create dice.
+     */
     @Before
     public void createDice() {
 
@@ -25,12 +27,18 @@ public class DiceTest {
 
     }
 
+    /**
+     * Delete dice.
+     */
     @After
     public void deleteDice() {
         dice = null;
     }
 
 
+    /**
+     * Test min dice result.
+     */
     @Test
     public void testMinDiceResult() {
 
@@ -40,6 +48,9 @@ public class DiceTest {
 
     }
 
+    /**
+     * Test max dice result.
+     */
     @Test
     public void testMaxDiceResult() {
 
@@ -51,6 +62,9 @@ public class DiceTest {
 
     }
 
+    /**
+     * Test zero result.
+     */
     @Test(expected = AssertionError.class)
     public void testZeroResult() {
 

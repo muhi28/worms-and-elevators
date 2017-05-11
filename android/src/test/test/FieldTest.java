@@ -17,17 +17,21 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Muhi on 29.04.2017.
  */
-
-
 public class FieldTest {
 
     private GameField gameField;
 
+    /**
+     * Create game fields.
+     */
     @Before
     public void createGameFields() {
         gameField = GameField.createGameField();
     }
 
+    /**
+     * Test current field.
+     */
     @Test
     public void testCurrentField() {
         Player player = gameField.getPlayer();
@@ -39,6 +43,9 @@ public class FieldTest {
         Assert.assertEquals(fieldNumberBeforeMove + 3, player.getCurrentField().getFieldnumber());
     }
 
+    /**
+     * Test next field exception.
+     */
     @Test (expected = NullPointerException.class)
     public void testNextFieldException(){
 
@@ -55,6 +62,9 @@ public class FieldTest {
         assertEquals(null,player.getCurrentField().getNextField());
     }
 
+    /**
+     * Test check field numbers.
+     */
     @Test
     public void testCheckFieldNumbers(){
         List<Field> fields = gameField.getFields();
