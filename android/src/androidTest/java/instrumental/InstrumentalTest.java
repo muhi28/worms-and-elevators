@@ -1,32 +1,34 @@
 package instrumental;
 
+import android.content.Intent;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.mygdx.game.netwoking.Server;
-import com.mygdx.game.util.ToastNotifier;
+import com.mygdx.game.Activities.MainMenu;
 
+import junit.framework.Assert;
+
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 
 
 @RunWith(AndroidJUnit4.class)
 public class InstrumentalTest {
-    /**
-     * Test min dice result.
-     */
+    @Rule
+    public ActivityTestRule<MainMenu> activityRule
+            = new ActivityTestRule<>(
+            MainMenu.class,
+            true,     // initialTouchMode
+            false);   // launchActivity. False to customize the intent
+
     @Test
-    public void testServer() {
-        ToastNotifier toastNotifier = mock(ToastNotifier.class);
-        Mockito.doNothing().when(toastNotifier).showToast(anyString());
-        Server server = new Server(toastNotifier);
+    public void intent() {
+        Intent intent = new Intent();
+        intent.putExtra("music", false);
 
-        server.start();
+        activityRule.launchActivity(intent);
 
-
+        Assert.assertEquals(true, true);
     }
 }
-
