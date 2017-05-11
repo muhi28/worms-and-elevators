@@ -63,7 +63,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
-        <service android:name=".netwoking.Server" />
+        <service android:name=".netwoking.ServerIntent" />
 
         <activity
             android:name=".Activities.OptionActivity"

@@ -1,12 +1,9 @@
 package com.mygdx.game.netwoking;
 
-import android.app.IntentService;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
+
 import android.util.Log;
-import android.widget.Toast;
+
+import com.mygdx.game.util.ToastNotifier;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,23 +12,17 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
 /**
  * The type Server.
  */
-public class Server extends IntentService {
+public class Server {
     /**
      * The constant PORT.
      */
     public static final int PORT = 12345;
-    /**
-     * The Tag.
-     */
-    static final String TAG = "AndroidServerSocket";
 
-    private Context appContext;
-    private NetworkUtils networkUtils;
     private PrintStream out;
+    private final ToastNotifier toastNotifier;
 
     private NetworkTrafficSender networkTrafficSender;
 
@@ -43,13 +34,18 @@ public class Server extends IntentService {
 
     /**
      * Instantiates a new Server.
+     *
+     * @param toastNotifier the toast notifier
      */
-    public Server() {
-        super("Server");
+    public Server(ToastNotifier toastNotifier) {
+        this.toastNotifier = toastNotifier;
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
+
+    /**
+     * Start.
+     */
+    public void start() {
         final Server currentInstance = this;
         networkTrafficSender = new NetworkTrafficSender(new ToNetworkProcessor() {
             public void sendMessage(String message) {
@@ -57,52 +53,30 @@ public class Server extends IntentService {
             }
         });
 
-        Log.d(Server.TAG, "onHandleIntent");
+        Log.d(ServerIntent.TAG, "onHandleIntent");
         ServerSocket listener;
-        networkUtils = new NetworkUtils(appContext);
         try {
             listener = new ServerSocket(PORT);
-            Log.d(Server.TAG, String.format("listening on port = %s:%d", networkUtils.wifiIpAddress(), PORT));
+
             while (true) {
-                Log.d(Server.TAG, "waiting for client");
+                Log.d(ServerIntent.TAG, "waiting for client");
                 BufferedReader in;
                 synchronized (this) {
                     Socket socket = listener.accept();
-                    showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
-                    Log.d(Server.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                    toastNotifier.showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                    Log.d(ServerIntent.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     out = new PrintStream(socket.getOutputStream());
                 }
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
-                    Log.d(Server.TAG, "received");
+                    Log.d(ServerIntent.TAG, "received");
                     NetworkManager.received(inputLine);
 
-                    Log.d(Server.TAG, inputLine);
+                    Log.d(ServerIntent.TAG, inputLine);
                 }
             }
         } catch (IOException e) {
-            Log.d(Server.TAG, e.toString(),e);
-        }
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        appContext = getBaseContext();//Get the context here
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-
-    //Use this method to show toast
-    private void showToast(final String toastMsg) {
-        if (null != appContext) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(appContext, toastMsg, Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            Log.d(ServerIntent.TAG, e.toString(), e);
         }
     }
 

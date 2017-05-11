@@ -56,9 +56,9 @@ public class NetworkMonitor extends Thread {
                 Thread.sleep(200);
                 synchronized (this) {
                     if (!monitorMessageGot) {
-                        showToast("Lost network connection!");
+                        //showToast("Lost network connection!");
                         Thread.sleep(3000);
-                        throw new RuntimeException("Lost network connection!");
+                        //throw new RuntimeException("Lost network connection!"); //todo
                     }
                 }
 

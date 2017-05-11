@@ -13,6 +13,7 @@ import com.mygdx.game.netwoking.Client;
 import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkUtils;
 import com.mygdx.game.netwoking.Server;
+import com.mygdx.game.netwoking.ServerIntent;
 
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.GameSync;
@@ -105,7 +106,7 @@ public class Network extends Activity {
         GameSync.getSync().waitForOtherPlayer();
         if (networkUtils.isPhoneConnectedToWifi()) {
             showToast(String.format("starting server %s on port: %d", networkUtils.wifiIpAddress(), Server.PORT));
-            this.startService(new Intent(this, Server.class));
+            this.startService(new Intent(this, ServerIntent.class));
             disableControls();
             final TextView textView = (TextView) findViewById(R.id.network_status);
             textView.setText("Waiting for client..");
@@ -128,7 +129,7 @@ public class Network extends Activity {
      */
     public void processMessageFromNetwork(final String reveivedFromNetwork) {
 
-        //Server receives init message from client
+        //ServerIntent receives init message from client
         if (reveivedFromNetwork.equals(Client.INIT_MESSAGE)) {
             NetworkMonitor.startMonitor(getApplicationContext());
             setNetworkStatus("Client connected");
@@ -141,7 +142,7 @@ public class Network extends Activity {
         //Client receives init message from server
         if (reveivedFromNetwork.equals(Server.INIT_MESSAGE)) {
             NetworkMonitor.startMonitor(getApplicationContext());
-            setNetworkStatus("Server connected");
+            setNetworkStatus("ServerIntent connected");
             intent = new Intent(this, CharacterSelect.class);
             startActivity(intent);
         }
