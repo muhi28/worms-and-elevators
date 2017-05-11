@@ -10,11 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.display.RenderPositionCalculator;
@@ -24,8 +19,12 @@ import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.main_controler.Controler;
 
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
- * Created by Muhi on 12.04.2017.
+ * The type Main.
  */
 public class Main extends ApplicationAdapter implements Observer {
 
@@ -107,11 +106,11 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         //setzen des InputProcessors der GUI
-         controler = new Controler();
+        controler = new Controler(playerOne);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
-    private void setFieldTextures(List<Field> fields){
+    private void setFieldTextures(List<Field> fields) {
 
         for (int i = 1; i <= fields.size(); i++) {
 
@@ -122,7 +121,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
     }
 
-    private void generateElevatorFieldTextures(){
+    private void generateElevatorFieldTextures() {
 
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
         int[] elevatorFields = Controler.getElevatorFields();

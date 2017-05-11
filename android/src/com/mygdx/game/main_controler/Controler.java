@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import com.mygdx.game.GUI.Main;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
+import com.mygdx.game.display.Worm;
 import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
-
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 
@@ -30,11 +29,16 @@ public class Controler implements InputProcessor {
 
     private static final String TAG = "Controler";
 
+    private Worm wormOne;
+
     /**
      * Instantiates a new Controler.
+     *
+     * @param wormOne the worm one
      */
-    public Controler() {
+    public Controler(Worm wormOne) {
         setInputProcessor();
+        this.wormOne = wormOne;
     }
 
 
@@ -64,6 +68,9 @@ public class Controler implements InputProcessor {
      */
     public void movement(Player player, Dice dice) {
 
+        if (wormOne.stillMoving()) {
+            return;
+        }
         int eyeNumber = dice.rollTheDice();
         for (int i = 0; i < eyeNumber; i++) {
             player.move();
@@ -82,7 +89,9 @@ public class Controler implements InputProcessor {
      * @param cheatCountdown the cheat countdown
      */
     public void cheatMovement(Player player, Integer cheatCountdown) {
-
+        if (wormOne.stillMoving()) {
+            return;
+        }
         for (int i = 0; i < cheatCountdown; i++) {
             player.move();
         }
@@ -172,29 +181,30 @@ public class Controler implements InputProcessor {
 
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
-        if (Player.getCounter() >= 3){
+        if (Player.getCounter() >= 3) {
 
             if (cheatCountDown.touchDown(screenX, screenY)) {
 
                 return true;
             }
-    }
+        }
 
         if (Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
 
 
-
+            if(!wormOne.stillMoving()){
                 movement(gameField.getPlayer(), dice);
                 diceSprite.setTexture(dice.getDiceTexture());
                 Main.setDiceAnimationTrue();
 
-                camera.update();
+            }
 
-                if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
+            camera.update();
 
-                    Gdx.app.log(TAG,"YOU ARE A WINNER !!");
-                }
+            if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
 
+                Gdx.app.log(TAG, "YOU ARE A WINNER !!");
+            }
 
 
         }

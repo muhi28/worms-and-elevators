@@ -1,10 +1,15 @@
 package com.mygdx.game.display;
 
+import android.util.Log;
+
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by dog on 11.04.17.
+ * The type Render position calculator.
  */
 public class RenderPositionCalculator {
 
@@ -39,6 +44,40 @@ public class RenderPositionCalculator {
     }
 
     /**
+     * Gets player field.
+     *
+     * @return the player field
+     */
+    public Field getPlayerField() {
+        return game.getPlayer().getCurrentField();
+    }
+
+    /**
+     * Gets coordinates between.
+     *
+     * @param from the from
+     * @param to   the to
+     * @return the coordinates between
+     */
+    public List<Coordinates> getCoordinatesBetween(Field from, Field to) {
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        Field nextField = from.getNextField();
+
+        int fields = to.getFieldnumber() - nextField.getFieldnumber();
+        Log.d("RenderPosition", "fields: " + fields);
+        while (true) {
+            Coordinates coordinatesOfField = getCoordinatesOfField(nextField);
+            coordinates.add(coordinatesOfField);
+            nextField = nextField.getNextField();
+            if (coordinatesOfField.equals(getCoordinatesOfField(to))){
+                break;
+            }
+        }
+        //coordinates.add(getCoordinatesOfField(nextField.getFieldnumber()));
+        return coordinates;
+    }
+
+    /**
      * Gets coordinates of field.
      *
      * @param fieldNumber the field number
@@ -51,5 +90,16 @@ public class RenderPositionCalculator {
 
         return new Coordinates(xPos, yPos);
 
+    }
+
+
+    /**
+     * Gets coordinates of field.
+     *
+     * @param field the field
+     * @return the coordinates of field
+     */
+    public Coordinates getCoordinatesOfField(Field field) {
+        return getCoordinatesOfField(field.getFieldnumber());
     }
 }

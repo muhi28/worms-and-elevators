@@ -1,7 +1,7 @@
 package com.mygdx.game.game;
 
 /**
- * Created by Muhi on 11.04.2017.
+ * The type Field.
  */
 public class Field {
 
@@ -112,6 +112,17 @@ public class Field {
      */
     public int getPosY() {
         return posY;
+    }
+
+
+    /**
+     * Same field boolean.
+     *
+     * @param other the other
+     * @return the boolean
+     */
+    public boolean sameField(Field other){
+        return fieldnumber == other.fieldnumber;
     }
 
 }
