@@ -1,4 +1,4 @@
-package test;
+package com.mygdx.game;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

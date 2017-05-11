@@ -1,11 +1,11 @@
-package test;
+package com.mygdx.game;
+
+import com.mygdx.game.dice.Dice;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.mygdx.game.dice.Dice;
 
 import static junit.framework.Assert.assertEquals;
 

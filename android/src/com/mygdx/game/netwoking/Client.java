@@ -1,7 +1,7 @@
 package com.mygdx.game.netwoking;
 
 
-import android.util.Log;
+import com.badlogic.gdx.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,9 +16,10 @@ import java.net.UnknownHostException;
 public class Client extends Thread {
 
     /**
-     * The Tag.
+     * The constant LOGGER.
      */
-    static final String TAG = "ClientSocket";
+    public static Logger LOGGER = new Logger("Client");
+
     /**
      * The constant INIT_MESSAGE.
      */
@@ -28,7 +29,6 @@ public class Client extends Thread {
 
     private PrintStream out;
     private NetworkTrafficSender networkTrafficSender;
-
 
     /**
      * Instantiates a new Client.
@@ -49,29 +49,28 @@ public class Client extends Thread {
         });
 
         try {
-            System.out.println("Starting Connection");
+            LOGGER.info("Starting Connection");
             Socket s = null;
             BufferedReader in;
             synchronized (this) {
                 s = new Socket(ipAddress, Server.PORT);
                 out = new PrintStream(s.getOutputStream());
-                System.out.println("Connection DONE");
+                LOGGER.info("Connection DONE");
                 in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             }
             while (true) {
 
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
-                    Log.d(Client.TAG, "received");
+                    LOGGER.info("received: " + inputLine);
                     NetworkManager.received(inputLine);
-                    Log.d(Client.TAG, inputLine);
                 }
             }
 
 
         } catch (UnknownHostException e) {
-            Log.d(TAG,"There was an Unknown Error: ",e);
+            LOGGER.info("There was an Unknown Error: ", e);
         } catch (IOException e) {
-            Log.d(TAG,"There was an IOException: ",e);
+            LOGGER.info("There was an IOException: ", e);
         }
 
     }
@@ -84,7 +83,7 @@ public class Client extends Thread {
     public void sendMessage(String toSend) {
         synchronized (this) {
             if (out != null) {
-                Log.d(Client.TAG, "Will send:" + toSend);
+                LOGGER.info("Will send:" + toSend);
                 out.println(toSend);
                 out.flush();
             }

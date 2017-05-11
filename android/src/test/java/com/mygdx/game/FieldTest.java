@@ -1,13 +1,13 @@
-package test;
-
-import org.junit.Before;
-import org.junit.Test;
+package com.mygdx.game;
 
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 
 import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 

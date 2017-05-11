@@ -13,10 +13,10 @@ android {
         }
 
         test {
-            java.srcDirs = ['src/test']
+            java.srcDirs = ['src/test/java']
         }
 
-        instrumentTest.setRoot('src/test')
+        instrumentTest.setRoot('src/androidtest/java')
     }
 
 
@@ -26,8 +26,9 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.game"
-        minSdkVersion 14
+        minSdkVersion 18
         targetSdkVersion 25
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         textReport true

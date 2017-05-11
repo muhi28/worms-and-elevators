@@ -1,8 +1,7 @@
 package com.mygdx.game.netwoking;
 
 
-import android.util.Log;
-
+import com.badlogic.gdx.utils.Logger;
 import com.mygdx.game.util.ToastNotifier;
 
 import java.io.BufferedReader;
@@ -16,6 +15,10 @@ import java.net.Socket;
  * The type Server.
  */
 public class Server {
+    /**
+     * The constant LOGGER.
+     */
+    public static Logger LOGGER = new Logger("SERVER");
     /**
      * The constant PORT.
      */
@@ -53,30 +56,28 @@ public class Server {
             }
         });
 
-        Log.d(ServerIntent.TAG, "onHandleIntent");
+        LOGGER.info("onHandleIntent");
         ServerSocket listener;
         try {
             listener = new ServerSocket(PORT);
 
             while (true) {
-                Log.d(ServerIntent.TAG, "waiting for client");
+                LOGGER.debug("waiting for client");
                 BufferedReader in;
                 synchronized (this) {
                     Socket socket = listener.accept();
                     toastNotifier.showToast(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
-                    Log.d(ServerIntent.TAG, String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
+                    LOGGER.debug(String.format("client connected from: %s", socket.getRemoteSocketAddress().toString()));
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     out = new PrintStream(socket.getOutputStream());
                 }
                 for (String inputLine; (inputLine = in.readLine()) != null; ) {
-                    Log.d(ServerIntent.TAG, "received");
+                    LOGGER.info("received: " + inputLine);
                     NetworkManager.received(inputLine);
-
-                    Log.d(ServerIntent.TAG, inputLine);
                 }
             }
         } catch (IOException e) {
-            Log.d(ServerIntent.TAG, e.toString(), e);
+            LOGGER.error(e.toString(), e);
         }
     }
 
