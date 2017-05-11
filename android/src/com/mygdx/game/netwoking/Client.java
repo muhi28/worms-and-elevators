@@ -10,9 +10,18 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * The type Client.
+ */
 public class Client extends Thread {
 
+    /**
+     * The Tag.
+     */
     static final String TAG = "ClientSocket";
+    /**
+     * The constant INIT_MESSAGE.
+     */
     public static final String INIT_MESSAGE = "START_CLIENT";
 
     private final String ipAddress;
@@ -21,6 +30,11 @@ public class Client extends Thread {
     private NetworkTrafficSender networkTrafficSender;
 
 
+    /**
+     * Instantiates a new Client.
+     *
+     * @param ipAddress the ip address
+     */
     public Client(String ipAddress) {
         this.ipAddress = ipAddress;
     }
@@ -62,6 +76,11 @@ public class Client extends Thread {
 
     }
 
+    /**
+     * Send message.
+     *
+     * @param toSend the to send
+     */
     public void sendMessage(String toSend) {
         synchronized (this) {
             if (out != null) {

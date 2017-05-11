@@ -6,8 +6,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+/**
+ * The type Network monitor.
+ */
 public class NetworkMonitor extends Thread {
 
+    /**
+     * The constant CONNECTION_MONITOR_MESSAGE.
+     */
     public static final String CONNECTION_MONITOR_MESSAGE = "beep";
 
 
@@ -16,6 +22,11 @@ public class NetworkMonitor extends Thread {
     private boolean monitorMessageGot;
 
 
+    /**
+     * Instantiates a new Network monitor.
+     *
+     * @param appContext the app context
+     */
     public NetworkMonitor(Context appContext) {
         this.appContext = appContext;
         this.monitorMessageGot = false;
@@ -80,6 +91,11 @@ public class NetworkMonitor extends Thread {
         }
     }
 
+    /**
+     * Start monitor.
+     *
+     * @param appContext the app context
+     */
     public static void startMonitor(Context appContext) {
         NetworkMonitor networkMonitor = new NetworkMonitor(appContext);
         networkMonitor.start();

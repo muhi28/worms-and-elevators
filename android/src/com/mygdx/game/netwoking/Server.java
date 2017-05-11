@@ -16,8 +16,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
+/**
+ * The type Server.
+ */
 public class Server extends IntentService {
+    /**
+     * The constant PORT.
+     */
     public static final int PORT = 12345;
+    /**
+     * The Tag.
+     */
     static final String TAG = "AndroidServerSocket";
 
     private Context appContext;
@@ -27,8 +36,14 @@ public class Server extends IntentService {
     private NetworkTrafficSender networkTrafficSender;
 
 
+    /**
+     * The constant INIT_MESSAGE.
+     */
     public static final String INIT_MESSAGE = "START_SERVER";
 
+    /**
+     * Instantiates a new Server.
+     */
     public Server() {
         super("Server");
     }
@@ -92,6 +107,11 @@ public class Server extends IntentService {
     }
 
 
+    /**
+     * Send message.
+     *
+     * @param toSend the to send
+     */
     public void sendMessage(String toSend) {
         synchronized (this) {
             if (out != null) {

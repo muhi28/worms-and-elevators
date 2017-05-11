@@ -12,18 +12,36 @@ import java.nio.ByteOrder;
 
 import static android.content.Context.WIFI_SERVICE;
 
+/**
+ * The type Network utils.
+ */
 public final class NetworkUtils {
 
     private final Context appContext;
 
+    /**
+     * Instantiates a new Network utils.
+     *
+     * @param appContext the app context
+     */
     public NetworkUtils(Context appContext) {
         this.appContext = appContext;
     }
 
+    /**
+     * Is phone connected to wifi boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPhoneConnectedToWifi() {
         return wifiIpAddress() != null;
     }
 
+    /**
+     * Wifi ip address string.
+     *
+     * @return the string
+     */
     public String wifiIpAddress() {
         WifiManager wifiManager = (WifiManager) appContext.getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();

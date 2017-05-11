@@ -9,7 +9,6 @@ import com.badlogic.gdx.audio.Sound;
  * Music and Sound are handled the same way. The difference is, that soundfiles are loaded into the ram (only for small files) and musicfiles are streamed.
  * Only for the game not for the Activities.
  */
-
 public class MusicManager {
 
     private Music gameMusic;
@@ -17,6 +16,9 @@ public class MusicManager {
     private Sound finish;
     private Sound move;
 
+    /**
+     * Instantiates a new Music manager.
+     */
     public MusicManager() {
 
         this.gameMusic = Gdx.audio.newMusic(Gdx.files.internal("m.mp3"));
@@ -25,19 +27,31 @@ public class MusicManager {
         this.finish = Gdx.audio.newSound(Gdx.files.internal("finish.wav"));
     }
 
+    /**
+     * Start music.
+     */
     public void startMusic() {
         this.gameMusic.setLooping(true);
         this.gameMusic.play();
     }
 
+    /**
+     * Shuffle.
+     */
     public void shuffle() {
         this.diceSound.play();
     }
 
+    /**
+     * Worm sound.
+     */
     public void wormSound() {
         this.move.play();
     }
 
+    /**
+     * Finish sound.
+     */
     public void finishSound() {
         this.finish.play();
     }
