@@ -1,11 +1,10 @@
 package com.mygdx.game.display;
 
-import android.util.Log;
-
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.game.Field;
+import com.mygdx.game.util.CustomLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,8 @@ import java.util.List;
  * The type Worm.
  */
 public class Worm extends Actor {
+
+    private final static CustomLogger LOGGER = new CustomLogger("WORM");
 
     private final Sprite player;
     private final RenderPositionCalculator renderPositionCalculator;
@@ -55,7 +56,7 @@ public class Worm extends Actor {
 
         if (renderPositionCalculator.getCoordinatesOfField(targetPlayerField).equals(coordinatesCurrent)
                 && !fieldCurrent.sameField(targetPlayerField)) {
-            Log.d("WORM", "Ziel erreicht");
+            LOGGER.debug("Ziel erreicht");
             fieldCurrent = targetPlayerField;
         }
 
@@ -65,29 +66,26 @@ public class Worm extends Actor {
 
             if (fieldCurrent.sameField(targetPlayerField)) {
                 batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY());
-                // Log.d("WORM","normal draw");
             } else {
                 coordinates = renderPositionCalculator.getCoordinatesBetween(fieldCurrent, targetPlayerField);
-                //   fieldTarget = targetPlayerField;
-                Log.d("WORM", "getCoordinatesBetween");
-
+                LOGGER.debug("getCoordinatesBetween");
             }
         } else {
 
             if (targetCoordinates == null) {
 
                 targetCoordinates = coordinates.remove(0);
-                Log.d("WORM", "new field");
+                LOGGER.debug("new field");
             }
             int x = narrowCoordinates(coordinatesCurrent.getX(), targetCoordinates.getX());
             int y = narrowCoordinates(coordinatesCurrent.getY(), targetCoordinates.getY());
 
             coordinatesCurrent = new Coordinates(x, y);
             batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY());
-            Log.d("WORM", "move to: " + targetCoordinates);
-            Log.d("WORM", "current to: " + coordinatesCurrent);
+            LOGGER.debug( "move to: " + targetCoordinates);
+            LOGGER.debug("current to: " + coordinatesCurrent);
             if (targetCoordinates.equals(coordinatesCurrent)) {
-                Log.d("WORM", "set tartet to null");
+                LOGGER.debug("set tartet to null");
                 targetCoordinates = null;
             }
 

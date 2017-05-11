@@ -31,8 +31,8 @@ public class NetworkTest {
      */
     @Test
     public void testServerAndClient() throws InterruptedException {
-        Server.LOGGER = new CustomLogger("Server", true);
-        Client.LOGGER = new CustomLogger("Client", true);
+        Server.LOGGER = new CustomLogger("Server", true, false);
+        Client.LOGGER = new CustomLogger("Client", true, false);
 
         final NetworkTest currentInstance = this;
         NetworkTrafficReceiver networkTrafficReceiver = new NetworkTrafficReceiver(new FromNetworkProcessor() {

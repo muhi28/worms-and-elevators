@@ -1,5 +1,7 @@
 package com.mygdx.game.util;
 
+import android.util.Log;
+
 import com.badlogic.gdx.utils.Logger;
 
 
@@ -9,6 +11,7 @@ import com.badlogic.gdx.utils.Logger;
 public class CustomLogger extends Logger {
 
     private final boolean writeToConsole;
+    private final boolean writeToAndroid;
     private final String tag;
 
     /**
@@ -17,7 +20,7 @@ public class CustomLogger extends Logger {
      * @param tag the tag
      */
     public CustomLogger(String tag) {
-        this(tag, false);
+        this(tag, false, true);
     }
 
     /**
@@ -26,26 +29,37 @@ public class CustomLogger extends Logger {
      * @param tag            the tag
      * @param writeToConsole the write to console
      */
-    public CustomLogger(String tag, boolean writeToConsole) {
+    public CustomLogger(String tag, boolean writeToConsole, boolean writeToAndroid) {
         super(tag);
         this.writeToConsole = writeToConsole;
         this.tag = tag;
+        this.writeToAndroid = writeToAndroid;
     }
 
     @Override
     public void debug(String message) {
+        if(writeToAndroid){
+            Log.d(tag, message);
+        }
         writeToConsole(message);
+
         super.debug(message);
     }
 
     @Override
     public void info(String message) {
+        if(writeToAndroid){
+            Log.i(tag, message);
+        }
         writeToConsole(message);
         super.info(message);
     }
 
     @Override
     public void error(String message) {
+        if(writeToAndroid){
+            Log.e(tag, message);
+        }
         writeToConsole(message);
         super.error(message);
     }
