@@ -42,23 +42,34 @@ public class NetworkMonitor extends Thread {
             }
         });
 
+        Thread sendBeaconsThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    NetworkManager.send(CONNECTION_MONITOR_MESSAGE);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        sendBeaconsThread.start();
 
         while (true) {
             try {
                 synchronized (this) {
                     monitorMessageGot = false;
                 }
-                NetworkManager.send(CONNECTION_MONITOR_MESSAGE);
-                Thread.sleep(200);
-                NetworkManager.send(CONNECTION_MONITOR_MESSAGE);
-                Thread.sleep(200);
-                NetworkManager.send(CONNECTION_MONITOR_MESSAGE);
-                Thread.sleep(200);
+
+                Thread.sleep(2000);
                 synchronized (this) {
                     if (!monitorMessageGot) {
-                        //showToast("Lost network connection!");
+                        showToast("Lost network connection!");
                         Thread.sleep(3000);
-                        //throw new RuntimeException("Lost network connection!"); //todo
+                        throw new RuntimeException("Lost network connection!");
                     }
                 }
 
