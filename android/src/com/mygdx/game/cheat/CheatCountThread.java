@@ -3,11 +3,19 @@ package com.mygdx.game.cheat;
 
 import com.badlogic.gdx.Gdx;
 
+/**
+ * The type Cheat count thread.
+ */
 public class CheatCountThread extends Thread {
 
     private final CheatCountDown cheatCountDown;
     private static final String TAG = "CheatCountThread";
 
+    /**
+     * Instantiates a new Cheat count thread.
+     *
+     * @param cheatCountDown the cheat count down
+     */
     public CheatCountThread(CheatCountDown cheatCountDown) {
         this.cheatCountDown = cheatCountDown;
     }

@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * The type Cheat count down.
+ */
 public class CheatCountDown extends Actor {
     private static final int CHEAT_TOUCH_AREA_SIZE = 100;
     private BitmapFont font;
@@ -15,6 +18,9 @@ public class CheatCountDown extends Actor {
     private Integer currentDiceValue;
     private CheatCountThread countThread;
 
+    /**
+     * Instantiates a new Cheat count down.
+     */
     public CheatCountDown() {
         font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -34,6 +40,9 @@ public class CheatCountDown extends Actor {
         }
     }
 
+    /**
+     * Increase current dice value.
+     */
     public synchronized void increaseCurrentDiceValue() {
         currentDiceValue++;
         if (currentDiceValue > 6) {
@@ -53,6 +62,13 @@ public class CheatCountDown extends Actor {
 
     }
 
+    /**
+     * Touch down boolean.
+     *
+     * @param screenX the screen x
+     * @param screenY the screen y
+     * @return the boolean
+     */
     public boolean touchDown(int screenX, int screenY) {
         if (!visible && screenX < CHEAT_TOUCH_AREA_SIZE
                 && screenY > Gdx.graphics.getHeight() - CHEAT_TOUCH_AREA_SIZE) {
@@ -63,10 +79,20 @@ public class CheatCountDown extends Actor {
         return false;
     }
 
+    /**
+     * Cheating is active boolean.
+     *
+     * @return the boolean
+     */
     public boolean cheatingIsActive() {
         return visible;
     }
 
+    /**
+     * Stop count down integer.
+     *
+     * @return the integer
+     */
     public Integer stopCountDown() {
         stopCount();
         countThread = new CheatCountThread(this);
