@@ -15,7 +15,6 @@ import java.util.Random;
  * Class Dice has two variables rang and dice_p
  * Until now only one relevant method is implemented (rollTheDice).
  */
-
 public class Dice {
 
     private int range;
@@ -27,7 +26,13 @@ public class Dice {
     private int result;
 
 
-    /*
+    /**
+     * Instantiates a new Dice.
+     *
+     * @param range        the range
+     * @param loadPictures the load pictures
+     */
+/*
       Constructor initializes range with delivered value and dice_p with dice_idle.png
      */
     public Dice(int range, boolean loadPictures) {
@@ -38,18 +43,38 @@ public class Dice {
         this.loadPictures = loadPictures;
     }
 
+    /**
+     * Instantiates a new Dice.
+     *
+     * @param range the range
+     */
     public Dice(int range) {
         this(range, true);
     }
 
+    /**
+     * Gets range.
+     *
+     * @return the range
+     */
     public int getRange() {
         return range;
     }
 
+    /**
+     * Gets result.
+     *
+     * @return the result
+     */
     public int getResult() {
         return result;
     }
 
+    /**
+     * Gets dice texture.
+     *
+     * @return the dice texture
+     */
     public Texture getDiceTexture() {
         return diceTexture;
     }
@@ -78,6 +103,7 @@ public class Dice {
     /**
      * The method cheatDice sets the diceTexture on the texture the player clicked.
      *
+     * @param dice_p the dice p
      * @return : the int value of the dice number
      */
     public int cheatDice(Texture dice_p) {
@@ -133,6 +159,11 @@ public class Dice {
 
     }
 
+    /**
+     * Create animation animation.
+     *
+     * @return the animation
+     */
     public Animation createAnimation() {
         TextureRegion [] text = new TextureRegion[this.getRange()];
 
