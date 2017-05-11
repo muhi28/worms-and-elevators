@@ -27,7 +27,6 @@ import com.mygdx.game.main_controler.Controler;
 /**
  * Created by Muhi on 12.04.2017.
  */
-
 public class Main extends ApplicationAdapter implements Observer {
 
     private static OrthographicCamera camera;
@@ -44,14 +43,23 @@ public class Main extends ApplicationAdapter implements Observer {
     private static CheatCountDown cheatCountDown;
     private static int time = 0;
     private static boolean diceAnimationActive = false;
+    /**
+     * The Stage.
+     */
     Stage stage;
+    /**
+     * The Player one.
+     */
     Worm playerOne;
 
     private static Sprite diceSprite;
 
 
-
-
+    /**
+     * Instantiates a new Main.
+     *
+     * @param wormcolor the wormcolor
+     */
     public Main(String wormcolor) {
         gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
@@ -152,30 +160,63 @@ public class Main extends ApplicationAdapter implements Observer {
 
     }
 
+    /**
+     * Gets dice.
+     *
+     * @return the dice
+     */
     public static Dice getDice() {
         return dice;
     }
 
+    /**
+     * Gets game field.
+     *
+     * @return the game field
+     */
     public static GameField getGameField() {
         return gameField;
     }
 
+    /**
+     * Gets cheat countdown.
+     *
+     * @return the cheat countdown
+     */
     public static CheatCountDown getCheatCountdown() {
         return cheatCountDown;
     }
 
+    /**
+     * Gets camera.
+     *
+     * @return the camera
+     */
     public static OrthographicCamera getCamera() {
         return camera;
     }
 
+    /**
+     * Gets dice sprite.
+     *
+     * @return the dice sprite
+     */
     public static Sprite getDiceSprite() {
         return diceSprite;
     }
 
+    /**
+     * Sets dice animation true.
+     */
     public static void setDiceAnimationTrue() {
         diceAnimationActive = true;
     }
 
+    /**
+     * Do dice animation.
+     *
+     * @param batch the batch
+     */
     public static void doDiceAnimation(SpriteBatch batch) {
         float x = Gdx.graphics.getWidth() / 2 - 100;
         float y = Gdx.graphics.getHeight() / 2 - 800;

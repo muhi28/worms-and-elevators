@@ -15,6 +15,9 @@ import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 
 
+/**
+ * The type Controler.
+ */
 public class Controler implements InputProcessor {
 
     //    boolean cheatMode = true;               //Stud for the cheat mode
@@ -27,21 +30,38 @@ public class Controler implements InputProcessor {
 
     private static final String TAG = "Controler";
 
+    /**
+     * Instantiates a new Controler.
+     */
     public Controler() {
         setInputProcessor();
     }
 
 
+    /**
+     * Gets input processor.
+     *
+     * @return the input processor
+     */
     public InputProcessor getInputProcessor() {
 
         return Gdx.input.getInputProcessor();
     }
 
+    /**
+     * Sets input processor.
+     */
     public void setInputProcessor() {
         Gdx.input.setInputProcessor(this);
     }
 
 
+    /**
+     * Movement.
+     *
+     * @param player the player
+     * @param dice   the dice
+     */
     public void movement(Player player, Dice dice) {
 
         int eyeNumber = dice.rollTheDice();
@@ -55,6 +75,12 @@ public class Controler implements InputProcessor {
 
     }
 
+    /**
+     * Cheat movement.
+     *
+     * @param player         the player
+     * @param cheatCountdown the cheat countdown
+     */
     public void cheatMovement(Player player, Integer cheatCountdown) {
 
         for (int i = 0; i < cheatCountdown; i++) {
@@ -67,11 +93,19 @@ public class Controler implements InputProcessor {
 
     }
 
+    /**
+     * Update current fieldnumber.
+     */
     public static void updateCurrentFieldnumber() {
         currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
     }
 
 
+    /**
+     * Check field.
+     *
+     * @param player the player
+     */
     public static void checkField(Player player) {
 
         currentFieldnumber = player.getCurrentField().getFieldnumber();
@@ -95,6 +129,12 @@ public class Controler implements InputProcessor {
 
     }
 
+    /**
+     * Port.
+     *
+     * @param fieldnumber the fieldnumber
+     * @param player      the player
+     */
     public static void port(int fieldnumber, Player player) {
         Field newCurrentField = gameField.getFieldFrom(fieldnumber);
         player.setCurrentField(newCurrentField);
@@ -102,6 +142,11 @@ public class Controler implements InputProcessor {
 
 //The following methods exist, so that the logic classes are seperated from each other and from the GUI classes. Architectual porpuses
 
+    /**
+     * Get elevator fields int [ ].
+     *
+     * @return the int [ ]
+     */
     public static int[] getElevatorFields() {
         return Elevator.getElevatorFields();
     }
