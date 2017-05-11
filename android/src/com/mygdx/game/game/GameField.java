@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Created by Muhi on 11.04.2017.
  */
-
 public class GameField {
 
 
@@ -28,6 +27,12 @@ public class GameField {
 
     private final Player player;
 
+    /**
+     * Instantiates a new Game field.
+     *
+     * @param fields the fields
+     * @param player the player
+     */
     public GameField(List<Field> fields, Player player) {
 
         this.player = player;
@@ -36,6 +41,14 @@ public class GameField {
 
     }
 
+    /**
+     * Gets fieldfrom pos.
+     *
+     * @param vertical   the vertical
+     * @param horizontal the horizontal
+     * @return the fieldfrom pos
+     * @throws RuntimeException the runtime exception
+     */
     public Field getFieldfromPos(int vertical, int horizontal) throws RuntimeException {
 
         for (Field field : fields) {
@@ -49,31 +62,61 @@ public class GameField {
         throw new RuntimeException("Field wurde nicht gefunden!");
     }
 
+    /**
+     * Gets start field.
+     *
+     * @return the start field
+     */
     public Field getStartField() {
 
         return getFieldfromPos(0, 0);
     }
 
+    /**
+     * Gets fields.
+     *
+     * @return the fields
+     */
     public List<Field> getFields() {
 
         return fields;
     }
 
+    /**
+     * Gets player.
+     *
+     * @return the player
+     */
     public Player getPlayer() {
 
         return player;
     }
 
+    /**
+     * Gets fieldof player.
+     *
+     * @return the fieldof player
+     */
     public Field getFieldofPlayer() {
 
         return player.getCurrentField();
     }
 
+    /**
+     * Gets goal.
+     *
+     * @return the goal
+     */
     public Field getGoal() {
 
         return goal;
     }
 
+    /**
+     * Create game field game field.
+     *
+     * @return the game field
+     */
     public static GameField createGameField() {
 
         List<Field> fields = new ArrayList<>();
@@ -112,6 +155,11 @@ public class GameField {
 
     }
 
+    /**
+     * Sort next field.
+     *
+     * @param sortedFields the sorted fields
+     */
     public static void sortNextField(List<Field> sortedFields) {
         for (int i = 1; i < sortedFields.size(); i++) {
             sortedFields.get(i).setNextField(sortedFields.get(i - 1));
@@ -119,6 +167,13 @@ public class GameField {
 
     }
 
+    /**
+     * Gets field from.
+     *
+     * @param number the number
+     * @return the field from
+     * @throws RuntimeException the runtime exception
+     */
     public Field getFieldFrom(int number) throws RuntimeException {
         for (Field field : fields) {
             if (field.getFieldnumber() == number) {
@@ -130,6 +185,12 @@ public class GameField {
     }
 
 
+    /**
+     * Get field numbers int [ ].
+     *
+     * @param gameField the game field
+     * @return the int [ ]
+     */
     public static int[] getFieldNumbers(List<Field> gameField) {
 
         for (int i = 0; i < gameField.size(); i++) {
@@ -140,6 +201,12 @@ public class GameField {
         return fieldnumbers;
     }
 
+    /**
+     * Snake order list.
+     *
+     * @param originalList the original list
+     * @return the list
+     */
     public static List<Field> snakeOrder(List<Field> originalList) {            //this method changes the order of our List of fields, so
         //that the players "slither" across the board instead of
         //the sequential

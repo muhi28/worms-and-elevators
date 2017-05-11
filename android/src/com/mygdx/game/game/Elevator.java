@@ -7,7 +7,6 @@ import java.util.Random;
 /**
  * Created by Muhi on 14.04.2017.
  */
-
 public class Elevator {
 
     private static int[] elevatorFields = new int[7];
@@ -19,6 +18,9 @@ public class Elevator {
 
     private Elevator(){}
 
+    /**
+     * Generate elevator.
+     */
     public static void generateElevator() {
 
         for (int i = 0; i < 7; i++) {
@@ -29,6 +31,12 @@ public class Elevator {
         }
     }
 
+    /**
+     * Gets new elevator fieldnumber.
+     *
+     * @param fieldnumber the fieldnumber
+     * @return the new elevator fieldnumber
+     */
     public static int getNewElevatorFieldnumber(int fieldnumber) {
 
         while (true) {
@@ -48,6 +56,11 @@ public class Elevator {
         return randomElevatorFieldnumber;
     }
 
+    /**
+     * Get elevator fields int [ ].
+     *
+     * @return the int [ ]
+     */
     public static int[] getElevatorFields() {
 
         return elevatorFields;

@@ -3,13 +3,24 @@ package com.mygdx.game.game;
 /**
  * Created by Muhi on 11.04.2017.
  */
-
 public class Field {
 
+    /**
+     * The enum Field typs.
+     */
     public enum FieldTyps {
 
+        /**
+         * Normal field typs.
+         */
         NORMAL,
+        /**
+         * Wurm field typs.
+         */
         WURM,
+        /**
+         * Aufzug field typs.
+         */
         AUFZUG
     }
 
@@ -20,6 +31,13 @@ public class Field {
     private Field previousField;
     private final int fieldnumber;
 
+    /**
+     * Instantiates a new Field.
+     *
+     * @param py          the py
+     * @param px          the px
+     * @param fieldnumber the fieldnumber
+     */
     public Field(int py, int px, int fieldnumber) {
 
         this.posX = px;
@@ -28,35 +46,70 @@ public class Field {
     }
 
 
+    /**
+     * Sets next field.
+     *
+     * @param nextField the next field
+     */
     public void setNextField(Field nextField) {
 
         this.nextField = nextField;
     }
 
+    /**
+     * Gets next field.
+     *
+     * @return the next field
+     */
     public Field getNextField() {
 
         return nextField;
     }
 
+    /**
+     * Sets previous field.
+     *
+     * @param previousField the previous field
+     */
     public void setPreviousField(Field previousField) {
 
         this.previousField = previousField;
     }
 
+    /**
+     * Gets previous.
+     *
+     * @return the previous
+     */
     public Field getPrevious() {
 
         return previousField;
     }
 
+    /**
+     * Gets fieldnumber.
+     *
+     * @return the fieldnumber
+     */
     public int getFieldnumber() {
 
         return fieldnumber;
     }
 
+    /**
+     * Gets pos x.
+     *
+     * @return the pos x
+     */
     public int getPosX() {
         return posX;
     }
 
+    /**
+     * Gets pos y.
+     *
+     * @return the pos y
+     */
     public int getPosY() {
         return posY;
     }
