@@ -32,11 +32,17 @@ public class Main extends ApplicationAdapter implements Observer {
 
     private SpriteBatch batch;
     private Controler controler;
-    private Sprite texturePlayer;
+    private Sprite texturePlayer1;
+    private Sprite texturePlayer2;
+    private Sprite texturePlayer3;
+    private Sprite texturePlayer4;
     private Texture tile1;
     private Texture tile2;
     private static Dice dice;
-    private String color;
+    private String color1;
+    private String color2;
+    private String color3;
+    private String color4;
     private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator;
     private static CheatCountDown cheatCountDown;
@@ -51,19 +57,25 @@ public class Main extends ApplicationAdapter implements Observer {
      */
     Worm playerOne;
 
+    Worm playerTwo;
+    Worm playerThree;
+    Worm playerFour;
+
     private static Sprite diceSprite;
 
 
     /**
      * Instantiates a new Main.
      *
-     * @param wormcolor the wormcolor
+     * @param playerList the wormcolor
      */
-    public Main(String wormcolor) {
+    public Main(List<Object[]> playerList) {
         gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
-
-        this.color = wormcolor;
+        this.color1 = (String) playerList.get(0)[0];
+        this.color2 = (String) playerList.get(1)[0];
+        this.color3 = (String) playerList.get(2)[0];
+        this.color4 = (String) playerList.get(3)[0];
     }
 
 
@@ -80,8 +92,14 @@ public class Main extends ApplicationAdapter implements Observer {
 
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+
+        int numberOfPlayers = Controler.getNumberOfPlayers();
+
         //initialisieren der Textur der Spielfigur
-        texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color))));
+        texturePlayer1 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color1))));
+//        texturePlayer2 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color2))));
+//        texturePlayer3 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color3))));
+//        texturePlayer4 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color4))));
 
         tile1 = new Texture(Gdx.files.internal("background_grass.png"));
         tile2 = new Texture(Gdx.files.internal("background_elevator.png"));
@@ -94,7 +112,10 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         //Texture des Wurms
-        playerOne = new Worm(texturePlayer, renderPositionCalculator);
+        playerOne = new Worm(texturePlayer1, renderPositionCalculator);
+//        playerTwo = new Worm(texturePlayer2, renderPositionCalculator);
+//        playerThree = new Worm(texturePlayer3, renderPositionCalculator);
+//        playerFour = new Worm(texturePlayer4, renderPositionCalculator);
 
 
         // gibt jedem einzelnen Feld des Spielfelds ein Texture

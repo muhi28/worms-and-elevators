@@ -26,6 +26,7 @@ public class Controler implements InputProcessor {
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
     private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    private static int numberOfPlayers = 0;
 
     private static final String TAG = "Controler";
 
@@ -160,6 +161,13 @@ public class Controler implements InputProcessor {
         return Elevator.getElevatorFields();
     }
 
+    public static void setNumberOfPlayers(int players){
+        numberOfPlayers = players;
+    }
+
+    public static int getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
 
     @Override
     public boolean keyDown(int keycode) {

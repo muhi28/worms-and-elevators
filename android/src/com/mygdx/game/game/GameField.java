@@ -149,9 +149,12 @@ public class GameField {
         List<Field> sortedFields = snakeOrder(fields);
         sortNextField(sortedFields);
 
-        Player spieler = new Player(sortedFields.get(sortedFields.size() - 1));
+        Player playerOne = new Player(sortedFields.get(sortedFields.size() - 1));
+//        Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1));
+//        Player playerThree = new Player(sortedFields.get(sortedFields.size() - 1));
+//        Player playerFour = new Player(sortedFields.get(sortedFields.size() - 1));
 
-        return new GameField(sortedFields, spieler);
+        return new GameField(sortedFields, playerOne);
 
     }
 
