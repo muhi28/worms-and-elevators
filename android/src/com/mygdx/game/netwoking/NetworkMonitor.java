@@ -15,6 +15,7 @@ public class NetworkMonitor extends Thread {
      * The constant CONNECTION_MONITOR_MESSAGE.
      */
     public static final String CONNECTION_MONITOR_MESSAGE = "beep";
+    private static NetworkMonitor NETWORK_MONITOR;
 
 
     private Context appContext;
@@ -27,7 +28,7 @@ public class NetworkMonitor extends Thread {
      *
      * @param appContext the app context
      */
-    public NetworkMonitor(Context appContext) {
+    private NetworkMonitor(Context appContext) {
         this.appContext = appContext;
         this.monitorMessageGot = false;
     }
@@ -110,5 +111,12 @@ public class NetworkMonitor extends Thread {
     public static void startMonitor(Context appContext) {
         NetworkMonitor networkMonitor = new NetworkMonitor(appContext);
         networkMonitor.start();
+        NETWORK_MONITOR = networkMonitor;
+    }
+
+    public static boolean isConnected() {
+        synchronized (NETWORK_MONITOR) {
+            return NETWORK_MONITOR.monitorMessageGot;
+        }
     }
 }

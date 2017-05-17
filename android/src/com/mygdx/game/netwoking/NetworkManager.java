@@ -9,7 +9,6 @@ import java.util.Observable;
 public class NetworkManager extends Observable {
 
     private static NetworkManager NETWORK_LISTENER = new NetworkManager();
-    ;
     private static NetworkManager NETWORK_SENDER;
     private static boolean IS_SERVER;
 
