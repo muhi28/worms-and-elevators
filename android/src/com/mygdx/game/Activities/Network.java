@@ -10,15 +10,14 @@ import android.widget.Toast;
 
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.Client;
-import com.mygdx.game.netwoking.NetworkMonitor;
-import com.mygdx.game.netwoking.NetworkUtils;
-import com.mygdx.game.netwoking.Server;
-import com.mygdx.game.netwoking.ServerIntent;
-
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.GameSync;
 import com.mygdx.game.netwoking.NetworkManager;
+import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
+import com.mygdx.game.netwoking.NetworkUtils;
+import com.mygdx.game.netwoking.Server;
+import com.mygdx.game.netwoking.ServerIntent;
 
 
 /**
@@ -87,7 +86,7 @@ public class Network extends Activity {
     public void onClickConnectClientToServer(View view) {
         GameSync.getSync().waitForOtherPlayer();
         final TextView textView = (TextView) findViewById(R.id.ip_address_server);
-
+        NetworkManager.initialize(false);
         Client client = new Client(textView.getText().toString());
         client.start();
 
@@ -102,9 +101,9 @@ public class Network extends Activity {
      */
     public void onClickStartServer(View view) {
 
-
         GameSync.getSync().waitForOtherPlayer();
         if (networkUtils.isPhoneConnectedToWifi()) {
+            NetworkManager.initialize(true);
             showToast(String.format("starting server %s on port: %d", networkUtils.wifiIpAddress(), Server.PORT));
             this.startService(new Intent(this, ServerIntent.class));
             disableControls();

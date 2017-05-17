@@ -31,6 +31,7 @@ public class NetworkTest {
      */
     @Test
     public void testServerAndClient() throws InterruptedException {
+        NetworkManager.initialize(true);
         Server.LOGGER = new CustomLogger("Server", true, false);
         Client.LOGGER = new CustomLogger("Client", true, false);
 

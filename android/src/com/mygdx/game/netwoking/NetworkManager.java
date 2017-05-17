@@ -8,8 +8,26 @@ import java.util.Observable;
  */
 public class NetworkManager extends Observable {
 
-    private static final NetworkManager NETWORK_LISTENER = new NetworkManager();
-    private static final NetworkManager NETWORK_SENDER = new NetworkManager();
+    private static NetworkManager NETWORK_LISTENER = new NetworkManager();
+    ;
+    private static NetworkManager NETWORK_SENDER;
+    private static boolean IS_SERVER;
+
+    public static void initialize(boolean isServer) {
+        if (NETWORK_SENDER != null) {
+            throw new RuntimeException("Network manager already initialised!");
+        }
+        IS_SERVER = isServer;
+        NETWORK_SENDER = new NetworkManager();
+    }
+
+    public static boolean isServer() {
+        return IS_SERVER;
+    }
+
+    public static boolean isClient() {
+        return !isServer();
+    }
 
     /**
      * Received.
