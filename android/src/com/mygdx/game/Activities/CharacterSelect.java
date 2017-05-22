@@ -10,8 +10,6 @@ import com.mygdx.game.Players.PlayerColor;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.GameSync;
-import com.mygdx.game.netwoking.NetworkManager;
-import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 /**
@@ -82,7 +80,7 @@ public class CharacterSelect extends Activity {
      */
     public void onClickStartGame(View view) {
 
-        NetworkManager.send(PLAYER_READY_MESSAGE, true);
+      //  NetworkManager.send(PLAYER_READY_MESSAGE, true); todo
 
         if (color == null) {
             chosenPlayer.setText("Please select worm color!");
@@ -90,17 +88,17 @@ public class CharacterSelect extends Activity {
             return;
         }
 
-        if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {
-            setMessage("Please wait for other player");
-            chosenPlayer.setVisibility(View.VISIBLE);
-            return;
-        }
+//        if (NetworkMonitor.isConnected() && colorOtherPlayer == null) { todo
+//            setMessage("Please wait for other player");
+//            chosenPlayer.setVisibility(View.VISIBLE);
+//            return;
+//        }
 
-        if (!otherPlayerReady) {
-            setMessage("Please wait for other player!");
-            waitingForOtherPlayer = true;
-            return;
-        }
+//        if (!otherPlayerReady) { todo
+//            setMessage("Please wait for other player!");
+//            waitingForOtherPlayer = true;
+//            return;
+//        }
 
         intent = new Intent(this, MainGameActivity.class);
 
@@ -186,7 +184,7 @@ public class CharacterSelect extends Activity {
     }
 
     private void sendSelectedColor() {
-        NetworkManager.send(color.toString(), true);
+        //NetworkManager.send(color.toString(), true); todo
     }
 
     /**
