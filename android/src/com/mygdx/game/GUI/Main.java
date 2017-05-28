@@ -19,6 +19,7 @@ import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.main_controler.Controler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -44,7 +45,8 @@ public class Main extends ApplicationAdapter implements Observer {
     private String color3;
     private String color4;
     private static GameField gameField;
-    private final RenderPositionCalculator renderPositionCalculator;
+    private final RenderPositionCalculator renderPositionCalculator1;
+    private final RenderPositionCalculator renderPositionCalculator2;
     private static CheatCountDown cheatCountDown;
     private static int time = 0;
     private static boolean diceAnimationActive = false;
@@ -71,7 +73,8 @@ public class Main extends ApplicationAdapter implements Observer {
      */
     public Main(List<Object[]> playerList) {
         gameField = GameField.createGameField();
-        this.renderPositionCalculator = new RenderPositionCalculator(gameField);
+        this.renderPositionCalculator1 = new RenderPositionCalculator(gameField);
+        this.renderPositionCalculator2 = new RenderPositionCalculator(gameField);
         this.color1 = (String) playerList.get(0)[0];
         this.color2 = (String) playerList.get(1)[0];
         this.color3 = (String) playerList.get(2)[0];
@@ -95,9 +98,22 @@ public class Main extends ApplicationAdapter implements Observer {
 
         int numberOfPlayers = Controler.getNumberOfPlayers();
 
+        Controler.setSingleplayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
+
         //initialisieren der Textur der Spielfigur
         texturePlayer1 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color1))));
-//        texturePlayer2 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color2))));
+        if (Controler.getSingleplayerBoolean()) {
+            if (color1.equals("red")){
+                texturePlayer2 = new Sprite(new Texture(Gdx.files.internal("player_blue.png")));
+            }
+            else {
+                texturePlayer2 = new Sprite(new Texture(Gdx.files.internal("player_red.png")));
+            }
+
+        }
+        else{
+            texturePlayer2 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color2))));
+        }
 //        texturePlayer3 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color3))));
 //        texturePlayer4 = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", color4))));
 
@@ -112,10 +128,14 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         //Texture des Wurms
-        playerOne = new Worm(texturePlayer1, renderPositionCalculator);
-//        playerTwo = new Worm(texturePlayer2, renderPositionCalculator);
-//        playerThree = new Worm(texturePlayer3, renderPositionCalculator);
-//        playerFour = new Worm(texturePlayer4, renderPositionCalculator);
+        playerOne = new Worm(texturePlayer1, renderPositionCalculator1);
+        playerTwo = new Worm(texturePlayer2, renderPositionCalculator2);
+//        playerThree = new Worm(texturePlayer3, renderPositionCalculator1);
+//        playerFour = new Worm(texturePlayer4, renderPositionCalculator1);
+
+        List<Worm> wormList = new ArrayList<>();
+        wormList.add(playerOne);
+        wormList.add(playerTwo);
 
 
         // gibt jedem einzelnen Feld des Spielfelds ein Texture
@@ -136,7 +156,7 @@ public class Main extends ApplicationAdapter implements Observer {
         for (int i = 1; i <= fields.size(); i++) {
 
 
-            SingleField singleField = new SingleField(tile1, renderPositionCalculator, i);
+            SingleField singleField = new SingleField(tile1, renderPositionCalculator1, i);
             stage.addActor(singleField);
         }
 
@@ -149,7 +169,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         for (int i = 0; i < elevatorFields.length; i++) {
 
-            SingleField singleField = new SingleField(tile2, renderPositionCalculator, elevatorFields[i]);
+            SingleField singleField = new SingleField(tile2, renderPositionCalculator1, elevatorFields[i]);
             stage.addActor(singleField);
         }
 
@@ -165,6 +185,10 @@ public class Main extends ApplicationAdapter implements Observer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.addActor(playerOne);
+
+        if (Controler.getSingleplayerBoolean()) {
+            stage.addActor(playerTwo);
+        }
 
         stage.addActor(cheatCountDown);
 

@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 import com.mygdx.game.Players.PlayerColor;
 import com.mygdx.game.R;
-
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.GameSync;
-import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 /**
@@ -23,11 +21,15 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
  */
 public class CharacterSelect extends Activity {
 
+    private static final String PLAYER_READY_MESSAGE = "READY2PLAY";
+
     private Intent intent;
 
     private TextView chosenPlayer;
     private TextView playername;
     private NetworkTrafficReceiver networkTrafficReceiver;
+    private boolean otherPlayerReady = false;
+    private boolean waitingForOtherPlayer = false;
 
     private PlayerColor color;
     private PlayerColor colorOtherPlayer;
@@ -78,16 +80,43 @@ public class CharacterSelect extends Activity {
      */
     public void onClickStartGame(View view) {
 
-        if (GameSync.isMultiplayerGame() && GameSync.getState() != GameSync.GameState.OTHER_PLAYER_HAS_WORM_SELECTED) {
-            chosenPlayer.setText("Plese wait for other player");
+        //  NetworkManager.send(PLAYER_READY_MESSAGE, true); todo
+
+        if (color == null) {
+            chosenPlayer.setText("Please select worm color!");
             chosenPlayer.setVisibility(View.VISIBLE);
+            return;
         }
+
+//        if (NetworkMonitor.isConnected() && colorOtherPlayer == null) { todo
+//            setMessage("Please wait for other player");
+//            chosenPlayer.setVisibility(View.VISIBLE);
+//            return;
+//        }
+
+//        if (!otherPlayerReady) { todo
+//            setMessage("Please wait for other player!");
+//            waitingForOtherPlayer = true;
+//            return;
+//        }
+
         intent = new Intent(this, MainGameActivity.class);
 
         intent.putExtra("Player_Color", color.toString());
 
         startActivity(intent);
     }
+
+    private void setMessage(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chosenPlayer.setText(message);
+                chosenPlayer.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
 
     /**
      * onClickGoBackToMenu switches from the character selection screen back
@@ -108,8 +137,8 @@ public class CharacterSelect extends Activity {
      */
     public void redButtonclicked(View view) {
 
-        chosenPlayer.setText("Es wurde die rote Spielfigur gewählt.");
-        chosenPlayer.setVisibility(View.VISIBLE);
+        setMessage("Es wurde die rote Spielfigur gewählt.");
+
 
         color = PlayerColor.RED;
         sendSelectedColor();
@@ -122,8 +151,7 @@ public class CharacterSelect extends Activity {
      */
     public void blueButtonclicked(View view) {
 
-        chosenPlayer.setText("Es wurde die blaue Spielfigur gewählt.");
-        chosenPlayer.setVisibility(View.VISIBLE);
+        setMessage("Es wurde die blaue Spielfigur gewählt.");
 
         color = PlayerColor.BLUE;
         sendSelectedColor();
@@ -136,8 +164,7 @@ public class CharacterSelect extends Activity {
      */
     public void greenButtonclicked(View view) {
 
-        chosenPlayer.setText("Es wurde die grüne Spielfigur gewählt.");
-        chosenPlayer.setVisibility(View.VISIBLE);
+        setMessage("Es wurde die grüne Spielfigur gewählt.");
 
         color = PlayerColor.GREEN;
         sendSelectedColor();
@@ -150,15 +177,14 @@ public class CharacterSelect extends Activity {
      */
     public void yellowButtonclicked(View view) {
 
-        chosenPlayer.setText("Es wurde die gelbe Spielfigur gewählt.");
-        chosenPlayer.setVisibility(View.VISIBLE);
+        setMessage("Es wurde die gelbe Spielfigur gewählt.");
 
         color = PlayerColor.YELLOW;
         sendSelectedColor();
     }
 
     private void sendSelectedColor() {
-        NetworkManager.send(color.toString(), true);
+        //NetworkManager.send(color.toString(), true); todo
     }
 
     /**
@@ -168,22 +194,22 @@ public class CharacterSelect extends Activity {
      */
     public void processMessageFromNetwork(final String inputString) {
 
+        if (inputString.equals(PLAYER_READY_MESSAGE)) {
+            this.otherPlayerReady = true;
+            if (waitingForOtherPlayer) {
+                onClickStartGame(findViewById(R.id.start_game_button));
+            } else {
+                setMessage("Other player is ready!");
+            }
+        }
+
         PlayerColor playerColor = PlayerColor.getFromString(inputString);
 
         if (playerColor != null) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    chosenPlayer.setText("Other player chose worm with color: " + inputString);
-                    chosenPlayer.setVisibility(View.VISIBLE);
-                }
-            });
-
+            setMessage("Other player chose worm with color: " + inputString);
             this.colorOtherPlayer = playerColor;
             GameSync.getSync().otherPlayerHasSelectedWorm();
-
         }
-
     }
 
 }

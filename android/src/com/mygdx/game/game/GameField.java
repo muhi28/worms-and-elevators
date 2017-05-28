@@ -3,6 +3,8 @@ package com.mygdx.game.game;
 
 import android.util.Log;
 
+import com.mygdx.game.main_controler.Controler;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,17 +27,23 @@ public class GameField {
 
     private static int[] fieldnumbers = new int[NUMBEROF_VERTICALS * NUMBEROF_HORIZONTAL];
 
-    private final Player player;
+//    private final Player player;
+//    private final Player player2;
+    private static List<Player> players;
+    private static Player currentPlayer;
+    private static int currentPlayerNumber;
 
     /**
      * Instantiates a new Game field.
      *
      * @param fields the fields
-     * @param player the player
+     * @param players the player
      */
-    public GameField(List<Field> fields, Player player) {
+    public GameField(List<Field> fields, List<Player> players) {
 
-        this.player = player;
+//        this.player = players.get(0);
+//        this.player2 = players.get(1);
+        this.players = players;
         this.fields = fields;
 
 
@@ -89,7 +97,12 @@ public class GameField {
      */
     public Player getPlayer() {
 
-        return player;
+        return currentPlayer;
+    }
+
+    public static void nextPlayer(){
+        currentPlayerNumber = (currentPlayerNumber+1)%4;
+        currentPlayer = players.get(currentPlayerNumber);
     }
 
     /**
@@ -99,7 +112,7 @@ public class GameField {
      */
     public Field getFieldofPlayer() {
 
-        return player.getCurrentField();
+        return currentPlayer.getCurrentField();
     }
 
     /**
@@ -149,12 +162,21 @@ public class GameField {
         List<Field> sortedFields = snakeOrder(fields);
         sortNextField(sortedFields);
 
+        List<Player> players = new ArrayList<>();
+
         Player playerOne = new Player(sortedFields.get(sortedFields.size() - 1));
-//        Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1));
+        players.add(playerOne);
+
+        Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1));
+        players.add(playerTwo);
+
+        currentPlayer = playerOne;
+        currentPlayerNumber = 0;
+
 //        Player playerThree = new Player(sortedFields.get(sortedFields.size() - 1));
 //        Player playerFour = new Player(sortedFields.get(sortedFields.size() - 1));
 
-        return new GameField(sortedFields, playerOne);
+        return new GameField(sortedFields, players);
 
     }
 
