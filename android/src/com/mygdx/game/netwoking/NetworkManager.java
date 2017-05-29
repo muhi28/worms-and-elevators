@@ -11,11 +11,13 @@ public class NetworkManager extends Observable {
     private static NetworkManager NETWORK_LISTENER = new NetworkManager();
     private static NetworkManager NETWORK_SENDER;
     private static boolean IS_SERVER;
+    private static boolean IS_MULTIPLAYER = false;
 
     public static void initialize(boolean isServer) {
         if (NETWORK_SENDER != null) {
             throw new RuntimeException("Network manager already initialised!");
         }
+        IS_MULTIPLAYER = true;
         IS_SERVER = isServer;
         NETWORK_SENDER = new NetworkManager();
     }
@@ -26,6 +28,10 @@ public class NetworkManager extends Observable {
 
     public static boolean isClient() {
         return !isServer();
+    }
+
+    public static boolean isMultiplayer() {
+        return IS_MULTIPLAYER;
     }
 
     /**
@@ -45,20 +51,24 @@ public class NetworkManager extends Observable {
      * @param useOtherThread the use other thread
      */
     public static void send(final String send, boolean useOtherThread) {
-        NETWORK_SENDER.setChanged();
-        if (useOtherThread) {
-            Thread deleayedThread = new Thread() {
 
-                @Override
-                public void run() {
-                    NetworkManager.send(send);
-                }
-            };
+        if (isMultiplayer()) {
+            NETWORK_SENDER.setChanged();
+            if (useOtherThread) {
+                Thread deleayedThread = new Thread() {
 
-            deleayedThread.start();
-        } else {
-            NETWORK_SENDER.notifyObservers(send);
+                    @Override
+                    public void run() {
+                        NetworkManager.send(send);
+                    }
+                };
+
+                deleayedThread.start();
+            } else {
+                NETWORK_SENDER.notifyObservers(send);
+            }
         }
+
     }
 
     /**
