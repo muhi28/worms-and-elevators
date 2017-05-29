@@ -62,6 +62,10 @@
             android:name=".Activities.MainGameActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.MultiplayerMainGameActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
         <service android:name=".netwoking.ServerIntent" />
 

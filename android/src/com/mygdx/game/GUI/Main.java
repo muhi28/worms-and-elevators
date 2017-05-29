@@ -1,14 +1,11 @@
 package com.mygdx.game.GUI;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
@@ -27,9 +24,7 @@ import java.util.Observer;
 /**
  * The type Main.
  */
-public class Main extends ApplicationAdapter implements Observer {
-
-    private static OrthographicCamera camera;
+public class Main extends BaseMain implements Observer {
 
     private SpriteBatch batch;
     private Controler controler;
@@ -39,17 +34,12 @@ public class Main extends ApplicationAdapter implements Observer {
     private Sprite texturePlayer4;
     private Texture tile1;
     private Texture tile2;
-    private static Dice dice;
     private String color1;
     private String color2;
     private String color3;
     private String color4;
-    private static GameField gameField;
     private final RenderPositionCalculator renderPositionCalculator1;
     private final RenderPositionCalculator renderPositionCalculator2;
-    private static CheatCountDown cheatCountDown;
-    private static int time = 0;
-    private static boolean diceAnimationActive = false;
     /**
      * The Stage.
      */
@@ -62,8 +52,6 @@ public class Main extends ApplicationAdapter implements Observer {
     Worm playerTwo;
     Worm playerThree;
     Worm playerFour;
-
-    private static Sprite diceSprite;
 
 
     /**
@@ -201,83 +189,6 @@ public class Main extends ApplicationAdapter implements Observer {
         doDiceAnimation(batch);
 
         batch.end();
-
-    }
-
-    /**
-     * Gets dice.
-     *
-     * @return the dice
-     */
-    public static Dice getDice() {
-        return dice;
-    }
-
-    /**
-     * Gets game field.
-     *
-     * @return the game field
-     */
-    public static GameField getGameField() {
-        return gameField;
-    }
-
-    /**
-     * Gets cheat countdown.
-     *
-     * @return the cheat countdown
-     */
-    public static CheatCountDown getCheatCountdown() {
-        return cheatCountDown;
-    }
-
-    /**
-     * Gets camera.
-     *
-     * @return the camera
-     */
-    public static OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    /**
-     * Gets dice sprite.
-     *
-     * @return the dice sprite
-     */
-    public static Sprite getDiceSprite() {
-        return diceSprite;
-    }
-
-    /**
-     * Sets dice animation true.
-     */
-    public static void setDiceAnimationTrue() {
-        diceAnimationActive = true;
-    }
-
-    /**
-     * Do dice animation.
-     *
-     * @param batch the batch
-     */
-    public static void doDiceAnimation(SpriteBatch batch) {
-        float x = Gdx.graphics.getWidth() / 2 - 100;
-        float y = Gdx.graphics.getHeight() / 2 - 800;
-        float i = 200;
-        diceSprite.draw(batch);
-        Animation a = dice.createAnimation();
-
-        if (diceAnimationActive) {
-            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), x, y, i, i);
-            time++;
-            if (time > 12) {
-                diceAnimationActive = false;
-                time = 0;
-            }
-
-        }
-
 
     }
 

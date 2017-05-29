@@ -1,14 +1,11 @@
 package com.mygdx.game.GUI;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
@@ -27,9 +24,8 @@ import java.util.Observer;
 /**
  * The type Main.
  */
-public class MultiplayerMain extends ApplicationAdapter implements Observer {
+public class MultiplayerMain extends BaseMain implements Observer {
 
-    private static OrthographicCamera camera;
 
     private SpriteBatch batch;
     private Controler controler;
@@ -37,15 +33,14 @@ public class MultiplayerMain extends ApplicationAdapter implements Observer {
     private Sprite texturePlayerOther;
     private Texture tilePlayer;
     private Texture tilePlayerOther;
-    private static Dice dice;
+
     private String colorPlayer;
     private String colorPlayerOther;
-    private static GameField gameField;
+
     private final RenderPositionCalculator renderPositionCalculator;
     private final RenderPositionCalculator renderPositionCalculatorOther;
-    private static CheatCountDown cheatCountDown;
-    private static int time = 0;
-    private static boolean diceAnimationActive = false;
+
+
     /**
      * The Stage.
      */
@@ -56,9 +51,6 @@ public class MultiplayerMain extends ApplicationAdapter implements Observer {
     Worm playerOne;
 
     Worm playerTwo;
-
-
-    private static Sprite diceSprite;
 
 
     /**
@@ -189,29 +181,6 @@ public class MultiplayerMain extends ApplicationAdapter implements Observer {
 
         batch.end();
 
-    }
-
-
-    /**
-     * Do dice animation.
-     *
-     * @param batch the batch
-     */
-    public static void doDiceAnimation(SpriteBatch batch) {
-        float x = Gdx.graphics.getWidth() / 2 - 100;
-        float y = Gdx.graphics.getHeight() / 2 - 800;
-        float i = 200;
-        diceSprite.draw(batch);
-        Animation a = dice.createAnimation();
-
-        if (diceAnimationActive) {
-            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), x, y, i, i);
-            time++;
-            if (time > 12) {
-                diceAnimationActive = false;
-                time = 0;
-            }
-        }
     }
 
 
