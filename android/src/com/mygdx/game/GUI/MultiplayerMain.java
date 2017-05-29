@@ -81,23 +81,9 @@ public class MultiplayerMain extends BaseMain implements Observer {
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-        int numberOfPlayers = Controler.getNumberOfPlayers();
-
-        Controler.setSingleplayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
-
         //initialisieren der Textur der Spielfigur
         texturePlayer = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorPlayer))));
-        if (Controler.getSingleplayerBoolean()) {
-            if (colorPlayer.equals("red")) {
-                texturePlayerOther = new Sprite(new Texture(Gdx.files.internal("player_blue.png")));
-            } else {
-                texturePlayerOther = new Sprite(new Texture(Gdx.files.internal("player_red.png")));
-            }
-
-        } else {
-            texturePlayerOther = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorPlayerOther))));
-        }
-
+        texturePlayerOther = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorPlayerOther))));
         tilePlayer = new Texture(Gdx.files.internal("background_grass.png"));
         tilePlayerOther = new Texture(Gdx.files.internal("background_elevator.png"));
 
@@ -111,8 +97,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
         //Texture des Wurms
         playerOne = new Worm(texturePlayer, renderPositionCalculator);
         playerTwo = new Worm(texturePlayerOther, renderPositionCalculatorOther);
-//        playerThree = new Worm(texturePlayer3, renderPositionCalculator);
-//        playerFour = new Worm(texturePlayer4, renderPositionCalculator);
+
 
         List<Worm> wormList = new ArrayList<>();
         wormList.add(playerOne);
@@ -154,6 +139,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
         }
 
     }
+
 
 
     @Override
