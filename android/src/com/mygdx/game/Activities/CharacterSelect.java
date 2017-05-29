@@ -81,14 +81,7 @@ public class CharacterSelect extends Activity {
      * @param view ... View
      */
     public void onClickStartGame(View view) {
-
         NetworkManager.send(PLAYER_READY_MESSAGE, true);
-
-        if (color == null) {
-            chosenPlayer.setText("Please select worm color!");
-            chosenPlayer.setVisibility(View.VISIBLE);
-            return;
-        }
 
         if (NetworkManager.isMultiplayer()) {
             if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {

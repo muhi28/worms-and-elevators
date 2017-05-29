@@ -1,5 +1,7 @@
 package com.mygdx.game.main_controler;
 
+import android.util.Log;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,12 +22,16 @@ import com.mygdx.game.game.Player;
 public class Controler implements InputProcessor {
 
     //    boolean cheatMode = true;               //Stud for the cheat mode
-    private static Sprite diceSprite = Main.getDiceSprite();
-    private static Dice dice = Main.getDice();
+//    private static Sprite diceSprite = Main.getDiceSprite();
+    private static Sprite diceSprite;
+//    private static Dice dice = Main.getDice();
+    private Dice dice;
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
     private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    private static int numberOfPlayers = 0;
+    private static boolean singleplayerBoolean = false;
 
     private static final String TAG = "Controler";
 
@@ -160,6 +166,21 @@ public class Controler implements InputProcessor {
         return Elevator.getElevatorFields();
     }
 
+    public static void setNumberOfPlayers(int players){
+        numberOfPlayers = players;
+    }
+
+    public static int getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
+
+    public static boolean getSingleplayerBoolean(){
+        return singleplayerBoolean;
+    }
+
+    public static void setSingleplayerBoolean(boolean state){
+        singleplayerBoolean = state;
+    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -193,8 +214,10 @@ public class Controler implements InputProcessor {
 
 
             if(!wormOne.stillMoving()){
-                movement(gameField.getPlayer(), dice);
-                diceSprite.setTexture(dice.getDiceTexture());
+                movement(gameField.getPlayer(), Main.getDice());
+//                diceSprite.setTexture(dice.getDiceTexture());
+                diceSprite = Main.getDiceSprite();
+                diceSprite.setTexture(Main.getDice().getDiceTexture());
                 Main.setDiceAnimationTrue();
 
             }
