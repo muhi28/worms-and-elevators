@@ -1,5 +1,7 @@
 package com.mygdx.game.GUI;
 
+import android.util.Log;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,9 +11,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
+import com.mygdx.game.display.Coordinates;
 import com.mygdx.game.display.RenderPositionCalculator;
 import com.mygdx.game.display.SingleField;
 import com.mygdx.game.display.Worm;
+import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.main_controler.Controler;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 /**
  * The type Main.
@@ -31,6 +36,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
     private Controler controler;
     private Sprite texturePlayer;
     private Sprite texturePlayerOther;
+    private Long randomSeedDice;
     private Texture tilePlayer;
     private Texture tilePlayerOther;
 
@@ -53,17 +59,14 @@ public class MultiplayerMain extends BaseMain implements Observer {
     Worm playerTwo;
 
 
-    /**
-     * Instantiates a new Main.
-     *
-     * @param playerList the wormcolor
-     */
-    public MultiplayerMain(List<String> playerList) {
-        gameField = GameField.createGameField();
+    public MultiplayerMain(List<String> playerList, Long randomSeedForDice) {
+        Elevator.random = new Random(randomSeedForDice);
+        this.gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
         this.renderPositionCalculatorOther = new RenderPositionCalculator(gameField);
         this.colorPlayer = playerList.get(0);
         this.colorPlayerOther = playerList.get(1);
+        this.randomSeedDice = randomSeedForDice;
     }
 
 
@@ -89,7 +92,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
 
         // DICE
-        dice = new Dice(6);
+        dice = new Dice(6, true, randomSeedDice);
         diceSprite = new Sprite(dice.getDiceTexture());
         diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 
@@ -114,6 +117,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
         //setzen des InputProcessors der GUI
         controler = new Controler(playerOne);
+        controler.addObserver(this);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
@@ -139,7 +143,6 @@ public class MultiplayerMain extends BaseMain implements Observer {
         }
 
     }
-
 
 
     @Override
@@ -169,8 +172,13 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
     }
 
+    public void touchDown(Coordinates coordinates) {
+        Log.d("TEST", "touchDown: " + coordinates);
+    }
+
 
     @Override
     public void update(Observable observable, Object o) {
+        touchDown((Coordinates) o);
     }
 }

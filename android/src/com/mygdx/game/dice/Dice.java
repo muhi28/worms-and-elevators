@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.badlogic.gdx.math.Interpolation;
 
 import java.util.Random;
 
@@ -20,7 +19,7 @@ public class Dice {
     private int range;
     private Texture diceTexture;
     private final boolean loadPictures;
-    private static Random random = new Random();
+    private final Random random;
 
 
     private int result;
@@ -32,15 +31,21 @@ public class Dice {
      * @param range        the range
      * @param loadPictures the load pictures
      */
-/*
-      Constructor initializes range with delivered value and dice_p with dice_idle.png
-     */
+
     public Dice(int range, boolean loadPictures) {
+        this(range, loadPictures, new Random().nextLong());
+    }
+
+    /*
+          Constructor initializes range with delivered value and dice_p with dice_idle.png
+         */
+    public Dice(int range, boolean loadPictures, long randomSeed) {
         this.range = range;
         if (loadPictures) {
             this.diceTexture = new Texture(Gdx.files.internal("dice_idle.png"));
         }
         this.loadPictures = loadPictures;
+        this.random = new Random(randomSeed);
     }
 
     /**
@@ -93,7 +98,7 @@ public class Dice {
          */
         if (loadPictures) {
 
-            this.diceTexture = new Texture(Gdx.files.internal("dice_"+result+".png"));
+            this.diceTexture = new Texture(Gdx.files.internal("dice_" + result + ".png"));
 
         }
 
@@ -118,13 +123,11 @@ public class Dice {
         String pathOfGivenTexture = ((FileTextureData) dice_p.getTextureData()).getFileHandle().path();
 
 
-        for(int i =1 ; i<=this.getRange();i++)
-        {
-            String vgl = ((FileTextureData) (new Texture(Gdx.files.internal("dice_"+i+".png"))).getTextureData()).getFileHandle().path();
+        for (int i = 1; i <= this.getRange(); i++) {
+            String vgl = ((FileTextureData) (new Texture(Gdx.files.internal("dice_" + i + ".png"))).getTextureData()).getFileHandle().path();
 
-            if(vgl.equals(pathOfGivenTexture))
-            {
-                result=i;
+            if (vgl.equals(pathOfGivenTexture)) {
+                result = i;
             }
         }
 
@@ -165,15 +168,14 @@ public class Dice {
      * @return the animation
      */
     public Animation createAnimation() {
-        TextureRegion [] text = new TextureRegion[this.getRange()];
+        TextureRegion[] text = new TextureRegion[this.getRange()];
 
-        for(int i=0;i<=this.getRange()-1;i++)
-        {
-            text[i]= new TextureRegion(new Texture(Gdx.files.internal("dice_"+(i+1)+".png")));
+        for (int i = 0; i <= this.getRange() - 1; i++) {
+            text[i] = new TextureRegion(new Texture(Gdx.files.internal("dice_" + (i + 1) + ".png")));
         }
 
         //Cast to Object because of warning.
-        Animation diceAnimation= new Animation(0.15f,(Object[])text);
+        Animation diceAnimation = new Animation(0.15f, (Object[]) text);
         return diceAnimation;
     }
 }

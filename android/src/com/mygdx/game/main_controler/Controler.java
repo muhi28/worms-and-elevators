@@ -7,17 +7,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.GUI.Main;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
+import com.mygdx.game.display.Coordinates;
 import com.mygdx.game.display.Worm;
 import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 
+import java.util.Observable;
+
 
 /**
  * The type Controler.
  */
-public class Controler implements InputProcessor {
+public class Controler extends Observable implements InputProcessor{
 
     //    boolean cheatMode = true;               //Stud for the cheat mode
 //    private static Sprite diceSprite = Main.getDiceSprite();
@@ -198,6 +201,9 @@ public class Controler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        this.setChanged();
+        this.notifyObservers(new Coordinates(screenX, screenY));
+
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
         if (Player.getCounter() >= 3) {
@@ -265,4 +271,5 @@ public class Controler implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

@@ -25,15 +25,13 @@ public class MultiplayerMainGameActivity extends AndroidApplication {
 
         Intent intent = getIntent();
 
-        if (intent.hasExtra(CharacterSelect.PLAYER_COLOR_KEY)) {
+        List<String> playerList = new ArrayList<>();
+        String colorPlayer = intent.getStringExtra(CharacterSelect.PLAYER_COLOR_KEY);
+        playerList.add(colorPlayer);
+        String colorPlayerOther = intent.getStringExtra(CharacterSelect.OTHER_PLAYER_COLOR_KEY);
+        playerList.add(colorPlayerOther);
 
-            List<String> playerList = new ArrayList<>();
-            String colorPlayer = intent.getStringExtra(CharacterSelect.PLAYER_COLOR_KEY);
-            playerList.add(colorPlayer);
-            String colorPlayerOther = intent.getStringExtra(CharacterSelect.OTHER_PLAYER_COLOR_KEY);
-            playerList.add(colorPlayerOther);
+        initialize(new MultiplayerMain(playerList, intent.getLongExtra(CharacterSelect.SEED_RANDOM, 0)), cfg);
 
-            initialize(new MultiplayerMain(playerList), cfg);
-        }
     }
 }

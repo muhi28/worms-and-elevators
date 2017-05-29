@@ -14,6 +14,8 @@ import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkMonitor;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
+import java.util.Random;
+
 /**
  * Created by Muhi on 04.04.2017.
  */
@@ -23,9 +25,10 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
  */
 public class CharacterSelect extends Activity {
 
-    private static final String PLAYER_READY_MESSAGE = "READY2PLAY";
+    private static final String PLAYER_READY_MESSAGE = "READY2PLAY?seed=";
     public static final String PLAYER_COLOR_KEY = "Player_Color";
     public static final String OTHER_PLAYER_COLOR_KEY = "Other_Player_Color";
+    public static final String SEED_RANDOM = "RANDOM_SEED";
 
     private Intent intent;
 
@@ -37,6 +40,7 @@ public class CharacterSelect extends Activity {
 
     private PlayerColor color;
     private PlayerColor colorOtherPlayer;
+    private Long seedRandom = new Random().nextLong();
 
     /**
      * The onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -83,7 +87,7 @@ public class CharacterSelect extends Activity {
      * @param view ... View
      */
     public void onClickStartGame(View view) {
-        NetworkManager.send(PLAYER_READY_MESSAGE, true);
+        NetworkManager.send(PLAYER_READY_MESSAGE + seedRandom, true);
 
         if (NetworkManager.isMultiplayer()) {
             if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {
@@ -102,6 +106,7 @@ public class CharacterSelect extends Activity {
 
             intent.putExtra(PLAYER_COLOR_KEY, color.toString());
             intent.putExtra(OTHER_PLAYER_COLOR_KEY, colorOtherPlayer.toString());
+            intent.putExtra(SEED_RANDOM, seedRandom);
 
         } else {
             intent = new Intent(this, MainGameActivity.class);
@@ -199,7 +204,9 @@ public class CharacterSelect extends Activity {
      */
     public void processMessageFromNetwork(final String inputString) {
 
-        if (inputString.equals(PLAYER_READY_MESSAGE)) {
+        if (inputString.startsWith(PLAYER_READY_MESSAGE)) {
+            this.seedRandom = Long.valueOf(inputString.replace(PLAYER_READY_MESSAGE, ""));
+
             this.otherPlayerReady = true;
             if (waitingForOtherPlayer) {
                 onClickStartGame(findViewById(R.id.start_game_button));
