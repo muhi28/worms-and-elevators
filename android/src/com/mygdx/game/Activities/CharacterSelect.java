@@ -24,6 +24,8 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 public class CharacterSelect extends Activity {
 
     private static final String PLAYER_READY_MESSAGE = "READY2PLAY";
+    public static final String PLAYER_COLOR_KEY = "Player_Color";
+    public static final String OTHER_PLAYER_COLOR_KEY = "Other_Player_Color";
 
     private Intent intent;
 
@@ -95,12 +97,17 @@ public class CharacterSelect extends Activity {
                 waitingForOtherPlayer = true;
                 return;
             }
+
+            intent = new Intent(this, MultiplayerMainGameActivity.class);
+
+            intent.putExtra(PLAYER_COLOR_KEY, color.toString());
+            intent.putExtra(OTHER_PLAYER_COLOR_KEY, colorOtherPlayer.toString());
+
+        } else {
+            intent = new Intent(this, MainGameActivity.class);
+            intent.putExtra("Player_Color", color.toString());
         }
 
-
-        intent = new Intent(this, MainGameActivity.class);
-
-        intent.putExtra("Player_Color", color.toString());
 
         startActivity(intent);
     }
