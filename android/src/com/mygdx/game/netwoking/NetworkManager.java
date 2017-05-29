@@ -13,6 +13,11 @@ public class NetworkManager extends Observable {
     private static boolean IS_SERVER;
     private static boolean IS_MULTIPLAYER = false;
 
+    /**
+     * Initialize.
+     *
+     * @param isServer the is server
+     */
     public static void initialize(boolean isServer) {
         if (NETWORK_SENDER != null) {
             throw new RuntimeException("Network manager already initialised!");
@@ -22,14 +27,29 @@ public class NetworkManager extends Observable {
         NETWORK_SENDER = new NetworkManager();
     }
 
+    /**
+     * Is server boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isServer() {
         return IS_SERVER;
     }
 
+    /**
+     * Is client boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isClient() {
         return !isServer();
     }
 
+    /**
+     * Is multiplayer boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isMultiplayer() {
         return IS_MULTIPLAYER;
     }

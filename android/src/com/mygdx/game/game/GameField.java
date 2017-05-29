@@ -1,10 +1,6 @@
 package com.mygdx.game.game;
 
 
-import android.util.Log;
-
-import com.mygdx.game.main_controler.Controler;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

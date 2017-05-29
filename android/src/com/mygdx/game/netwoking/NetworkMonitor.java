@@ -23,11 +23,6 @@ public class NetworkMonitor extends Thread {
     private boolean monitorMessageGot;
 
 
-    /**
-     * Instantiates a new Network monitor.
-     *
-     * @param appContext the app context
-     */
     private NetworkMonitor(Context appContext) {
         this.appContext = appContext;
         this.monitorMessageGot = false;
@@ -114,6 +109,11 @@ public class NetworkMonitor extends Thread {
         NETWORK_MONITOR = networkMonitor;
     }
 
+    /**
+     * Is connected boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isConnected() {
         synchronized (NETWORK_MONITOR) {
             return NETWORK_MONITOR.monitorMessageGot;
