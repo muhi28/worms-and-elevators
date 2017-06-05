@@ -139,7 +139,7 @@ public class Controler implements InputProcessor {
      *
      * @param player the player
      */
-    public static void checkField(Player player) {
+    public void checkField(Player player) {
 
         setCurrentFieldnumberForPlayer(player, player.getCurrentField().getFieldnumber());
 
@@ -153,7 +153,7 @@ public class Controler implements InputProcessor {
 
                 int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(player.getCurrentField().getFieldnumber());
                 port(newElevatorFieldnumber, player);
-
+                getWorm(player).teleport(player.getCurrentField());
                 break;
             }
 

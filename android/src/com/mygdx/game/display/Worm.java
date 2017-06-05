@@ -95,6 +95,12 @@ public class Worm extends Actor {
 
     }
 
+    public void teleport(Field field){
+        targetCoordinates = null;
+        coordinatesCurrent = renderPositionCalculator.getCoordinatesOfField(field);
+        coordinates.clear();
+    }
+
 
     private static int narrowCoordinates(int sourceCoordinate, int targetCoordinate) {
         if (targetCoordinate > sourceCoordinate) {
