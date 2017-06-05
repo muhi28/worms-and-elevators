@@ -18,8 +18,10 @@ import com.mygdx.game.display.Worm;
 import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
+import com.mygdx.game.game.Player;
 import com.mygdx.game.main_controler.Controler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -97,9 +99,8 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
 
         //Texture des Wurms
-        playerOne = new Worm(texturePlayer, renderPositionCalculator);
-        playerTwo = new Worm(texturePlayerOther, renderPositionCalculatorOther);
-
+        playerOne = new Worm(texturePlayer, renderPositionCalculator, Player.PLAYER_ONE_ID);
+        playerTwo = new Worm(texturePlayerOther, renderPositionCalculatorOther, Player.PLAYER_TWO_ID);
 
         List<Worm> wormList = new ArrayList<>();
         wormList.add(playerOne);
@@ -115,8 +116,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
 
         //setzen des InputProcessors der GUI
-        controler = new Controler(playerOne);
-        controler.addObserver(this);
+        controler = new Controler(playerOne, playerTwo);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
