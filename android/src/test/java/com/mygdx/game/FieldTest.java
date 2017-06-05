@@ -34,7 +34,7 @@ public class FieldTest {
      */
     @Test
     public void testCurrentField() {
-        Player player = gameField.getPlayer();
+        Player player = gameField.getPlayer(Player.PLAYER_ONE_ID);
         int fieldNumberBeforeMove = player.getCurrentField().getFieldnumber();
         player.move();
         player.move();
@@ -49,7 +49,7 @@ public class FieldTest {
     @Test (expected = NullPointerException.class)
     public void testNextFieldException(){
 
-        Player player = gameField.getPlayer();
+        Player player = gameField.getPlayer(Player.PLAYER_ONE_ID);
 
         List<Field> fields = gameField.getFields();
 

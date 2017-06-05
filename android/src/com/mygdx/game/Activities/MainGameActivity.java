@@ -25,29 +25,29 @@ public class MainGameActivity extends AndroidApplication {
 
         Intent intent = getIntent();
 
-        String color1 = "";
-        String color2 = "";
-        String color3 = "";
-        String color4 = "";
+        String colorOne = "";
+        String colorTwo = "";
+        String colorThree = "";
+        String colorFour = "";
 
 
         if (intent.hasExtra("Player_Color")) {
 
-            color1 = intent.getStringExtra("Player_Color");
+            colorOne = intent.getStringExtra("Player_Color");
             Object[] playerOne = new Object[3];
-            playerOne[0] = color1;
+            playerOne[0] = colorOne;
 
-            color2 = intent.getStringExtra("Player_color");
+            colorTwo = intent.getStringExtra("Player_color");
             Object[] playerTwo = new Object[3];
-            playerTwo[0] = color2;
+            playerTwo[0] = colorTwo;
 
-            color3 = intent.getStringExtra("Player_Color");
+            colorThree = intent.getStringExtra("Player_Color");
             Object[] playerThree = new Object[3];
-            playerThree[0] = color3;
+            playerThree[0] = colorThree;
 
-            color4 = intent.getStringExtra("Player_Color");
+            colorFour = intent.getStringExtra("Player_Color");
             Object[] playerFour = new Object[3];
-            playerFour[0] = color4;
+            playerFour[0] = colorFour;
 
             List<Object[]> playerList = new ArrayList<>();
             playerList.add(playerOne);

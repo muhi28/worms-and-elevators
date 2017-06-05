@@ -19,6 +19,7 @@ public class Worm extends Actor {
 
     private final Sprite player;
     private final RenderPositionCalculator renderPositionCalculator;
+    private final String playerId;
     private Coordinates coordinatesCurrent;
     private Field fieldCurrent;
     private List<Coordinates> coordinates = new ArrayList<>();
@@ -32,11 +33,12 @@ public class Worm extends Actor {
      * @param player                   the player
      * @param renderPositionCalculator the render position calculator
      */
-    public Worm(Sprite player, RenderPositionCalculator renderPositionCalculator) {
+    public Worm(Sprite player, RenderPositionCalculator renderPositionCalculator, String playerId) {
         this.player = player;
+        this.playerId = playerId;
         this.renderPositionCalculator = renderPositionCalculator;
-        this.coordinatesCurrent = renderPositionCalculator.getCoordinatesOfPlayer();
-        this.fieldCurrent = renderPositionCalculator.getPlayerField();
+        this.coordinatesCurrent = renderPositionCalculator.getCoordinatesOfPlayer(playerId);
+        this.fieldCurrent = renderPositionCalculator.getPlayerField(playerId);
     }
 
     /**
@@ -45,13 +47,13 @@ public class Worm extends Actor {
      * @return the boolean
      */
     public boolean stillMoving() {
-        return !fieldCurrent.sameField(renderPositionCalculator.getPlayerField());
+        return !fieldCurrent.sameField(renderPositionCalculator.getPlayerField(playerId));
     }
 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Field targetPlayerField = renderPositionCalculator.getPlayerField();
+        Field targetPlayerField = renderPositionCalculator.getPlayerField(playerId);
 
 
         if (renderPositionCalculator.getCoordinatesOfField(targetPlayerField).equals(coordinatesCurrent)
@@ -93,6 +95,12 @@ public class Worm extends Actor {
 
     }
 
+    public void teleport(Field field){
+        targetCoordinates = null;
+        coordinatesCurrent = renderPositionCalculator.getCoordinatesOfField(field);
+        coordinates.clear();
+    }
+
 
     private static int narrowCoordinates(int sourceCoordinate, int targetCoordinate) {
         if (targetCoordinate > sourceCoordinate) {
@@ -104,4 +112,7 @@ public class Worm extends Actor {
         }
     }
 
+    public String getPlayerId() {
+        return playerId;
+    }
 }

@@ -20,7 +20,6 @@ import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.main_controler.Controler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
