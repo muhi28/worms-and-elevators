@@ -337,6 +337,7 @@ public class Controler extends Observable implements InputProcessor{
     public void processMessageFromNetwork(final String inputString) {
 
         if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
+            this.setChanged();
             Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
 
             movement(playerTwo, Main.getDice());
@@ -344,6 +345,7 @@ public class Controler extends Observable implements InputProcessor{
             diceSprite.setTexture(Main.getDice().getDiceTexture());
             Main.setDiceAnimationTrue();
             playerOneTurn = true;
+            camera.update();
         }
 
     }

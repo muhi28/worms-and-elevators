@@ -85,18 +85,8 @@ public class Main extends BaseMain implements Observer {
 
         //initialisieren der Textur der Spielfigur
         texturePlayerOne = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorOne))));
-        if (Controler.getSingleplayerBoolean()) {
-            if (colorOne.equals("red")){
-                texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal("player_blue.png")));
-            }
-            else {
-                texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal("player_red.png")));
-            }
+        texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorTwo))));
 
-        }
-        else{
-            texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorTwo))));
-        }
 
         tileOne = new Texture(Gdx.files.internal("background_grass.png"));
         tileTwo = new Texture(Gdx.files.internal("background_elevator.png"));

@@ -16,6 +16,8 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 import java.util.Random;
 
+import static com.mygdx.game.Players.PlayerColor.RED;
+
 /**
  * Created by Muhi on 04.04.2017.
  */
@@ -39,7 +41,7 @@ public class CharacterSelect extends Activity {
     private boolean waitingForOtherPlayer = false;
 
     private PlayerColor color;
-    private PlayerColor colorOtherPlayer;
+    private PlayerColor colorOtherPlayer = null;
     private Long seedRandom = new Random().nextLong();
 
     /**
@@ -103,8 +105,13 @@ public class CharacterSelect extends Activity {
             }
 
 
-
         }
+
+        if (colorOtherPlayer == null) {
+
+            colorOtherPlayer = color.equals(RED) ? PlayerColor.BLUE : RED;
+        }
+
         intent = new Intent(this, MainGameActivity.class);
         intent.putExtra("Player_Color", color.toString());
         intent.putExtra(PLAYER_COLOR_KEY, color.toString());
@@ -148,7 +155,7 @@ public class CharacterSelect extends Activity {
         setMessage("Es wurde die rote Spielfigur gewählt.");
 
 
-        color = PlayerColor.RED;
+        color = RED;
         sendSelectedColor();
     }
 
