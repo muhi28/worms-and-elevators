@@ -14,6 +14,7 @@ import com.mygdx.game.display.SingleField;
 import com.mygdx.game.display.Worm;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
+import com.mygdx.game.game.Player;
 import com.mygdx.game.main_controler.Controler;
 
 import java.util.ArrayList;
@@ -30,16 +31,12 @@ public class Main extends BaseMain implements Observer {
     private Controler controler;
     private Sprite texturePlayerOne;
     private Sprite texturePlayerTwo;
-    private Sprite texturePlayerThree;
-    private Sprite texturePlayerFour;
     private Texture tileOne;
     private Texture tileTwo;
     private String colorOne;
     private String colorTwo;
-    private String colorThree;
-    private String colorFour;
-    private final RenderPositionCalculator renderPositionCalculatorOne;
-    private final RenderPositionCalculator renderPositionCalculatorTwo;
+
+    private final RenderPositionCalculator renderPositionCalculator;
     /**
      * The Stage.
      */
@@ -50,8 +47,7 @@ public class Main extends BaseMain implements Observer {
     Worm playerOne;
 
     Worm playerTwo;
-    Worm playerThree;
-    Worm playerFour;
+
 
 
     /**
@@ -61,12 +57,9 @@ public class Main extends BaseMain implements Observer {
      */
     public Main(List<Object[]> playerList) {
         gameField = GameField.createGameField();
-        this.renderPositionCalculatorOne = new RenderPositionCalculator(gameField);
-        this.renderPositionCalculatorTwo = new RenderPositionCalculator(gameField);
+        this.renderPositionCalculator = new RenderPositionCalculator(gameField);
         this.colorOne = (String) playerList.get(0)[0];
         this.colorTwo = (String) playerList.get(1)[0];
-        this.colorThree = (String) playerList.get(2)[0];
-        this.colorFour = (String) playerList.get(3)[0];
     }
 
 
@@ -102,8 +95,6 @@ public class Main extends BaseMain implements Observer {
         else{
             texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorTwo))));
         }
-//        texturePlayerThree = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorThree))));
-//        texturePlayerFour = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorFour))));
 
         tileOne = new Texture(Gdx.files.internal("background_grass.png"));
         tileTwo = new Texture(Gdx.files.internal("background_elevator.png"));
@@ -116,10 +107,8 @@ public class Main extends BaseMain implements Observer {
 
 
         //Texture des Wurms
-        playerOne = new Worm(texturePlayerOne, renderPositionCalculatorOne);
-        playerTwo = new Worm(texturePlayerTwo, renderPositionCalculatorTwo);
-//        playerThree = new Worm(texturePlayerThree, renderPositionCalculatorOne);
-//        playerFour = new Worm(texturePlayerFour, renderPositionCalculatorOne);
+        playerOne = new Worm(texturePlayerOne, renderPositionCalculator, Player.PLAYER_ONE_ID);
+        playerTwo = new Worm(texturePlayerTwo, renderPositionCalculator, Player.PLAYER_TWO_ID);
 
         List<Worm> wormList = new ArrayList<>();
         wormList.add(playerOne);
@@ -135,7 +124,7 @@ public class Main extends BaseMain implements Observer {
 
 
         //setzen des InputProcessors der GUI
-        controler = new Controler(playerOne);
+        controler = new Controler(playerOne, playerTwo);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
@@ -144,7 +133,7 @@ public class Main extends BaseMain implements Observer {
         for (int i = 1; i <= fields.size(); i++) {
 
 
-            SingleField singleField = new SingleField(tileOne, renderPositionCalculatorOne, i);
+            SingleField singleField = new SingleField(tileOne, renderPositionCalculator, i);
             stage.addActor(singleField);
         }
 
@@ -157,7 +146,7 @@ public class Main extends BaseMain implements Observer {
 
         for (int i = 0; i < elevatorFields.length; i++) {
 
-            SingleField singleField = new SingleField(tileTwo, renderPositionCalculatorOne, elevatorFields[i]);
+            SingleField singleField = new SingleField(tileTwo, renderPositionCalculator, elevatorFields[i]);
             stage.addActor(singleField);
         }
 

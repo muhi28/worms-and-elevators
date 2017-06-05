@@ -23,23 +23,20 @@ public class GameField {
 
     private static int[] fieldnumbers = new int[NUMBEROF_VERTICALS * NUMBEROF_HORIZONTAL];
 
-//    private final Player player;
-//    private final Player player2;
-    private static List<Player> players;
-    private static Player currentPlayer;
+    private final Player playerOne;
+    private final Player playerTwo;
+
     private static int currentPlayerNumber;
 
     /**
      * Instantiates a new Game field.
      *
-     * @param fields the fields
+     * @param fields  the fields
      * @param players the player
      */
-    public GameField(List<Field> fields, List<Player> players) {
-
-//        this.player = players.get(0);
-//        this.player2 = players.get(1);
-        this.players = players;
+    public GameField(List<Field> fields, Player playersOne, Player playerTwo) {
+        this.playerOne = playersOne;
+        this.playerTwo = playerTwo;
         this.fields = fields;
 
 
@@ -91,24 +88,21 @@ public class GameField {
      *
      * @return the player
      */
-    public Player getPlayer() {
-
-        return currentPlayer;
+    public Player getPlayerOne() {
+        return playerOne;
     }
 
-    public static void nextPlayer(){
-        currentPlayerNumber = (currentPlayerNumber+1)%4;
-        currentPlayer = players.get(currentPlayerNumber);
+    public Player getPlayer(String playerId) {
+        if(playerOne.getPlyerId().equals(playerId))
+            return playerOne;
+        else if(playerTwo.getPlyerId().equals(playerId))
+            return playerTwo;
+
+        throw new RuntimeException("Unknown player id: " + playerId);
     }
 
-    /**
-     * Gets fieldof player.
-     *
-     * @return the fieldof player
-     */
-    public Field getFieldofPlayer() {
-
-        return currentPlayer.getCurrentField();
+    public Player getPlayerTwo() {
+        return playerTwo;
     }
 
     /**
@@ -158,21 +152,12 @@ public class GameField {
         List<Field> sortedFields = snakeOrder(fields);
         sortNextField(sortedFields);
 
-        List<Player> players = new ArrayList<>();
+        Player playerOne = new Player(sortedFields.get(sortedFields.size() - 1), Player.PLAYER_ONE_ID);
+        Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1), Player.PLAYER_TWO_ID);
 
-        Player playerOne = new Player(sortedFields.get(sortedFields.size() - 1));
-        players.add(playerOne);
-
-        Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1));
-        players.add(playerTwo);
-
-        currentPlayer = playerOne;
         currentPlayerNumber = 0;
 
-//        Player playerThree = new Player(sortedFields.get(sortedFields.size() - 1));
-//        Player playerFour = new Player(sortedFields.get(sortedFields.size() - 1));
-
-        return new GameField(sortedFields, players);
+        return new GameField(sortedFields, playerOne, playerTwo);
 
     }
 

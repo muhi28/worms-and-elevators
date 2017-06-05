@@ -16,7 +16,6 @@ import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.main_controler.Controler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -108,28 +107,28 @@ public class MultiplayerMain extends BaseMain implements Observer {
         diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 
 
-        //Texture des Wurms
-        playerOne = new Worm(texturePlayer, renderPositionCalculator);
-        playerTwo = new Worm(texturePlayerOther, renderPositionCalculatorOther);
-//        playerThree = new Worm(texturePlayer3, renderPositionCalculator);
-//        playerFour = new Worm(texturePlayer4, renderPositionCalculator);
-
-        List<Worm> wormList = new ArrayList<>();
-        wormList.add(playerOne);
-        wormList.add(playerTwo);
-
-
-        // gibt jedem einzelnen Feld des Spielfelds ein Texture
-        List<Field> fields = gameField.getFields();
-        setFieldTextures(fields);
-
-        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
-        generateElevatorFieldTextures();
-
-
-        //setzen des InputProcessors der GUI
-        controler = new Controler(playerOne);
-        Gdx.input.setInputProcessor(controler.getInputProcessor());
+//        //Texture des Wurms
+//        playerOne = new Worm(texturePlayer, renderPositionCalculator);
+//        playerTwo = new Worm(texturePlayerOther, renderPositionCalculatorOther);
+////        playerThree = new Worm(texturePlayer3, renderPositionCalculator);
+////        playerFour = new Worm(texturePlayer4, renderPositionCalculator);
+//
+//        List<Worm> wormList = new ArrayList<>();
+//        wormList.add(playerOne);
+//        wormList.add(playerTwo);
+//
+//
+//        // gibt jedem einzelnen Feld des Spielfelds ein Texture
+//        List<Field> fields = gameField.getFields();
+//        setFieldTextures(fields);
+//
+//        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
+//        generateElevatorFieldTextures();
+//
+//
+//        //setzen des InputProcessors der GUI
+//        controler = new Controler(playerOne);
+//        Gdx.input.setInputProcessor(controler.getInputProcessor());
     }
 
     private void setFieldTextures(List<Field> fields) {

@@ -19,30 +19,30 @@ import com.mygdx.game.game.Player;
  */
 public class Controler implements InputProcessor {
 
-    //    boolean cheatMode = true;               //Stud for the cheat mode
-//    private static Sprite diceSprite = Main.getDiceSprite();
+
     private static Sprite diceSprite;
-//    private static Dice dice = Main.getDice();
-    private Dice dice;
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static OrthographicCamera camera = Main.getCamera();
-    private static int currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    private static int currentFieldnumberPlayerOne = gameField.getPlayer(Player.PLAYER_ONE_ID).getCurrentField().getFieldnumber();
+    private static int currentFieldnumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
     private static int numberOfPlayers = 0;
     private static boolean singleplayerBoolean = false;
 
     private static final String TAG = "Controler";
 
-    private Worm wormOne;
+    private final Worm wormOne;
+    private final Worm wormTwo;
 
     /**
      * Instantiates a new Controler.
      *
      * @param wormOne the worm one
      */
-    public Controler(Worm wormOne) {
+    public Controler(Worm wormOne, Worm wormTwo) {
         setInputProcessor();
         this.wormOne = wormOne;
+        this.wormTwo = wormTwo;
     }
 
 
@@ -72,18 +72,28 @@ public class Controler implements InputProcessor {
      */
     public void movement(Player player, Dice dice) {
 
-        if (wormOne.stillMoving()) {
+        if (getWorm(player).stillMoving()) {
             return;
         }
         int eyeNumber = dice.rollTheDice();
         for (int i = 0; i < eyeNumber; i++) {
             player.move();
         }
-        updateCurrentFieldnumber();
+        updateCurrentFieldnumber(player);
         checkField(player);
         Player.increaseCounter();
-        Player.switchPlayer();
+    }
 
+    private Worm getWorm(Player player) {
+        if (player.getPlyerId().equals(wormOne.getPlayerId())) {
+            return wormOne;
+        }
+
+        if (player.getPlyerId().equals(wormTwo.getPlayerId())) {
+            return wormTwo;
+        }
+
+        throw new RuntimeException("Worm not found");
     }
 
     /**
@@ -93,14 +103,14 @@ public class Controler implements InputProcessor {
      * @param cheatCountdown the cheat countdown
      */
     public void cheatMovement(Player player, Integer cheatCountdown) {
-        if (wormOne.stillMoving()) {
+        if (getWorm(player).stillMoving()) {
             return;
         }
         for (int i = 0; i < cheatCountdown; i++) {
             player.move();
         }
 
-        updateCurrentFieldnumber();
+        updateCurrentFieldnumber(player);
         checkField(player);
 
 
@@ -109,8 +119,18 @@ public class Controler implements InputProcessor {
     /**
      * Update current fieldnumber.
      */
-    public static void updateCurrentFieldnumber() {
-        currentFieldnumber = gameField.getPlayer().getCurrentField().getFieldnumber();
+    public static void updateCurrentFieldnumber(Player player) {
+        setCurrentFieldnumberForPlayer(player, gameField.getPlayer(player.getPlyerId()).getCurrentField().getFieldnumber());
+    }
+
+    private static void setCurrentFieldnumberForPlayer(Player player, int fieldNumber) {
+        if (player.getPlyerId().equals(Player.PLAYER_ONE_ID)) {
+            currentFieldnumberPlayerOne = fieldNumber;
+        }
+
+        if (player.getPlyerId().equals(Player.PLAYER_TWO_ID)) {
+            currentFieldnumberPlayerTwo = fieldNumber;
+        }
     }
 
 
@@ -121,17 +141,17 @@ public class Controler implements InputProcessor {
      */
     public static void checkField(Player player) {
 
-        currentFieldnumber = player.getCurrentField().getFieldnumber();
+        setCurrentFieldnumberForPlayer(player, player.getCurrentField().getFieldnumber());
 
-        Gdx.app.log(TAG, Integer.toString(currentFieldnumber)); //test to determine if the method works
+        Gdx.app.log(TAG, Integer.toString(currentFieldnumberPlayerOne)); //test to determine if the method works
 
         int[] elevatorNumber = Elevator.getElevatorFields();
 
         for (int i = 0; i < 7; i++) {
 
-            if (currentFieldnumber == elevatorNumber[i]) {
+            if (player.getCurrentField().getFieldnumber() == elevatorNumber[i]) {
 
-                int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(currentFieldnumber);
+                int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(player.getCurrentField().getFieldnumber());
                 port(newElevatorFieldnumber, player);
 
                 break;
@@ -164,19 +184,19 @@ public class Controler implements InputProcessor {
         return Elevator.getElevatorFields();
     }
 
-    public static void setNumberOfPlayers(int players){
+    public static void setNumberOfPlayers(int players) {
         numberOfPlayers = players;
     }
 
-    public static int getNumberOfPlayers(){
+    public static int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public static boolean getSingleplayerBoolean(){
+    public static boolean getSingleplayerBoolean() {
         return singleplayerBoolean;
     }
 
-    public static void setSingleplayerBoolean(boolean state){
+    public static void setSingleplayerBoolean(boolean state) {
         singleplayerBoolean = state;
     }
 
@@ -195,6 +215,9 @@ public class Controler implements InputProcessor {
         return false;
     }
 
+
+    private boolean playerOneTurn = true;
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
@@ -208,24 +231,41 @@ public class Controler implements InputProcessor {
             }
         }
 
-        if (Gdx.input.isTouched() && gameField.getPlayer().getCurrentField().getNextField() != null) {
+        Player playerOne = gameField.getPlayer(Player.PLAYER_ONE_ID);
+        Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
 
+        if (Gdx.input.isTouched() && playerOne.getCurrentField().getNextField() != null && playerTwo.getCurrentField().getNextField() != null) {
 
-            if(!wormOne.stillMoving()){
-                movement(gameField.getPlayer(), Main.getDice());
+            if (playerOneTurn) {
+                if (!wormOne.stillMoving()) {
+                    movement(playerOne, Main.getDice());
 //                diceSprite.setTexture(dice.getDiceTexture());
-                diceSprite = Main.getDiceSprite();
-                diceSprite.setTexture(Main.getDice().getDiceTexture());
-                Main.setDiceAnimationTrue();
+                    diceSprite = Main.getDiceSprite();
+                    diceSprite.setTexture(Main.getDice().getDiceTexture());
+                    Main.setDiceAnimationTrue();
+                    playerOneTurn = false;
 
+                }
+            } else {
+                if (!wormTwo.stillMoving()) {
+                    movement(playerTwo, Main.getDice());
+//                diceSprite.setTexture(dice.getDiceTexture());
+                    diceSprite = Main.getDiceSprite();
+                    diceSprite.setTexture(Main.getDice().getDiceTexture());
+                    Main.setDiceAnimationTrue();
+                    playerOneTurn = true;
+
+                }
             }
+
 
             camera.update();
 
-            if (gameField.getPlayer().getCurrentField().equals(gameField.getGoal())) {
+            if (playerOne.getCurrentField().equals(gameField.getGoal()))
+                Gdx.app.log(TAG, "PLAYER ONE is the WINNER!");
 
-                Gdx.app.log(TAG, "YOU ARE A WINNER !!");
-            }
+            if (playerTwo.getCurrentField().equals(gameField.getGoal()))
+                Gdx.app.log(TAG, "PLAYER TWO is the WINNER!");
 
 
         }
@@ -240,10 +280,8 @@ public class Controler implements InputProcessor {
         if (cheatCountDown.cheatingIsActive()) {
 
             Integer integer = cheatCountDown.stopCountDown();
-
-            cheatMovement(gameField.getPlayer(), integer);
+            cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
             Player.resetCounter();
-
             camera.update();
 
             return true;

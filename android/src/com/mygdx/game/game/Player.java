@@ -11,7 +11,11 @@ import java.util.List;
 
 public class Player {
 
+    public final static String PLAYER_ONE_ID = "ONE";
+    public final static String PLAYER_TWO_ID = "TWo";
+
     private Field currentField;
+    private final String plyerId;
     /**
      * The constant counterList.
      */
@@ -20,7 +24,6 @@ public class Player {
      * The constant currentPlayer.
      */
     public static int currentPlayer = 0;
-    private Player nextPlayer;
 
 
     /**
@@ -28,10 +31,11 @@ public class Player {
      *
      * @param currentField the current field
      */
-    public Player(Field currentField) {
+    public Player(Field currentField, String plyerId) {
 
         this.currentField = currentField;
         counterList.add(0);
+        this.plyerId = plyerId;
     }
 
     /**
@@ -63,45 +67,6 @@ public class Player {
     }
 
     /**
-     * Switch player.
-     */
-    public static void switchPlayer(){
-        if (counterList.size()==2){
-            if (currentPlayer ==0){
-                currentPlayer =1;
-            }
-            else{
-                currentPlayer = 0;
-            }
-        }
-        if (counterList.size()==3){
-            if (currentPlayer==0){
-                currentPlayer = 1;
-            }
-            else if (currentPlayer == 1){
-                currentPlayer = 2;
-            }
-            else{
-                currentPlayer = 0;
-            }
-        }
-        if (counterList.size()==4){
-            if (currentPlayer==0){
-                currentPlayer = 1;
-            }
-            else if (currentPlayer == 1){
-                currentPlayer = 2;
-            }
-            else if(currentPlayer == 2){
-                currentPlayer = 3;
-            }
-            else{
-                currentPlayer = 0;
-            }
-        }
-        }
-
-    /**
      * Reset counter.
      */
     public static void resetCounter(){
@@ -127,4 +92,8 @@ public class Player {
         currentField = field;
     }
 
+
+    public String getPlyerId() {
+        return plyerId;
+    }
 }
