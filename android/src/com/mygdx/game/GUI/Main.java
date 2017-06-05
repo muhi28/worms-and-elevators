@@ -12,6 +12,7 @@ import com.mygdx.game.dice.Dice;
 import com.mygdx.game.display.RenderPositionCalculator;
 import com.mygdx.game.display.SingleField;
 import com.mygdx.game.display.Worm;
+import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 /**
  * The type Main.
@@ -35,6 +37,7 @@ public class Main extends BaseMain implements Observer {
     private Texture tileTwo;
     private String colorOne;
     private String colorTwo;
+    private Long randomSeedDice;
 
     private final RenderPositionCalculator renderPositionCalculator;
     /**
@@ -55,12 +58,16 @@ public class Main extends BaseMain implements Observer {
      *
      * @param playerList the wormcolor
      */
-    public Main(List<Object[]> playerList) {
-        gameField = GameField.createGameField();
+    public Main(List<String> playerList, Long randomSeedForDice) {
+        Elevator.random = new Random(randomSeedForDice);
+        this.gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
-        this.colorOne = (String) playerList.get(0)[0];
-        this.colorTwo = (String) playerList.get(1)[0];
+
+        this.colorOne = playerList.get(0);
+        this.colorTwo = playerList.get(1);
+        this.randomSeedDice = randomSeedForDice;
     }
+
 
 
     @Override
@@ -70,14 +77,9 @@ public class Main extends BaseMain implements Observer {
         cheatCountDown = new CheatCountDown();
 
         stage = new Stage();
-
-
         camera = new OrthographicCamera();
-
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-        int numberOfPlayers = Controler.getNumberOfPlayers();
 
         Controler.setSingleplayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
 
@@ -101,7 +103,7 @@ public class Main extends BaseMain implements Observer {
 
 
         // DICE
-        dice = new Dice(6);
+        dice = new Dice(6, true, randomSeedDice);
         diceSprite = new Sprite(dice.getDiceTexture());
         diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
 

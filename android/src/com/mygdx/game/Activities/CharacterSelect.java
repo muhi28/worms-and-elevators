@@ -102,16 +102,14 @@ public class CharacterSelect extends Activity {
                 return;
             }
 
-            intent = new Intent(this, MultiplayerMainGameActivity.class);
 
-            intent.putExtra(PLAYER_COLOR_KEY, color.toString());
-            intent.putExtra(OTHER_PLAYER_COLOR_KEY, colorOtherPlayer.toString());
-            intent.putExtra(SEED_RANDOM, seedRandom);
 
-        } else {
-            intent = new Intent(this, MainGameActivity.class);
-            intent.putExtra("Player_Color", color.toString());
         }
+        intent = new Intent(this, MainGameActivity.class);
+        intent.putExtra("Player_Color", color.toString());
+        intent.putExtra(PLAYER_COLOR_KEY, color.toString());
+        intent.putExtra(OTHER_PLAYER_COLOR_KEY, colorOtherPlayer.toString());
+        intent.putExtra(SEED_RANDOM, seedRandom);
 
 
         startActivity(intent);

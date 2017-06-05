@@ -54,6 +54,10 @@ public class NetworkManager extends Observable {
         return IS_MULTIPLAYER;
     }
 
+    public static boolean isSinglePlayer() {
+        return !isMultiplayer();
+    }
+
     /**
      * Received.
      *

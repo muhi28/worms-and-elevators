@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.GUI.MultiplayerMain;
+import com.mygdx.game.GUI.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class MultiplayerMainGameActivity extends AndroidApplication {
         String colorPlayerOther = intent.getStringExtra(CharacterSelect.OTHER_PLAYER_COLOR_KEY);
         playerList.add(colorPlayerOther);
 
-        initialize(new MultiplayerMain(playerList, intent.getLongExtra(CharacterSelect.SEED_RANDOM, 0)), cfg);
+        initialize(new Main(playerList, intent.getLongExtra(CharacterSelect.SEED_RANDOM, 0)), cfg);
 
     }
 }

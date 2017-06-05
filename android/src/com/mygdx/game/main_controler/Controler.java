@@ -13,6 +13,9 @@ import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
+import com.mygdx.game.netwoking.FromNetworkProcessor;
+import com.mygdx.game.netwoking.NetworkManager;
+import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 import java.util.Observable;
 
@@ -21,7 +24,7 @@ import java.util.Observable;
  * The type Controler.
  */
 public class Controler extends Observable implements InputProcessor{
-
+    public static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE= "Other_Player_Rolled_Dice";
 
     private static Sprite diceSprite;
     private static GameField gameField = Main.getGameField();
@@ -33,7 +36,7 @@ public class Controler extends Observable implements InputProcessor{
     private static boolean singleplayerBoolean = false;
 
     private static final String TAG = "Controler";
-
+    private NetworkTrafficReceiver networkTrafficReceiver;
     private final Worm wormOne;
     private final Worm wormTwo;
 
@@ -46,6 +49,17 @@ public class Controler extends Observable implements InputProcessor{
         setInputProcessor();
         this.wormOne = wormOne;
         this.wormTwo = wormTwo;
+
+        if(NetworkManager.isMultiplayer() && NetworkManager.isClient()){
+            playerOneTurn = false;
+        }
+
+        final Controler currentInstance = this;
+        networkTrafficReceiver = new NetworkTrafficReceiver(new FromNetworkProcessor() {
+            public void receiveMessage(String message) {
+                currentInstance.processMessageFromNetwork(message);
+            }
+        });
     }
 
 
@@ -242,20 +256,25 @@ public class Controler extends Observable implements InputProcessor{
 
         if (Gdx.input.isTouched() && playerOne.getCurrentField().getNextField() != null && playerTwo.getCurrentField().getNextField() != null) {
 
+
             if (playerOneTurn) {
                 if (!wormOne.stillMoving()) {
                     movement(playerOne, Main.getDice());
-//                diceSprite.setTexture(dice.getDiceTexture());
                     diceSprite = Main.getDiceSprite();
                     diceSprite.setTexture(Main.getDice().getDiceTexture());
                     Main.setDiceAnimationTrue();
                     playerOneTurn = false;
 
+
+                    if(NetworkManager.isMultiplayer()){
+                        NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
+                    }
+
                 }
-            } else {
+            } else if(NetworkManager.isSinglePlayer()) {
                 if (!wormTwo.stillMoving()) {
                     movement(playerTwo, Main.getDice());
-//                diceSprite.setTexture(dice.getDiceTexture());
+//
                     diceSprite = Main.getDiceSprite();
                     diceSprite.setTexture(Main.getDice().getDiceTexture());
                     Main.setDiceAnimationTrue();
@@ -308,6 +327,25 @@ public class Controler extends Observable implements InputProcessor{
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    /**
+     * Process message from network.
+     *
+     * @param inputString the input string
+     */
+    public void processMessageFromNetwork(final String inputString) {
+
+        if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
+            Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
+
+            movement(playerTwo, Main.getDice());
+            diceSprite = Main.getDiceSprite();
+            diceSprite.setTexture(Main.getDice().getDiceTexture());
+            Main.setDiceAnimationTrue();
+            playerOneTurn = true;
+        }
+
     }
 
 }
