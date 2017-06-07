@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GUI.Main;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.dice.Dice;
@@ -87,7 +88,7 @@ public class Controler extends Observable implements InputProcessor{
      * @param player the player
      * @param dice   the dice
      */
-    public void movement(Player player, Dice dice) {
+    private void movement(Player player, Dice dice) {
 
         if (getWorm(player).stillMoving()) {
             return;
@@ -119,7 +120,7 @@ public class Controler extends Observable implements InputProcessor{
      * @param player         the player
      * @param cheatCountdown the cheat countdown
      */
-    public void cheatMovement(Player player, Integer cheatCountdown) {
+    private void cheatMovement(Player player, Integer cheatCountdown) {
         if (getWorm(player).stillMoving()) {
             return;
         }
@@ -136,7 +137,7 @@ public class Controler extends Observable implements InputProcessor{
     /**
      * Update current fieldnumber.
      */
-    public static void updateCurrentFieldnumber(Player player) {
+    private static void updateCurrentFieldnumber(Player player) {
         setCurrentFieldnumberForPlayer(player, gameField.getPlayer(player.getPlyerId()).getCurrentField().getFieldnumber());
     }
 
@@ -156,7 +157,7 @@ public class Controler extends Observable implements InputProcessor{
      *
      * @param player the player
      */
-    public void checkField(Player player) {
+    private void checkField(Player player) {
 
         setCurrentFieldnumberForPlayer(player, player.getCurrentField().getFieldnumber());
 
@@ -185,7 +186,7 @@ public class Controler extends Observable implements InputProcessor{
      * @param fieldnumber the fieldnumber
      * @param player      the player
      */
-    public static void port(int fieldnumber, Player player) {
+    private static void port(int fieldnumber, Player player) {
         Field newCurrentField = gameField.getFieldFrom(fieldnumber);
         player.setCurrentField(newCurrentField);
     }
@@ -254,7 +255,8 @@ public class Controler extends Observable implements InputProcessor{
         Player playerOne = gameField.getPlayer(Player.PLAYER_ONE_ID);
         Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
 
-        if (Gdx.input.isTouched() && playerOne.getCurrentField().getNextField() != null && playerTwo.getCurrentField().getNextField() != null) {
+
+        if (diceSpriteTouched()) {
 
 
             if (playerOneTurn) {
@@ -298,6 +300,43 @@ public class Controler extends Observable implements InputProcessor{
 
         return true;
     }
+
+    private boolean diceSpriteTouched(){
+
+        Vector3 touchpoint = new Vector3();
+
+        if(Gdx.input.isTouched()){
+
+            touchpoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
+            camera.unproject(touchpoint);
+
+            if (checkTouchX(touchpoint) && checkTouchY(touchpoint)){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkTouchX(Vector3 touch){
+
+        if(touch.x >= Main.getDiceSprite().getX() ){
+
+            if (touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth()){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkTouchY(Vector3 touch){
+
+        return touch.y >= 1550 && touch.y <= 1770;
+    }
+
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
