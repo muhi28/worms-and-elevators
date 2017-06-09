@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.cheat.CheatCountDown;
+import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.display.RenderPositionCalculator;
 import com.mygdx.game.display.SingleField;
@@ -79,6 +80,8 @@ public class Main extends BaseMain implements Observer {
 
         batch = new SpriteBatch();
         cheatCountDown = new CheatCountDown();
+        cheatIcon = new CheatIcon();
+
 
         stage = new Stage();
         camera = new OrthographicCamera();
@@ -185,6 +188,8 @@ public class Main extends BaseMain implements Observer {
         else if (playerTwo.stillMoving() == false && Controler.getPlayerOneTurn()){
             font.draw(batch, "Spieler 1 ist an der Reihe", 210, 675);
         }
+
+        cheatIcon.draw(batch);
 
 
         doDiceAnimation(batch);

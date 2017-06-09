@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.cheat.CheatCountDown;
+import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.game.GameField;
 
@@ -20,6 +21,7 @@ class BaseMain extends ApplicationAdapter {
     protected static Dice dice;
     protected static GameField gameField;
     protected static CheatCountDown cheatCountDown;
+    protected static CheatIcon cheatIcon;
     protected static Sprite diceSprite;
     private static int time = 0;
     private static boolean diceAnimationActive = false;
