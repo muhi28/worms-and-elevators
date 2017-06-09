@@ -42,7 +42,7 @@ public class Elevator {
 
         while (true) {
 
-            int randomNumber = random.nextInt(6 - 1 + 1) + 1;         //(max - min + 1) + min
+            int randomNumber = random.nextInt(6 - 0 + 1) + 0;         //(max - min + 1) + min
             randomElevatorFieldnumber = elevatorFields[randomNumber];
 
             if (randomElevatorFieldnumber != fieldnumber) {

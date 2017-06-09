@@ -234,7 +234,11 @@ public class Controler extends Observable implements InputProcessor{
     }
 
 
-    private boolean playerOneTurn = true;
+    private static boolean playerOneTurn = true;
+
+    public static boolean getPlayerOneTurn(){
+        return playerOneTurn;
+    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

@@ -1,9 +1,11 @@
 package com.mygdx.game.GUI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -40,6 +42,8 @@ public class Main extends BaseMain implements Observer {
     private Long randomSeedDice;
 
     private final RenderPositionCalculator renderPositionCalculator;
+
+    private BitmapFont font;
     /**
      * The Stage.
      */
@@ -115,6 +119,12 @@ public class Main extends BaseMain implements Observer {
         generateElevatorFieldTextures();
 
 
+        // Font
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(4,4);
+
+
         //setzen des InputProcessors der GUI
         controler = new Controler(playerOne, playerTwo);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
@@ -166,6 +176,16 @@ public class Main extends BaseMain implements Observer {
         stage.draw();
 
         batch.begin();
+
+        if (playerOne.stillMoving() == false && Controler.getPlayerOneTurn() == false){
+
+            font.draw(batch, "Spieler 2 ist an der Reihe", 210, 675);
+        }
+
+        else if (playerTwo.stillMoving() == false && Controler.getPlayerOneTurn()){
+            font.draw(batch, "Spieler 1 ist an der Reihe", 210, 675);
+        }
+
 
         doDiceAnimation(batch);
 
