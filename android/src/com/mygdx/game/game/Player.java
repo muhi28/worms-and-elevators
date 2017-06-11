@@ -21,9 +21,9 @@ public class Player {
      */
     public static List<Integer> counterList = new ArrayList<Integer>();
     /**
-     * The constant currentPlayer.
+     * The constant currentPlayerIndex.
      */
-    public static int currentPlayer = 0;
+    public static int currentPlayerIndex = 0;
 
 
     /**
@@ -54,7 +54,7 @@ public class Player {
      * Increase counter.
      */
     public static void increaseCounter(){
-        counterList.set(currentPlayer, counterList.get(currentPlayer)+1);
+        counterList.set(currentPlayerIndex, counterList.get(currentPlayerIndex)+1);
     }
 
     /**
@@ -63,15 +63,15 @@ public class Player {
      * @return the int
      */
     public static int getCounter(){
-        return counterList.get(currentPlayer);
+        return counterList.get(currentPlayerIndex);
     }
 
     /**
      * Reset counter.
      */
     public static void resetCounter(){
-            counterList.set(currentPlayer, 0);
-        }
+        counterList.set(currentPlayerIndex, 0);
+    }
 
     /**
      * Gets current field.
@@ -90,6 +90,19 @@ public class Player {
      */
     public void setCurrentField(Field field) {
         currentField = field;
+    }
+
+    public static void switchCurrentPlayerIndex(){
+        if (currentPlayerIndex == 0){
+            currentPlayerIndex = 1;
+        }
+        else if (currentPlayerIndex == 1){
+            currentPlayerIndex = 0;
+        }
+    }
+
+    public static int getCurrentPlayerIndex(){
+        return currentPlayerIndex;
     }
 
 

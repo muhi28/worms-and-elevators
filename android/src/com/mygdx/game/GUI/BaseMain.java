@@ -53,6 +53,10 @@ class BaseMain extends ApplicationAdapter {
         return cheatCountDown;
     }
 
+    public static CheatIcon getCheatIcon(){
+        return cheatIcon;
+    }
+
     /**
      * Gets camera.
      *

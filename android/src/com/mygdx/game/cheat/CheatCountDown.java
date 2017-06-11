@@ -17,6 +17,7 @@ public class CheatCountDown extends Actor {
     private boolean visible = false;
     private Integer currentDiceValue;
     private CheatCountThread countThread;
+    private static int usageCounter;
 
     /**
      * Instantiates a new Cheat count down.
@@ -27,6 +28,19 @@ public class CheatCountDown extends Actor {
         font.getData().setScale(2f);
         font.setColor(Color.BLACK);
         countThread = new CheatCountThread(this);
+        usageCounter = 0;
+    }
+
+    public static void increaseUsageCounter (){
+        usageCounter = usageCounter + 1;
+    }
+
+    public static void resetUsageCounter (){
+        usageCounter = 1;
+    }
+
+    public static int getUsageCounter(){
+        return usageCounter;
     }
 
     @Override

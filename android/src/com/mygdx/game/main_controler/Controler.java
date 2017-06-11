@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GUI.Main;
 import com.mygdx.game.cheat.CheatCountDown;
+import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.display.Coordinates;
 import com.mygdx.game.display.Worm;
@@ -30,6 +31,7 @@ public class Controler extends Observable implements InputProcessor{
     private static Sprite diceSprite;
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
+    private static CheatIcon cheatIcon = Main.getCheatIcon();
     private static OrthographicCamera camera = Main.getCamera();
     private static int currentFieldnumberPlayerOne = gameField.getPlayer(Player.PLAYER_ONE_ID).getCurrentField().getFieldnumber();
     private static int currentFieldnumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
@@ -40,6 +42,9 @@ public class Controler extends Observable implements InputProcessor{
     private NetworkTrafficReceiver networkTrafficReceiver;
     private final Worm wormOne;
     private final Worm wormTwo;
+
+    private static Field[] lastFields = new Field[2];
+    private static Field lastField;
 
     /**
      * Instantiates a new Controler.
@@ -99,7 +104,9 @@ public class Controler extends Observable implements InputProcessor{
         }
         updateCurrentFieldnumber(player);
         checkField(player);
+        lastFields[Player.getCurrentPlayerIndex()] = player.getCurrentField();
         Player.increaseCounter();
+        Player.switchCurrentPlayerIndex();
     }
 
     private Worm getWorm(Player player) {
@@ -130,6 +137,7 @@ public class Controler extends Observable implements InputProcessor{
 
         updateCurrentFieldnumber(player);
         checkField(player);
+        Player.switchCurrentPlayerIndex();
 
 
     }
@@ -218,6 +226,14 @@ public class Controler extends Observable implements InputProcessor{
         singleplayerBoolean = state;
     }
 
+    public static Field setLastField(){
+        Player.switchCurrentPlayerIndex();
+        lastField = lastFields[Player.getCurrentPlayerIndex()];
+        Player.switchCurrentPlayerIndex();
+
+        return lastField;
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -248,11 +264,36 @@ public class Controler extends Observable implements InputProcessor{
 
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
-        if (Player.getCounter() >= 3) {
+        if (Player.getCounter() >= 2) {
 
-            if (cheatCountDown.touchDown(screenX, screenY)) {
+            if (NetworkManager.isSinglePlayer()) {
 
-                return true;
+                if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
+
+                    cheatCountDown.increaseUsageCounter();
+
+                    if (CheatCountDown.getUsageCounter() >= 2){
+
+                        CheatIcon.changeVisibility(true);
+                    }
+
+                    return true;
+                }
+            }
+
+            else{
+                if (cheatCountDown.touchDown(screenX, screenY)) {
+
+                    cheatCountDown.increaseUsageCounter();
+
+                    if (CheatCountDown.getUsageCounter() >= 2){
+
+                        CheatIcon.changeVisibility(true);
+                    }
+
+                    return true;
+                }
+
             }
         }
 
@@ -260,6 +301,20 @@ public class Controler extends Observable implements InputProcessor{
         Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
 
 
+
+        //TODO look into the renderPositionCalculator for this next part to work
+
+/*        if (cheatIcon.touchDown(screenX,screenY)){
+            if (NetworkManager.isSinglePlayer()){
+                setLastField();
+                playerOne.setCurrentField(lastField);
+                CheatIcon.changeVisibility(false);
+            }
+
+            return true;
+        }
+
+*/
         if (diceSpriteTouched()) {
 
 
@@ -347,13 +402,37 @@ public class Controler extends Observable implements InputProcessor{
 
         if (cheatCountDown.cheatingIsActive()) {
 
-            Integer integer = cheatCountDown.stopCountDown();
-            cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-            Player.resetCounter();
-            camera.update();
+            if (NetworkManager.isSinglePlayer()){
+                Integer integer = cheatCountDown.stopCountDown();
+                cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
+                playerOneTurn = false;
+                Player.resetCounter();
+                camera.update();
 
-            return true;
+                return true;
+
+            }
+            else{
+                Integer integer = cheatCountDown.stopCountDown();
+
+                if (Player.getCurrentPlayerIndex() == 0){
+                    cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
+                }
+                else if (Player.getCurrentPlayerIndex() == 1){
+                    cheatMovement(gameField.getPlayer(Player.PLAYER_TWO_ID), integer);
+                }
+
+                Player.resetCounter();
+                camera.update();
+
+                return true;
+            }
+
         }
+
+
+
+
         return false;
     }
 
