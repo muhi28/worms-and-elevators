@@ -24,7 +24,7 @@ public class CheatIcon extends Actor {
         sprite.setBounds(980, 30, 70, 70);
     }
 
-    public static void changeVisibility(boolean visibility){
+    public static void setVisibility(boolean visibility){
         visible = visibility;
     }
 

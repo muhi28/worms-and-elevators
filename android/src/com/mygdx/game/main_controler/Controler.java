@@ -37,14 +37,14 @@ public class Controler extends Observable implements InputProcessor{
     private static int currentFieldnumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
     private static int numberOfPlayers = 0;
     private static boolean singleplayerBoolean = false;
+    private static boolean turnBlocked = false;
 
     private static final String TAG = "Controler";
     private NetworkTrafficReceiver networkTrafficReceiver;
     private final Worm wormOne;
     private final Worm wormTwo;
 
-    private static Field[] lastFields = new Field[2];
-    private static Field lastField;
+    private static boolean[] playerCheatedList = new boolean[2];
 
     /**
      * Instantiates a new Controler.
@@ -55,6 +55,9 @@ public class Controler extends Observable implements InputProcessor{
         setInputProcessor();
         this.wormOne = wormOne;
         this.wormTwo = wormTwo;
+
+        playerCheatedList[0] = false;
+        playerCheatedList[1] = false;
 
         if(NetworkManager.isMultiplayer() && NetworkManager.isClient()){
             playerOneTurn = false;
@@ -104,9 +107,11 @@ public class Controler extends Observable implements InputProcessor{
         }
         updateCurrentFieldnumber(player);
         checkField(player);
-        lastFields[Player.getCurrentPlayerIndex()] = player.getCurrentField();
         Player.increaseCounter();
-        Player.switchCurrentPlayerIndex();
+        if (turnBlocked == false){
+            Player.switchCurrentPlayerIndex();
+        }
+
     }
 
     private Worm getWorm(Player player) {
@@ -226,12 +231,12 @@ public class Controler extends Observable implements InputProcessor{
         singleplayerBoolean = state;
     }
 
-    public static Field setLastField(){
+    public static void setPlayerCheated(){
         Player.switchCurrentPlayerIndex();
-        lastField = lastFields[Player.getCurrentPlayerIndex()];
+        playerCheatedList[Player.getCurrentPlayerIndex()] = true;
+        turnBlocked = true;
+        CheatCountDown.resetUsageCounter();
         Player.switchCurrentPlayerIndex();
-
-        return lastField;
     }
 
     @Override
@@ -274,7 +279,7 @@ public class Controler extends Observable implements InputProcessor{
 
                     if (CheatCountDown.getUsageCounter() >= 2){
 
-                        CheatIcon.changeVisibility(true);
+                        CheatIcon.setVisibility(true);
                     }
 
                     return true;
@@ -288,7 +293,7 @@ public class Controler extends Observable implements InputProcessor{
 
                     if (CheatCountDown.getUsageCounter() >= 2){
 
-                        CheatIcon.changeVisibility(true);
+                        CheatIcon.setVisibility(true);
                     }
 
                     return true;
@@ -300,21 +305,14 @@ public class Controler extends Observable implements InputProcessor{
         Player playerOne = gameField.getPlayer(Player.PLAYER_ONE_ID);
         Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
 
-
-
-        //TODO look into the renderPositionCalculator for this next part to work
-
-/*        if (cheatIcon.touchDown(screenX,screenY)){
+        if (cheatIcon.touchDown(screenX,screenY)){
             if (NetworkManager.isSinglePlayer()){
-                setLastField();
-                playerOne.setCurrentField(lastField);
-                CheatIcon.changeVisibility(false);
+                setPlayerCheated();
+                CheatIcon.setVisibility(false);
             }
-
-            return true;
         }
 
-*/
+
         if (diceSpriteTouched()) {
 
 
@@ -339,7 +337,13 @@ public class Controler extends Observable implements InputProcessor{
                     diceSprite = Main.getDiceSprite();
                     diceSprite.setTexture(Main.getDice().getDiceTexture());
                     Main.setDiceAnimationTrue();
-                    playerOneTurn = true;
+                    if (!turnBlocked){
+                        playerOneTurn = true;
+                    }
+                    else{
+                        turnBlocked = false;
+                    }
+
 
                 }
             }
