@@ -275,9 +275,9 @@ public class Controler extends Observable implements InputProcessor{
 
                 if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
 
-                    cheatCountDown.increaseUsageCounter();
+                    CheatCountDown.increaseUsageCounter();
 
-                    if (CheatCountDown.getUsageCounter() >= 2){
+                    if (CheatCountDown.getUsageCounter() >= 1) {
 
                         CheatIcon.setVisibility(true);
                     }
@@ -289,9 +289,9 @@ public class Controler extends Observable implements InputProcessor{
             else{
                 if (cheatCountDown.touchDown(screenX, screenY)) {
 
-                    cheatCountDown.increaseUsageCounter();
+                    CheatCountDown.increaseUsageCounter();
 
-                    if (CheatCountDown.getUsageCounter() >= 2){
+                    if (CheatCountDown.getUsageCounter() >= 1) {
 
                         CheatIcon.setVisibility(true);
                     }
