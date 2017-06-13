@@ -23,7 +23,7 @@ import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
-import com.mygdx.game.main_controler.Controler;
+import com.mygdx.game.maincontroller.Controler;
 import com.mygdx.game.netwoking.NetworkManager;
 
 import java.util.ArrayList;
