@@ -159,7 +159,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
 
     classDirectories = fileTree(
             dir: '../android/build/intermediates/classes',
-            excludes: ['**/R.class',
+            excludes: ['**/Activities/**',
+                       '**/R.class',
                        '**/R$*.class',
                        '**/*$ViewInjector*.*',
                        '**/BuildConfig.*',
