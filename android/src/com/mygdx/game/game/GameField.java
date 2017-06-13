@@ -1,20 +1,20 @@
 package com.mygdx.game.game;
 
 
+import com.mygdx.game.MyRuntimeException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Muhi on 11.04.2017.
+ *Created by Muhi on 11.04.2017.
  */
 public class GameField {
 
 
     private static final int NUMBEROF_VERTICALS = 10;
     private static final int NUMBEROF_HORIZONTAL = 10;
-    private static final String TAG = "GameField OriginalList";
-    private static final String TAG2 = "GameField SubList";
 
 
     private final List<Field> fields;
@@ -43,14 +43,14 @@ public class GameField {
     }
 
     /**
-     * Gets fieldfrom pos.
+     * Gets field from pos.
      *
      * @param vertical   the vertical
      * @param horizontal the horizontal
      * @return the fieldfrom pos
-     * @throws RuntimeException the runtime exception
+     * @throws MyRuntimeException the runtime exception
      */
-    public Field getFieldfromPos(int vertical, int horizontal) throws RuntimeException {
+    private Field getFieldFromPos(int vertical, int horizontal) {
 
         for (Field field : fields) {
 
@@ -60,7 +60,7 @@ public class GameField {
             }
         }
 
-        throw new RuntimeException("Field wurde nicht gefunden!");
+        throw new MyRuntimeException("Field wurde nicht gefunden!");
     }
 
     /**
@@ -70,7 +70,7 @@ public class GameField {
      */
     public Field getStartField() {
 
-        return getFieldfromPos(0, 0);
+        return getFieldFromPos(0, 0);
     }
 
     /**
@@ -97,8 +97,8 @@ public class GameField {
             return playerOne;
         else if(playerTwo.getPlyerId().equals(playerId))
             return playerTwo;
-
-        throw new RuntimeException("Unknown player id: " + playerId);
+        else
+            throw new MyRuntimeException("Unknown player id: " + playerId);
     }
 
     public Player getPlayerTwo() {
@@ -166,7 +166,7 @@ public class GameField {
      *
      * @param sortedFields the sorted fields
      */
-    public static void sortNextField(List<Field> sortedFields) {
+    private static void sortNextField(List<Field> sortedFields) {
         for (int i = 1; i < sortedFields.size(); i++) {
             sortedFields.get(i).setNextField(sortedFields.get(i - 1));
         }
@@ -180,14 +180,14 @@ public class GameField {
      * @return the field from
      * @throws RuntimeException the runtime exception
      */
-    public Field getFieldFrom(int number) throws RuntimeException {
+    public Field getFieldFrom(int number) {
         for (Field field : fields) {
             if (field.getFieldnumber() == number) {
                 return field;
             }
         }
 
-        throw new RuntimeException("Field not found!");
+        throw new MyRuntimeException("Field not found!");
     }
 
 
@@ -197,7 +197,7 @@ public class GameField {
      * @param gameField the game field
      * @return the int [ ]
      */
-    public static int[] getFieldNumbers(List<Field> gameField) {
+    private static int[] getFieldNumbers(List<Field> gameField) {
 
         for (int i = 0; i < gameField.size(); i++) {
 
@@ -213,7 +213,7 @@ public class GameField {
      * @param originalList the original list
      * @return the list
      */
-    public static List<Field> snakeOrder(List<Field> originalList) {            //this method changes the order of our List of fields, so
+    private static List<Field> snakeOrder(List<Field> originalList) {            //this method changes the order of our List of fields, so
         //that the players "slither" across the board instead of
         //the sequential
 

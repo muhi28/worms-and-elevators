@@ -1,7 +1,5 @@
 package com.mygdx.game.game;
 
-import android.util.Log;
-
 import java.util.Random;
 
 /**
@@ -13,7 +11,6 @@ public class Elevator {
 
     private static int[] elevatorFields = new int[7];
     private static int randomElevatorFieldnumber;
-    private static final String TAG = "New Elevator Field";
 
 
     private Elevator() {

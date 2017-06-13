@@ -1,6 +1,8 @@
 package com.mygdx.game.game;
 
 
+import com.mygdx.game.MyRuntimeException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,19 +13,19 @@ import java.util.List;
 
 public class Player {
 
-    public final static String PLAYER_ONE_ID = "ONE";
-    public final static String PLAYER_TWO_ID = "TWo";
+    public static final String PLAYER_ONE_ID = "ONE";
+    public static final String PLAYER_TWO_ID = "TWo";
 
     private Field currentField;
     private final String plyerId;
     /**
      * The constant counterList.
      */
-    public static List<Integer> counterList = new ArrayList<Integer>();
+    private static final List<Integer> counterList = new ArrayList<>();
     /**
      * The constant currentPlayerIndex.
      */
-    public static int currentPlayerIndex = 0;
+    private static int currentPlayerIndex = 0;
 
 
     /**
@@ -43,9 +45,10 @@ public class Player {
      *
      * @throws NullPointerException the null pointer exception
      */
-    public void move() throws NullPointerException {
+    public void move() {
 
-        if (currentField.getNextField() == null) throw new NullPointerException("Naechstes Feld ist außerhalb des Spielfeldes !!!");
+        if (currentField.getNextField() == null)
+            throw new MyRuntimeException("Naechstes Feld ist außerhalb des Spielfeldes !!!");
 
         currentField = currentField.getNextField();
     }

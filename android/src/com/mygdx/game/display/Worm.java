@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Worm extends Actor {
 
-    private final static CustomLogger LOGGER = new CustomLogger("WORM");
+    private static final CustomLogger LOGGER = new CustomLogger("WORM");
 
     private final Sprite player;
     private final RenderPositionCalculator renderPositionCalculator;

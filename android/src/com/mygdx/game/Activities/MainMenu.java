@@ -1,17 +1,11 @@
 package com.mygdx.game.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.mygdx.game.Players.Player;
 import com.mygdx.game.R;
@@ -31,10 +25,9 @@ public class MainMenu extends Activity {
 
     private Intent intent;
     private EditText text;
-    private Player player;
-    private NetworkUtils networkUtils;
+    Player player;
+    NetworkUtils networkUtils;
     private MediaPlayer mediaPlayer;
-    private Boolean startMusic = true;
 
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -52,7 +45,7 @@ public class MainMenu extends Activity {
         Intent in = getIntent();
         mediaPlayer = MediaPlayer.create(MainMenu.this, R.raw.music);
 
-        startMusic = in.getBooleanExtra("music", true);
+        Boolean startMusic = in.getBooleanExtra("music", true);
 
 
         if (startMusic) {

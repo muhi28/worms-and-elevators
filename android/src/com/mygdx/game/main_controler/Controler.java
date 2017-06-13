@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GUI.Main;
+import com.mygdx.game.MyRuntimeException;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
@@ -134,9 +135,7 @@ public class Controler extends Observable implements InputProcessor{
 
         if (player.getPlyerId().equals(wormTwo.getPlayerId())) {
             return wormTwo;
-        }
-
-        throw new RuntimeException("Worm not found");
+        } else throw new MyRuntimeException("Worm not found");
     }
 
     /**
@@ -312,8 +311,7 @@ public class Controler extends Observable implements InputProcessor{
      */
     //------------------ GESTURE CONTROL PLAYER TURN -----------
     private void checkPlayerTurn() {
-        if (playerOneTurn) {
-            if (!wormOne.stillMoving()) {
+        if (playerOneTurn && !wormOne.stillMoving()) {
                 movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
                 diceSprite = Main.getDiceSprite();
                 diceSprite.setTexture(Main.getDice().getDiceTexture());
@@ -325,10 +323,7 @@ public class Controler extends Observable implements InputProcessor{
                     NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
                 }
 
-            }
-        } else if (NetworkManager.isSinglePlayer()) {
-
-            if (!wormTwo.stillMoving()) {
+        } else if (NetworkManager.isSinglePlayer() && !wormTwo.stillMoving()) {
 
                 movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
                 diceSprite = Main.getDiceSprite();
@@ -339,7 +334,6 @@ public class Controler extends Observable implements InputProcessor{
                 } else {
                     turnBlocked = false;
                 }
-            }
         }
         camera.update();
     }
@@ -376,15 +370,8 @@ public class Controler extends Observable implements InputProcessor{
      */
     private boolean checkTouchX(Vector3 touch) {
 
-        if (touch.x >= Main.getDiceSprite().getX()) {
+        return touch.x >= Main.getDiceSprite().getX() && touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth();
 
-            if (touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth()) {
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -456,11 +443,10 @@ public class Controler extends Observable implements InputProcessor{
             }
         }
 
-        if (cheatIcon.touchDown(screenX,screenY)){
-            if (NetworkManager.isSinglePlayer()){
+        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer()) {
                 setPlayerCheated();
                 CheatIcon.setVisibility(false);
-            }
+
         }
 
         touchInputPlayerTurn();
