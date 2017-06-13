@@ -153,7 +153,7 @@ public class MultiplayerMain extends BaseMain implements Observer {
 
         stage.addActor(playerOne);
 
-        if (Controler.getSingleplayerBoolean()) {
+        if (Controler.getSinglePlayerBoolean()) {
             stage.addActor(playerTwo);
         }
 

@@ -19,7 +19,7 @@ import com.mygdx.game.netwoking.NetworkUtils;
 
 
 /**
- * Created by Muhi on 03.04.2017.
+ *Created by Muhi on 03.04.2017.
  */
 
 /**
@@ -35,12 +35,6 @@ public class MainMenu extends Activity {
     private NetworkUtils networkUtils;
     private MediaPlayer mediaPlayer;
     private Boolean startMusic = true;
-
-
-    private SensorManager sm;
-    private float acelVal; //Curent acceleration value and qravity
-    private float acelLast; //Last acceleration value and gravity
-    private float shake; //Acceleration value differ from gravity
 
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
@@ -70,42 +64,8 @@ public class MainMenu extends Activity {
 
         }
 
-
-        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sm.registerListener(sensorListener, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-
-        acelVal = SensorManager.GRAVITY_EARTH;
-        acelLast = SensorManager.GRAVITY_EARTH;
-        shake = 0.00f;
-
         player = new Player(text.getText().toString());
     }
-
-    private final SensorEventListener sensorListener = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-
-            acelLast = acelVal;
-            acelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float delta = acelVal - acelLast;
-            shake = shake * 0.9f + delta;
-
-            if (shake > 8) {
-
-                Toast toast = Toast.makeText(getApplicationContext(), "Schüttle mich nicht", Toast.LENGTH_LONG);
-                toast.show();
-            }
-
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    };
 
     /**
      * This method is used to switch from the Main Menu into the Instruction Screen
@@ -116,7 +76,7 @@ public class MainMenu extends Activity {
     public void onButtonClickCreateInstr(View v) {
 
         intent = new Intent(this, Instruction.class);
-        mediaPlayer.stop();                                                                     //momentane Loesung
+        mediaPlayer.stop();
         startActivity(intent);
     }
 
@@ -157,7 +117,7 @@ public class MainMenu extends Activity {
 
 
         intent = new Intent(this, Network.class);
-        mediaPlayer.stop();                                                                     //momentant Loesung
+        mediaPlayer.stop();
 
         startActivity(intent);
 
@@ -170,7 +130,7 @@ public class MainMenu extends Activity {
      */
     public void onClickOptionButton(View v) {
         intent = new Intent(this, OptionActivity.class);
-        mediaPlayer.stop();                                                                     //momentane Loesung
+        mediaPlayer.stop();
 
         startActivity(intent);
 

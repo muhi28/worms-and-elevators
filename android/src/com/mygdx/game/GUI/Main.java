@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
@@ -48,15 +49,15 @@ public class Main extends BaseMain implements Observer {
     /**
      * The Stage.
      */
-    Stage stage;
+    private Stage stage;
     /**
      * The Player one.
      */
-    Worm playerOne;
+    private Worm playerOne;
 
-    Worm playerTwo;
+    private Worm playerTwo;
 
-
+    private Long lastTimeShaken;
 
     /**
      * Instantiates a new Main.
@@ -65,14 +66,13 @@ public class Main extends BaseMain implements Observer {
      */
     public Main(List<String> playerList, Long randomSeedForDice) {
         Elevator.random = new Random(randomSeedForDice);
-        this.gameField = GameField.createGameField();
+        gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
 
         this.colorOne = playerList.get(0);
         this.colorTwo = playerList.get(1);
         this.randomSeedDice = randomSeedForDice;
     }
-
 
 
     @Override
@@ -88,7 +88,7 @@ public class Main extends BaseMain implements Observer {
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-        Controler.setSingleplayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
+        Controler.setSinglePlayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
 
         //initialisieren der Textur der Spielfigur
         texturePlayerOne = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorOne))));
@@ -125,12 +125,14 @@ public class Main extends BaseMain implements Observer {
         // Font
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        font.getData().setScale(4,4);
+        font.getData().setScale(4, 4);
 
 
         //setzen des InputProcessors der GUI
         controler = new Controler(playerOne, playerTwo);
         Gdx.input.setInputProcessor(controler.getInputProcessor());
+
+        lastTimeShaken = TimeUtils.millis();
     }
 
     private void setFieldTextures(List<Field> fields) {
@@ -149,9 +151,9 @@ public class Main extends BaseMain implements Observer {
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
         int[] elevatorFields = Controler.getElevatorFields();
 
-        for (int i = 0; i < elevatorFields.length; i++) {
+        for (int elevatorField : elevatorFields) {
 
-            SingleField singleField = new SingleField(tileTwo, renderPositionCalculator, elevatorFields[i]);
+            SingleField singleField = new SingleField(tileTwo, renderPositionCalculator, elevatorField);
             stage.addActor(singleField);
         }
 
@@ -163,12 +165,11 @@ public class Main extends BaseMain implements Observer {
 
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.addActor(playerOne);
 
-        if (Controler.getSingleplayerBoolean()) {
+        if (Controler.getSinglePlayerBoolean()) {
             stage.addActor(playerTwo);
         }
 
@@ -180,22 +181,36 @@ public class Main extends BaseMain implements Observer {
 
         batch.begin();
 
-        if (playerOne.stillMoving() == false && Controler.getPlayerOneTurn() == false){
-
-            font.draw(batch, "Spieler 2 ist an der Reihe", 210, 675);
-        }
-
-        else if (playerTwo.stillMoving() == false && Controler.getPlayerOneTurn()){
-            font.draw(batch, "Spieler 1 ist an der Reihe", 210, 675);
-        }
-
+        checkDeviceShaken();
+        playerSwitchTextOutput();
         cheatIcon.draw(batch);
-
-
         doDiceAnimation(batch);
 
         batch.end();
 
+    }
+
+    private void playerSwitchTextOutput() {
+
+        if (!playerOne.stillMoving() && !Controler.getPlayerOneTurn()) {
+
+            font.draw(batch, "Spieler 2 ist an der Reihe", 210, 675);
+        } else if (!playerTwo.stillMoving() && Controler.getPlayerOneTurn()) {
+            font.draw(batch, "Spieler 1 ist an der Reihe", 210, 675);
+        }
+    }
+
+    private void checkDeviceShaken() {
+
+        if (TimeUtils.millis() > (lastTimeShaken + 500)) {
+
+            boolean shaken = controler.checkAcceleration();
+
+            Gdx.app.log("GESTURE CONTROLL", String.format("Device shaken: %b", shaken));
+
+
+            lastTimeShaken = TimeUtils.millis();
+        }
     }
 
 

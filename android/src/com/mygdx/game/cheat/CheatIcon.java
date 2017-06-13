@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
 /**
- * Created by Klemens on 09.06.2017.
+ *Created by Klemens on 09.06.2017.
  */
 
 public class CheatIcon extends Actor {
@@ -38,11 +38,8 @@ public class CheatIcon extends Actor {
 
     public boolean touchDown (int screenX, int screenY){
 
-        if(visible && screenX > TOUCH_AREA_WIDTH && screenY > TOUCH_AREA_HEIGHT ){
-            return true;
-        }
+        return visible && screenX > TOUCH_AREA_WIDTH && screenY > TOUCH_AREA_HEIGHT;
 
-        return false;
     }
 
 

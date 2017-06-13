@@ -1,6 +1,7 @@
 package com.mygdx.game.main_controler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,7 +27,7 @@ import java.util.Observable;
  * The type Controler.
  */
 public class Controler extends Observable implements InputProcessor{
-    public static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE= "Other_Player_Rolled_Dice";
+    private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
 
     private static Sprite diceSprite;
     private static GameField gameField = Main.getGameField();
@@ -36,7 +37,7 @@ public class Controler extends Observable implements InputProcessor{
     private static int currentFieldnumberPlayerOne = gameField.getPlayer(Player.PLAYER_ONE_ID).getCurrentField().getFieldnumber();
     private static int currentFieldnumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
     private static int numberOfPlayers = 0;
-    private static boolean singleplayerBoolean = false;
+    private static boolean singlePlayerBoolean = false;
     private static boolean turnBlocked = false;
 
     private static final String TAG = "Controler";
@@ -44,10 +45,18 @@ public class Controler extends Observable implements InputProcessor{
     private final Worm wormOne;
     private final Worm wormTwo;
 
+    /**
+     * Sensor Items
+     */
+    private float accelLast;  //Current acceleration value and gravity
+    private float accelVal; //Last acceleration value and gravity
+    private float shake; //Acceleration value differ from gravity
+
     private static boolean[] playerCheatedList = new boolean[2];
+    private static boolean playerOneTurn = true;
 
     /**
-     * Instantiates a new Controler.
+     * Instantiates a new Controller.
      *
      * @param wormOne the worm one
      */
@@ -85,7 +94,7 @@ public class Controler extends Observable implements InputProcessor{
     /**
      * Sets input processor.
      */
-    public void setInputProcessor() {
+    private void setInputProcessor() {
         Gdx.input.setInputProcessor(this);
     }
 
@@ -108,12 +117,16 @@ public class Controler extends Observable implements InputProcessor{
         updateCurrentFieldnumber(player);
         checkField(player);
         Player.increaseCounter();
-        if (turnBlocked == false){
+        if (!turnBlocked) {
             Player.switchCurrentPlayerIndex();
         }
 
     }
 
+    /**
+     * @param player -> The Player
+     * @return new Worm-Object
+     */
     private Worm getWorm(Player player) {
         if (player.getPlyerId().equals(wormOne.getPlayerId())) {
             return wormOne;
@@ -148,12 +161,19 @@ public class Controler extends Observable implements InputProcessor{
     }
 
     /**
-     * Update current fieldnumber.
+     * Update current FieldNumber.
      */
     private static void updateCurrentFieldnumber(Player player) {
         setCurrentFieldnumberForPlayer(player, gameField.getPlayer(player.getPlyerId()).getCurrentField().getFieldnumber());
     }
 
+    /**
+     * Set current FieldNumber for player.
+     *
+     * @param player -> The Player
+     *
+     * @param fieldNumber -> new FieldNumber
+     */
     private static void setCurrentFieldnumberForPlayer(Player player, int fieldNumber) {
         if (player.getPlyerId().equals(Player.PLAYER_ONE_ID)) {
             currentFieldnumberPlayerOne = fieldNumber;
@@ -204,7 +224,8 @@ public class Controler extends Observable implements InputProcessor{
         player.setCurrentField(newCurrentField);
     }
 
-//The following methods exist, so that the logic classes are seperated from each other and from the GUI classes. Architectual porpuses
+
+//The following methods exist, so that the logic classes are separated from each other and from the GUI classes. Architectural purposes
 
     /**
      * Get elevator fields int [ ].
@@ -223,15 +244,15 @@ public class Controler extends Observable implements InputProcessor{
         return numberOfPlayers;
     }
 
-    public static boolean getSingleplayerBoolean() {
-        return singleplayerBoolean;
+    public static boolean getSinglePlayerBoolean() {
+        return singlePlayerBoolean;
     }
 
-    public static void setSingleplayerBoolean(boolean state) {
-        singleplayerBoolean = state;
+    public static void setSinglePlayerBoolean(boolean state) {
+        singlePlayerBoolean = state;
     }
 
-    public static void setPlayerCheated(){
+    private static void setPlayerCheated() {
         Player.switchCurrentPlayerIndex();
         playerCheatedList[Player.getCurrentPlayerIndex()] = true;
         turnBlocked = true;
@@ -239,6 +260,146 @@ public class Controler extends Observable implements InputProcessor{
         Player.switchCurrentPlayerIndex();
     }
 
+    public static boolean getPlayerOneTurn() {
+        return playerOneTurn;
+    }
+
+    /**
+     * Checks whether the device is shaken or not.
+     *
+     * @return true -> iff device acceleration is detected
+     * false -> no acceleration detected
+     */
+    //------------------ GESTURE CONTROLLER DETECTION ----------
+    public boolean checkAcceleration() {
+
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+
+            float x = Gdx.input.getAccelerometerX();
+            float y = Gdx.input.getAccelerometerY();
+            float z = Gdx.input.getAccelerometerZ();
+
+            accelLast = accelVal;
+            accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = accelVal - accelLast;
+            shake = shake * 0.9f + delta;
+
+            if (shake > 10) {
+
+                checkPlayerTurn();
+
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    /**
+     * Switch between players, if touch input is detected.
+     */
+    //------------------ TOUCH DETECTION PLAYER TURN -----------
+    private void touchInputPlayerTurn() {
+
+        if (diceSpriteTouched()) {
+            checkPlayerTurn();
+        }
+    }
+
+    /**
+     * Switch between players.
+     */
+    //------------------ GESTURE CONTROL PLAYER TURN -----------
+    private void checkPlayerTurn() {
+        if (playerOneTurn) {
+            if (!wormOne.stillMoving()) {
+                movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
+                diceSprite = Main.getDiceSprite();
+                diceSprite.setTexture(Main.getDice().getDiceTexture());
+                Main.setDiceAnimationTrue();
+                playerOneTurn = false;
+
+
+                if (NetworkManager.isMultiplayer()) {
+                    NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
+                }
+
+            }
+        } else if (NetworkManager.isSinglePlayer()) {
+
+            if (!wormTwo.stillMoving()) {
+
+                movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
+                diceSprite = Main.getDiceSprite();
+                diceSprite.setTexture(Main.getDice().getDiceTexture());
+                Main.setDiceAnimationTrue();
+                if (!turnBlocked) {
+                    playerOneTurn = true;
+                } else {
+                    turnBlocked = false;
+                }
+            }
+        }
+        camera.update();
+    }
+
+    /**
+     * This method checks whether the dice sprite is touched or not.
+     *
+     * @return true -> dice is touched
+     * false -> no touch input detected
+     */
+    //------------------ DICE TOUCH DETECTION -----------------
+    private boolean diceSpriteTouched() {
+
+        Vector3 touchPoint = new Vector3();
+
+        if (Gdx.input.isTouched()) {
+
+            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPoint);
+
+            if (checkTouchX(touchPoint) && checkTouchY(touchPoint)) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param touch -> Touch Position
+     * @return true -> if touch X-position matches with dice sprite X-position
+     * false -> touch doesn't match with dice sprite X-position
+     */
+    private boolean checkTouchX(Vector3 touch) {
+
+        if (touch.x >= Main.getDiceSprite().getX()) {
+
+            if (touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth()) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param touch -> Touch Position
+     * @return true -> if touch Y-position matches with dice sprite Y-position
+     * false -> touch doesn't match with dice sprite Y-position
+     */
+    private boolean checkTouchY(Vector3 touch) {
+
+        return touch.y >= 1550 && touch.y <= 1770;
+    }
+    //---------------------------------------------------------
+
+
+    //------------------ INPUT PROCESSOR ----------------------
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -252,13 +413,6 @@ public class Controler extends Observable implements InputProcessor{
     @Override
     public boolean keyTyped(char character) {
         return false;
-    }
-
-
-    private static boolean playerOneTurn = true;
-
-    public static boolean getPlayerOneTurn(){
-        return playerOneTurn;
     }
 
     @Override
@@ -302,9 +456,6 @@ public class Controler extends Observable implements InputProcessor{
             }
         }
 
-        Player playerOne = gameField.getPlayer(Player.PLAYER_ONE_ID);
-        Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
-
         if (cheatIcon.touchDown(screenX,screenY)){
             if (NetworkManager.isSinglePlayer()){
                 setPlayerCheated();
@@ -312,94 +463,10 @@ public class Controler extends Observable implements InputProcessor{
             }
         }
 
-
-        if (diceSpriteTouched()) {
-
-
-            if (playerOneTurn) {
-                if (!wormOne.stillMoving()) {
-                    movement(playerOne, Main.getDice());
-                    diceSprite = Main.getDiceSprite();
-                    diceSprite.setTexture(Main.getDice().getDiceTexture());
-                    Main.setDiceAnimationTrue();
-                    playerOneTurn = false;
-
-
-                    if(NetworkManager.isMultiplayer()){
-                        NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
-                    }
-
-                }
-            } else if(NetworkManager.isSinglePlayer()) {
-                if (!wormTwo.stillMoving()) {
-                    movement(playerTwo, Main.getDice());
-//
-                    diceSprite = Main.getDiceSprite();
-                    diceSprite.setTexture(Main.getDice().getDiceTexture());
-                    Main.setDiceAnimationTrue();
-                    if (!turnBlocked){
-                        playerOneTurn = true;
-                    }
-                    else{
-                        turnBlocked = false;
-                    }
-
-
-                }
-            }
-
-
-            camera.update();
-
-            if (playerOne.getCurrentField().equals(gameField.getGoal()))
-                Gdx.app.log(TAG, "PLAYER ONE is the WINNER!");
-
-            if (playerTwo.getCurrentField().equals(gameField.getGoal()))
-                Gdx.app.log(TAG, "PLAYER TWO is the WINNER!");
-
-
-        }
-
+        touchInputPlayerTurn();
 
         return true;
     }
-
-    private boolean diceSpriteTouched(){
-
-        Vector3 touchpoint = new Vector3();
-
-        if(Gdx.input.isTouched()){
-
-            touchpoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
-            camera.unproject(touchpoint);
-
-            if (checkTouchX(touchpoint) && checkTouchY(touchpoint)){
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean checkTouchX(Vector3 touch){
-
-        if(touch.x >= Main.getDiceSprite().getX() ){
-
-            if (touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth()){
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean checkTouchY(Vector3 touch){
-
-        return touch.y >= 1550 && touch.y <= 1770;
-    }
-
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -454,6 +521,8 @@ public class Controler extends Observable implements InputProcessor{
     public boolean scrolled(int amount) {
         return false;
     }
+
+    //---------------------------------------------------------
 
     /**
      * Process message from network.
