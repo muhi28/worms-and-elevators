@@ -1,7 +1,6 @@
 package com.mygdx.game.GUI;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,9 +11,10 @@ import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
 import com.mygdx.game.game.GameField;
 
-/**
- * Created by dog on 29.05.17.
- */
+import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_DICE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_DICE;
+
 
 class BaseMain extends ApplicationAdapter {
     protected static OrthographicCamera camera;
@@ -31,7 +31,7 @@ class BaseMain extends ApplicationAdapter {
      *
      * @return the dice
      */
-    public  static  Dice getDice() {
+    public static Dice getDice() {
         return dice;
     }
 
@@ -53,7 +53,7 @@ class BaseMain extends ApplicationAdapter {
         return cheatCountDown;
     }
 
-    public static CheatIcon getCheatIcon(){
+    public static CheatIcon getCheatIcon() {
         return cheatIcon;
     }
 
@@ -88,14 +88,12 @@ class BaseMain extends ApplicationAdapter {
      * @param batch the batch
      */
     public static void doDiceAnimation(SpriteBatch batch) {
-        float x = Gdx.graphics.getWidth() / 2 - 100;
-        float y = Gdx.graphics.getHeight() / 2 - 800;
-        float i = 200;
+
         diceSprite.draw(batch);
         Animation a = dice.createAnimation();
 
         if (diceAnimationActive) {
-            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), x, y, i, i);
+            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
             time++;
             if (time > 12) {
                 diceAnimationActive = false;

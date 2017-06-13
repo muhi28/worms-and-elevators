@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.GUI.DisplaySizeRatios;
 import com.mygdx.game.GUI.Main;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
@@ -22,11 +23,13 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 import java.util.Observable;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
+
 
 /**
  * The type Controler.
  */
-public class Controler extends Observable implements InputProcessor{
+public class Controler extends Observable implements InputProcessor {
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
 
     private static Sprite diceSprite;
@@ -68,7 +71,7 @@ public class Controler extends Observable implements InputProcessor{
         playerCheatedList[0] = false;
         playerCheatedList[1] = false;
 
-        if(NetworkManager.isMultiplayer() && NetworkManager.isClient()){
+        if (NetworkManager.isMultiplayer() && NetworkManager.isClient()) {
             playerOneTurn = false;
         }
 
@@ -170,8 +173,7 @@ public class Controler extends Observable implements InputProcessor{
     /**
      * Set current FieldNumber for player.
      *
-     * @param player -> The Player
-     *
+     * @param player      -> The Player
      * @param fieldNumber -> new FieldNumber
      */
     private static void setCurrentFieldnumberForPlayer(Player player, int fieldNumber) {
@@ -312,6 +314,8 @@ public class Controler extends Observable implements InputProcessor{
      */
     //------------------ GESTURE CONTROL PLAYER TURN -----------
     private void checkPlayerTurn() {
+        Gdx.app.log(TAG, String.format("playerOneTurn: %b", playerOneTurn));
+        Gdx.app.log(TAG, String.format("turnBlocked: %b", turnBlocked));
         if (playerOneTurn) {
             if (!wormOne.stillMoving()) {
                 movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
@@ -376,9 +380,9 @@ public class Controler extends Observable implements InputProcessor{
      */
     private boolean checkTouchX(Vector3 touch) {
 
-        if (touch.x >= Main.getDiceSprite().getX()) {
+        if (touch.x >= DisplaySizeRatios.X_DICE) {
 
-            if (touch.x <= Main.getDiceSprite().getX() + Main.getDiceSprite().getWidth()) {
+            if (touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE) {
 
                 return true;
             }
@@ -394,7 +398,8 @@ public class Controler extends Observable implements InputProcessor{
      */
     private boolean checkTouchY(Vector3 touch) {
 
-        return touch.y >= 1550 && touch.y <= 1770;
+
+        return touch.y <= Gdx.graphics.getHeight() - DisplaySizeRatios.Y_DICE && touch.y >= Gdx.graphics.getHeight() - (DisplaySizeRatios.Y_DICE + DisplaySizeRatios.DICE_SIZE);
     }
     //---------------------------------------------------------
 
@@ -438,9 +443,7 @@ public class Controler extends Observable implements InputProcessor{
 
                     return true;
                 }
-            }
-
-            else{
+            } else {
                 if (cheatCountDown.touchDown(screenX, screenY)) {
 
                     CheatCountDown.increaseUsageCounter();
@@ -456,8 +459,8 @@ public class Controler extends Observable implements InputProcessor{
             }
         }
 
-        if (cheatIcon.touchDown(screenX,screenY)){
-            if (NetworkManager.isSinglePlayer()){
+        if (cheatIcon.touchDown(screenX, screenY)) {
+            if (NetworkManager.isSinglePlayer()) {
                 setPlayerCheated();
                 CheatIcon.setVisibility(false);
             }
@@ -473,7 +476,7 @@ public class Controler extends Observable implements InputProcessor{
 
         if (cheatCountDown.cheatingIsActive()) {
 
-            if (NetworkManager.isSinglePlayer()){
+            if (NetworkManager.isSinglePlayer()) {
                 Integer integer = cheatCountDown.stopCountDown();
                 cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
                 playerOneTurn = false;
@@ -482,14 +485,12 @@ public class Controler extends Observable implements InputProcessor{
 
                 return true;
 
-            }
-            else{
+            } else {
                 Integer integer = cheatCountDown.stopCountDown();
 
-                if (Player.getCurrentPlayerIndex() == 0){
+                if (Player.getCurrentPlayerIndex() == 0) {
                     cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-                }
-                else if (Player.getCurrentPlayerIndex() == 1){
+                } else if (Player.getCurrentPlayerIndex() == 1) {
                     cheatMovement(gameField.getPlayer(Player.PLAYER_TWO_ID), integer);
                 }
 
@@ -500,8 +501,6 @@ public class Controler extends Observable implements InputProcessor{
             }
 
         }
-
-
 
 
         return false;

@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.NUMBEROF_HORIZONTAL;
+import static com.mygdx.game.GUI.DisplaySizeRatios.NUMBEROF_VERTICALS;
+
 /**
  * Created by Muhi on 11.04.2017.
  */
 public class GameField {
 
 
-    private static final int NUMBEROF_VERTICALS = 10;
-    private static final int NUMBEROF_HORIZONTAL = 10;
     private static final String TAG = "GameField OriginalList";
     private static final String TAG2 = "GameField SubList";
 

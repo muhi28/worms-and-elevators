@@ -9,6 +9,9 @@ import com.mygdx.game.util.CustomLogger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_MOVEMENT;
+import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_SIZE;
+
 
 /**
  * The type Worm.
@@ -67,7 +70,7 @@ public class Worm extends Actor {
 
 
             if (fieldCurrent.sameField(targetPlayerField)) {
-                batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY());
+                batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY(), WORM_SIZE, WORM_SIZE);
             } else {
                 coordinates = renderPositionCalculator.getCoordinatesBetween(fieldCurrent, targetPlayerField);
                 LOGGER.debug("getCoordinatesBetween");
@@ -83,7 +86,7 @@ public class Worm extends Actor {
             int y = narrowCoordinates(coordinatesCurrent.getY(), targetCoordinates.getY());
 
             coordinatesCurrent = new Coordinates(x, y);
-            batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY());
+            batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY(), WORM_SIZE, WORM_SIZE);
             LOGGER.debug( "move to: " + targetCoordinates);
             LOGGER.debug("current to: " + coordinatesCurrent);
             if (targetCoordinates.equals(coordinatesCurrent)) {
@@ -101,14 +104,26 @@ public class Worm extends Actor {
         coordinates.clear();
     }
 
-
     private static int narrowCoordinates(int sourceCoordinate, int targetCoordinate) {
+        int newCoordinates = narrowCoordinatesPrimitive(sourceCoordinate, targetCoordinate);
+
+        if(newCoordinates >= targetCoordinate )
+        {
+            return targetCoordinate;
+        }
+
+        return newCoordinates;
+    }
+
+
+
+    private static int narrowCoordinatesPrimitive(int sourceCoordinate, int targetCoordinate) {
         if (targetCoordinate > sourceCoordinate) {
-            return sourceCoordinate + 4;
+            return sourceCoordinate + WORM_MOVEMENT;
         } else if (targetCoordinate == sourceCoordinate) {
             return sourceCoordinate;
         } else {
-            return sourceCoordinate - 4;
+            return sourceCoordinate - WORM_MOVEMENT;
         }
     }
 

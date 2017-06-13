@@ -8,13 +8,14 @@ import com.mygdx.game.game.GameField;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.FIELD_SIZE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_START_FIELD;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_START_FIELD;
+
 public class RenderPositionCalculator {
 
-    public static final int FIELD_SIZE = 108;
 
     private final GameField game;
-    private static final int xStartOfField = -108;
-    private static final int yStartOfField = 600;
 
 
     public RenderPositionCalculator(GameField game) {
@@ -22,9 +23,10 @@ public class RenderPositionCalculator {
     }
 
     public Coordinates getCoordinatesOfPlayer(String playerId) {
+
         Field field = game.getPlayer(playerId).getCurrentField();
-        return new Coordinates(xStartOfField + (field.getPosX() * FIELD_SIZE),
-                yStartOfField + (field.getPosY() * FIELD_SIZE));
+        return new Coordinates(X_START_FIELD + (field.getPosX() * FIELD_SIZE),
+                Y_START_FIELD + (field.getPosY() * FIELD_SIZE));
     }
 
     public Field getPlayerField(String playerId) {
@@ -41,7 +43,7 @@ public class RenderPositionCalculator {
             Coordinates coordinatesOfField = getCoordinatesOfField(nextField);
             coordinates.add(coordinatesOfField);
             nextField = nextField.getNextField();
-            if (coordinatesOfField.equals(getCoordinatesOfField(to))){
+            if (coordinatesOfField.equals(getCoordinatesOfField(to))) {
                 break;
             }
         }
@@ -51,8 +53,8 @@ public class RenderPositionCalculator {
 
     public Coordinates getCoordinatesOfField(int fieldNumber) {
         Field field = game.getFieldFrom(fieldNumber);
-        int xPos = field.getPosX() * FIELD_SIZE + xStartOfField;
-        int yPos = field.getPosY() * FIELD_SIZE + yStartOfField;
+        int xPos = field.getPosX() * FIELD_SIZE + X_START_FIELD;
+        int yPos = field.getPosY() * FIELD_SIZE + Y_START_FIELD;
 
         return new Coordinates(xPos, yPos);
 
