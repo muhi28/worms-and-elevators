@@ -1,4 +1,4 @@
-package com.mygdx.game.main_controler;
+package com.mygdx.game.maincontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -261,6 +261,36 @@ public class Controler extends Observable implements InputProcessor {
         Player.switchCurrentPlayerIndex();
     }
 
+    private void checkUsageCounter() {
+
+        CheatCountDown.increaseUsageCounter();
+
+        if (CheatCountDown.getUsageCounter() >= 2) {
+
+            CheatIcon.setVisibility(true);
+        }
+    }
+
+    private boolean cheatUsage(int screenX, int screenY) {
+
+        if (NetworkManager.isSinglePlayer()) {
+
+            if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
+
+                checkUsageCounter();
+            }
+
+            return true;
+        } else {
+            if (cheatCountDown.touchDown(screenX, screenY)) {
+
+                checkUsageCounter();
+            }
+
+            return true;
+        }
+    }
+
     public static boolean getPlayerOneTurn() {
         return playerOneTurn;
     }
@@ -369,15 +399,8 @@ public class Controler extends Observable implements InputProcessor {
      */
     private boolean checkTouchX(Vector3 touch) {
 
-        if (touch.x >= DisplaySizeRatios.X_DICE) {
+        return touch.x >= DisplaySizeRatios.X_DICE && touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE;
 
-            if (touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE) {
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -419,33 +442,7 @@ public class Controler extends Observable implements InputProcessor {
 
         if (Player.getCounter() >= 2) {
 
-            if (NetworkManager.isSinglePlayer()) {
-
-                if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
-
-                    CheatCountDown.increaseUsageCounter();
-
-                    if (CheatCountDown.getUsageCounter() >= 1) {
-
-                        CheatIcon.setVisibility(true);
-                    }
-
-                    return true;
-                }
-            } else {
-                if (cheatCountDown.touchDown(screenX, screenY)) {
-
-                    CheatCountDown.increaseUsageCounter();
-
-                    if (CheatCountDown.getUsageCounter() >= 1) {
-
-                        CheatIcon.setVisibility(true);
-                    }
-
-                    return true;
-                }
-
-            }
+            return cheatUsage(screenX, screenY);
         }
 
         if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer()) {

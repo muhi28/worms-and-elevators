@@ -34,14 +34,14 @@ public class DisplaySizeRatios {
         X_START_FIELD = -FIELD_SIZE;
         Y_START_FIELD = Gdx.graphics.getHeight() - ((NUMBEROF_HORIZONTAL + 1) * FIELD_SIZE);
 
-        DICE_SIZE = Gdx.graphics.getWidth() / 3;
+        DICE_SIZE = Gdx.graphics.getWidth() / 5;
         X_DICE = Gdx.graphics.getWidth() / 2 - (DICE_SIZE / 2);
         Y_DICE = (int) (DICE_SIZE * 0.5);
 
         WORM_SIZE = FIELD_SIZE;
         WORM_MOVEMENT = 5;
 
-        X_LABEL = FIELD_SIZE / 2;
+        X_LABEL = Gdx.graphics.getWidth() / 5;
         Y_LABEL = Y_START_FIELD;
         printSettings();
 
