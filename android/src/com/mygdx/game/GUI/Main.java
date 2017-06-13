@@ -28,6 +28,12 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_DICE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_LABEL;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_DICE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
+
 /**
  * The type Main.
  */
@@ -65,6 +71,7 @@ public class Main extends BaseMain implements Observer {
      * @param playerList the wormcolor
      */
     public Main(List<String> playerList, Long randomSeedForDice) {
+
         Elevator.random = new Random(randomSeedForDice);
         gameField = GameField.createGameField();
         this.renderPositionCalculator = new RenderPositionCalculator(gameField);
@@ -77,7 +84,7 @@ public class Main extends BaseMain implements Observer {
 
     @Override
     public void create() {
-
+        DisplaySizeRatios.calculateRatios();
         batch = new SpriteBatch();
         cheatCountDown = new CheatCountDown();
         cheatIcon = new CheatIcon();
@@ -102,7 +109,7 @@ public class Main extends BaseMain implements Observer {
         // DICE
         dice = new Dice(6, true, randomSeedDice);
         diceSprite = new Sprite(dice.getDiceTexture());
-        diceSprite.setBounds(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 2 - 800, 200, 200);
+        diceSprite.setBounds(X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
 
 
         //Texture des Wurms
@@ -163,7 +170,6 @@ public class Main extends BaseMain implements Observer {
     @Override
     public void render() {
 
-
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -194,9 +200,9 @@ public class Main extends BaseMain implements Observer {
 
         if (!playerOne.stillMoving() && !Controler.getPlayerOneTurn()) {
 
-            font.draw(batch, "Spieler 2 ist an der Reihe", 210, 675);
+            font.draw(batch, "Spieler 2 ist an der Reihe", X_LABEL, Y_LABEL);
         } else if (!playerTwo.stillMoving() && Controler.getPlayerOneTurn()) {
-            font.draw(batch, "Spieler 1 ist an der Reihe", 210, 675);
+            font.draw(batch, "Spieler 1 ist an der Reihe", X_LABEL, Y_LABEL);
         }
     }
 
