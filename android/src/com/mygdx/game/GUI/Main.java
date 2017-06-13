@@ -1,13 +1,16 @@
 package com.mygdx.game.GUI;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.cheat.CheatCountDown;
@@ -20,10 +23,13 @@ import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
-import com.mygdx.game.main_controler.Controler;
+import com.mygdx.game.maincontroller.Controler;
+import com.mygdx.game.netwoking.NetworkManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -37,7 +43,8 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
 /**
  * The type Main.
  */
-public class Main extends BaseMain implements Observer {
+public class Main extends ApplicationAdapter implements Observer {
+
 
     private SpriteBatch batch;
     private Controler controler;
@@ -65,6 +72,17 @@ public class Main extends BaseMain implements Observer {
 
     private Long lastTimeShaken;
 
+
+    protected static OrthographicCamera camera;
+    protected static Dice dice;
+    protected static GameField gameField;
+    protected static CheatCountDown cheatCountDown;
+    protected static CheatIcon cheatIcon;
+    protected Texture diceTextureIdle;
+    protected Map<Integer, Texture> diceTextures = new HashMap<>();
+    private static int time = 0;
+    private static boolean diceAnimationActive = false;
+
     /**
      * Instantiates a new Main.
      *
@@ -84,6 +102,7 @@ public class Main extends BaseMain implements Observer {
 
     @Override
     public void create() {
+
         DisplaySizeRatios.calculateRatios();
         batch = new SpriteBatch();
         cheatCountDown = new CheatCountDown();
@@ -107,9 +126,13 @@ public class Main extends BaseMain implements Observer {
 
 
         // DICE
-        dice = new Dice(6, true, randomSeedDice);
-        diceSprite = new Sprite(dice.getDiceTexture());
-        diceSprite.setBounds(X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
+        int diceRange = 6;
+        dice = new Dice(diceRange, randomSeedDice);
+
+        diceTextureIdle = new Texture(Gdx.files.internal("dice_idle.png"));
+        for (int i = 1; i <= diceRange; i++) {
+            diceTextures.put(i, new Texture(Gdx.files.internal("dice_" + i + ".png")));
+        }
 
 
         //Texture des Wurms
@@ -198,11 +221,23 @@ public class Main extends BaseMain implements Observer {
 
     private void playerSwitchTextOutput() {
 
+
         if (!playerOne.stillMoving() && !Controler.getPlayerOneTurn()) {
 
-            font.draw(batch, "Spieler 2 ist an der Reihe", X_LABEL, Y_LABEL);
+            if (NetworkManager.isMultiplayer()) {
+                font.draw(batch, "Andere Spieler  ist an der Reihe!", X_LABEL, Y_LABEL);
+            } else {
+                font.draw(batch, "Spieler 2 ist an der Reihe", X_LABEL, Y_LABEL);
+            }
+
         } else if (!playerTwo.stillMoving() && Controler.getPlayerOneTurn()) {
-            font.draw(batch, "Spieler 1 ist an der Reihe", X_LABEL, Y_LABEL);
+            if (NetworkManager.isMultiplayer()) {
+                font.draw(batch, "Du bist an der Reihe!", X_LABEL, Y_LABEL);
+
+            } else {
+                font.draw(batch, "Spieler 1 ist an der Reihe", X_LABEL, Y_LABEL);
+            }
+
         }
     }
 
@@ -222,5 +257,82 @@ public class Main extends BaseMain implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+    }
+
+
+    /**
+     * Gets dice.
+     *
+     * @return the dice
+     */
+    public static Dice getDice() {
+        return dice;
+    }
+
+    /**
+     * Gets game field.
+     *
+     * @return the game field
+     */
+    public static GameField getGameField() {
+        return gameField;
+    }
+
+    /**
+     * Gets cheat countdown.
+     *
+     * @return the cheat countdown
+     */
+    public static CheatCountDown getCheatCountdown() {
+        return cheatCountDown;
+    }
+
+    public static CheatIcon getCheatIcon() {
+        return cheatIcon;
+    }
+
+    /**
+     * Gets camera.
+     *
+     * @return the camera
+     */
+    public static OrthographicCamera getCamera() {
+        return camera;
+    }
+
+
+    /**
+     * Sets dice animation true.
+     */
+    public static void setDiceAnimationTrue() {
+        diceAnimationActive = true;
+    }
+
+    public Texture getDiceTexture() {
+        if (dice.getResult() == null)
+            return diceTextureIdle;
+        return diceTextures.get(dice.getResult());
+    }
+
+    /**
+     * Do dice animation.
+     *
+     * @param batch the batch
+     */
+    public void doDiceAnimation(SpriteBatch batch) {
+
+        if (diceAnimationActive) {
+            Animation a = dice.createAnimation(diceTextures);
+            batch.draw((TextureRegion) a.getKeyFrame((float) (Math.random() * dice.getRange() + 1), true), X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
+            time++;
+            if (time > 12) {
+                diceAnimationActive = false;
+                time = 0;
+                batch.draw(getDiceTexture(), X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
+            }
+
+        } else {
+            batch.draw(getDiceTexture(), X_DICE, Y_DICE, DICE_SIZE, DICE_SIZE);
+        }
     }
 }

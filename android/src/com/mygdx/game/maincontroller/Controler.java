@@ -1,4 +1,4 @@
-package com.mygdx.game.main_controler;
+package com.mygdx.game.maincontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -261,6 +261,41 @@ public class Controler extends Observable implements InputProcessor {
         Player.switchCurrentPlayerIndex();
     }
 
+    private void checkUsageCounter() {
+
+        CheatCountDown.increaseUsageCounter();
+
+        if (CheatCountDown.getUsageCounter() >= 2) {
+
+            CheatIcon.setVisibility(true);
+        }
+    }
+
+    private boolean cheatUsage(int screenX, int screenY) {
+
+        if (NetworkManager.isSinglePlayer()) {
+
+            if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
+
+                checkUsageCounter();
+
+                return true;
+            }
+
+
+        } else {
+            if (cheatCountDown.touchDown(screenX, screenY)) {
+
+                checkUsageCounter();
+
+                return true;
+            }
+
+
+        }
+        return false;
+    }
+
     public static boolean getPlayerOneTurn() {
         return playerOneTurn;
     }
@@ -316,8 +351,6 @@ public class Controler extends Observable implements InputProcessor {
 
         if (playerOneTurn && !wormOne.stillMoving()) {
                 movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
-                diceSprite = Main.getDiceSprite();
-                diceSprite.setTexture(Main.getDice().getDiceTexture());
                 Main.setDiceAnimationTrue();
                 playerOneTurn = false;
 
@@ -329,8 +362,6 @@ public class Controler extends Observable implements InputProcessor {
         } else if (NetworkManager.isSinglePlayer() && !wormTwo.stillMoving()) {
 
                 movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
-                diceSprite = Main.getDiceSprite();
-                diceSprite.setTexture(Main.getDice().getDiceTexture());
                 Main.setDiceAnimationTrue();
                 if (!turnBlocked) {
                     playerOneTurn = true;
@@ -373,15 +404,8 @@ public class Controler extends Observable implements InputProcessor {
      */
     private boolean checkTouchX(Vector3 touch) {
 
-        if (touch.x >= DisplaySizeRatios.X_DICE) {
+        return touch.x >= DisplaySizeRatios.X_DICE && touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE;
 
-            if (touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE) {
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -423,32 +447,8 @@ public class Controler extends Observable implements InputProcessor {
 
         if (Player.getCounter() >= 2) {
 
-            if (NetworkManager.isSinglePlayer()) {
-
-                if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
-
-                    CheatCountDown.increaseUsageCounter();
-
-                    if (CheatCountDown.getUsageCounter() >= 1) {
-
-                        CheatIcon.setVisibility(true);
-                    }
-
-                    return true;
-                }
-            } else {
-                if (cheatCountDown.touchDown(screenX, screenY)) {
-
-                    CheatCountDown.increaseUsageCounter();
-
-                    if (CheatCountDown.getUsageCounter() >= 1) {
-
-                        CheatIcon.setVisibility(true);
-                    }
-
-                    return true;
-                }
-
+            if (cheatUsage(screenX, screenY)) {
+                return true;
             }
         }
 
@@ -525,10 +525,8 @@ public class Controler extends Observable implements InputProcessor {
         if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
             this.setChanged();
             Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
-
             movement(playerTwo, Main.getDice());
-            diceSprite = Main.getDiceSprite();
-            diceSprite.setTexture(Main.getDice().getDiceTexture());
+
             Main.setDiceAnimationTrue();
             playerOneTurn = true;
             camera.update();
