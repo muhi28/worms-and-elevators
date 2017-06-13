@@ -115,6 +115,9 @@ public class Controler extends Observable implements InputProcessor {
             return;
         }
         int eyeNumber = dice.rollTheDice();
+        if (player.getCurrentField().getFieldnumber() > 91 && player.getCurrentField().getFieldnumber() - eyeNumber < 91) {
+            eyeNumber = player.getCurrentField().getFieldnumber() - 91;
+        }
         for (int i = 0; i < eyeNumber; i++) {
             player.move();
         }
