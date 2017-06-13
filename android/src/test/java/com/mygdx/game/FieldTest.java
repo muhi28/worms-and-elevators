@@ -46,7 +46,7 @@ public class FieldTest {
     /**
      * Test next field exception.
      */
-    @Test (expected = NullPointerException.class)
+    @Test(expected = MyRuntimeException.class)
     public void testNextFieldException(){
 
         Player player = gameField.getPlayer(Player.PLAYER_ONE_ID);
