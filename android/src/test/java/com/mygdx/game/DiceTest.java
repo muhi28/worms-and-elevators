@@ -23,7 +23,7 @@ public class DiceTest {
     @Before
     public void createDice() {
 
-        dice = new Dice(6, false);
+        dice = new Dice(6);
 
     }
 
@@ -42,7 +42,7 @@ public class DiceTest {
     @Test
     public void testMinDiceResult() {
 
-        int range = dice.rollTheDice();
+        Integer range = dice.rollTheDice();
 
         assertEquals(dice.getResult(), range);
 
@@ -54,11 +54,11 @@ public class DiceTest {
     @Test
     public void testMaxDiceResult() {
 
-        int range = dice.rollTheDice();
+        Integer range = dice.rollTheDice();
 
         assertEquals(dice.getResult(), range);
 
-        Assert.assertNotEquals(89, dice.getResult());
+        Assert.assertNotEquals(null, dice.getResult());
 
     }
 

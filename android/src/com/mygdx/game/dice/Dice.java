@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,36 +18,19 @@ import java.util.Random;
 public class Dice {
 
     private int range;
-    private Texture diceTexture;
-    private final boolean loadPictures;
     private final Random random;
 
 
-    private int result;
-
-
-    /**
-     * Instantiates a new Dice.
-     *
-     * @param range        the range
-     * @param loadPictures the load pictures
-     */
-
-    public Dice(int range, boolean loadPictures) {
-        this(range, loadPictures, new Random().nextLong());
-    }
+    private Integer result;
 
     /*
           Constructor initializes range with delivered value and dice_p with dice_idle.png
          */
-    public Dice(int range, boolean loadPictures, long randomSeed) {
+    public Dice(int range, long randomSeed) {
         this.range = range;
-        if (loadPictures) {
-            this.diceTexture = new Texture(Gdx.files.internal("dice_idle.png"));
-        }
-        this.loadPictures = loadPictures;
         this.random = new Random(randomSeed);
     }
+
 
     /**
      * Instantiates a new Dice.
@@ -54,7 +38,7 @@ public class Dice {
      * @param range the range
      */
     public Dice(int range) {
-        this(range, true);
+        this(range,  new Random().nextLong());
     }
 
     /**
@@ -71,18 +55,10 @@ public class Dice {
      *
      * @return the result
      */
-    public int getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    /**
-     * Gets dice texture.
-     *
-     * @return the dice texture
-     */
-    public Texture getDiceTexture() {
-        return diceTexture;
-    }
 
     /**
      * The method rollTheDice generates a random number and sets the texture of the dice.
@@ -92,21 +68,12 @@ public class Dice {
     public int rollTheDice() {
 
         result = random.nextInt(this.range - 1 + 1) + 1;         //(max - min + 1) + min
-//        result = (int) (Math.random() * this.range + 1);
-        /*
-        sets diceTexture on the rolled texture
-         */
-        if (loadPictures) {
-
-            this.diceTexture = new Texture(Gdx.files.internal("dice_" + result + ".png"));
-
-        }
-
         return result;
     }
 
+
     /**
-     * The method cheatDice sets the diceTexture on the texture the player clicked.
+     * The method cheatDice sets the diceTextureIdle on the texture the player clicked.
      *
      * @param dice_p the dice p
      * @return : the int value of the dice number
@@ -132,27 +99,27 @@ public class Dice {
         }
 
         /*
-        sets diceTexture depending on the given texture
+        sets diceTextureIdle depending on the given texture
          */
         /*
         switch (result) {
             case 1:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_one.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_one.png")));
                 break;
             case 2:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_two.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_two.png")));
                 break;
             case 3:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_three.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_three.png")));
                 break;
             case 4:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_four.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_four.png")));
                 break;
             case 5:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_five.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_five.png")));
                 break;
             case 6:
-                this.diceTexture = (new Texture(Gdx.files.internal("dice_six.png")));
+                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_six.png")));
                 break;
             default:
                 System.out.println("Falscher Value uebergeben!");
@@ -167,11 +134,11 @@ public class Dice {
      *
      * @return the animation
      */
-    public Animation createAnimation() {
+    public Animation createAnimation(Map<Integer, Texture> textureMap) {
         TextureRegion[] text = new TextureRegion[this.getRange()];
 
         for (int i = 0; i <= this.getRange() - 1; i++) {
-            text[i] = new TextureRegion(new Texture(Gdx.files.internal("dice_" + (i + 1) + ".png")));
+            text[i] = new TextureRegion(textureMap.get(i+1));
         }
 
         //Cast to Object because of warning.

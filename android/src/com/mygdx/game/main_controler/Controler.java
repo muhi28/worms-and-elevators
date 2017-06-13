@@ -316,8 +316,6 @@ public class Controler extends Observable implements InputProcessor {
 
         if (playerOneTurn && !wormOne.stillMoving()) {
                 movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
-                diceSprite = Main.getDiceSprite();
-                diceSprite.setTexture(Main.getDice().getDiceTexture());
                 Main.setDiceAnimationTrue();
                 playerOneTurn = false;
 
@@ -329,8 +327,6 @@ public class Controler extends Observable implements InputProcessor {
         } else if (NetworkManager.isSinglePlayer() && !wormTwo.stillMoving()) {
 
                 movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
-                diceSprite = Main.getDiceSprite();
-                diceSprite.setTexture(Main.getDice().getDiceTexture());
                 Main.setDiceAnimationTrue();
                 if (!turnBlocked) {
                     playerOneTurn = true;
@@ -525,10 +521,8 @@ public class Controler extends Observable implements InputProcessor {
         if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
             this.setChanged();
             Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
-
             movement(playerTwo, Main.getDice());
-            diceSprite = Main.getDiceSprite();
-            diceSprite.setTexture(Main.getDice().getDiceTexture());
+
             Main.setDiceAnimationTrue();
             playerOneTurn = true;
             camera.update();
