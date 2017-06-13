@@ -452,7 +452,7 @@ public class Controler extends Observable implements InputProcessor {
             }
         }
 
-        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer()) {
+        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer() && !playerOneTurn) {
                 setPlayerCheated();
                 CheatIcon.setVisibility(false);
 
