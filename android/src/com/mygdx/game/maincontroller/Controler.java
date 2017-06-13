@@ -278,17 +278,22 @@ public class Controler extends Observable implements InputProcessor {
             if (cheatCountDown.touchDown(screenX, screenY) && Player.getCurrentPlayerIndex() == 0) {
 
                 checkUsageCounter();
+
+                return true;
             }
 
-            return true;
+
         } else {
             if (cheatCountDown.touchDown(screenX, screenY)) {
 
                 checkUsageCounter();
+
+                return true;
             }
 
-            return true;
+
         }
+        return false;
     }
 
     public static boolean getPlayerOneTurn() {
@@ -442,7 +447,9 @@ public class Controler extends Observable implements InputProcessor {
 
         if (Player.getCounter() >= 2) {
 
-            return cheatUsage(screenX, screenY);
+            if (cheatUsage(screenX, screenY)) {
+                return true;
+            }
         }
 
         if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer()) {
