@@ -35,15 +35,15 @@
 
         Wer als erster seine Spielfigur ins Ziel gebracht hat, gewinnt das Spiel.
 
-        Spielablauf: Bei einem Spiel können maximal 4 Personen im Multiplayermodus teilnehmen bzw. mindestens 1 Person im Singleplayermodus.
-        Jeder der 4 Spieler würfelt einmal. Der Spieler der die höchste Augenzahl gewürfelt hat beginnt mit dem ersten Spielzug.
+        Spielablauf: Bei einem Spiel können maximal 2 Personen im Multiplayermodus teilnehmen bzw. mindestens 1 Person im Singleplayermodus.
+        Jeder der 2 Spieler würfelt einmal. Der Spieler der die höchste Augenzahl gewürfelt hat beginnt mit dem ersten Spielzug.
         Der erste Spieler ist am Zug und kann durch das schütteln des Smartphones würfeln.
         Nach dem der erste Spieler seine Spielfigur bewegt hat, ist ein anderer Spieler am Zug.
         Um das Spiel lustiger zu gestalten kann man auch Schummeln. Wenn ein Spieler bei seinem Zug schummeln will,
         kann er durch das betätigen des Buttons "schummeln" eine Augenzahl auswählen. Nachdem der Spieler
         geschummelt hat wird ein Symbol auf seinem Smartphone angezeigt. Um zu erkennen ob ein Spieler geschummelt hat,
         muss man nun auf den Bildschirm vom Spieler schauen. Findet man das Schummler-Symbol auf dem Bildschirm des Spielers,
-        so muss dieser den Button "zurück" anklicken um zur Ausgangsposition zurück zu kehren.
+        so muss dieser dieses Icon anklicken, wodurch er eine Runde aussetzen muss.
 
 
     </string>

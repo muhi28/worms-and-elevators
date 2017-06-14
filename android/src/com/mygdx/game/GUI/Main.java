@@ -225,9 +225,9 @@ public class Main extends ApplicationAdapter implements Observer {
         if (!playerOne.stillMoving() && !Controler.getPlayerOneTurn()) {
 
             if (NetworkManager.isMultiplayer()) {
-                font.draw(batch, "Andere Spieler  ist an der Reihe!", X_LABEL, Y_LABEL);
+                font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL, Y_LABEL);
             } else {
-                font.draw(batch, "Spieler 2 ist an der Reihe", X_LABEL, Y_LABEL);
+                font.draw(batch, "COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
         } else if (!playerTwo.stillMoving() && Controler.getPlayerOneTurn()) {
@@ -243,7 +243,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
     private void checkDeviceShaken() {
 
-        if (TimeUtils.millis() > (lastTimeShaken + 500)) {
+        if (TimeUtils.millis() > (lastTimeShaken + 350)) {
 
             boolean shaken = controler.checkAcceleration();
 

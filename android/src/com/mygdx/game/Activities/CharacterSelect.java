@@ -16,10 +16,10 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 import java.util.Random;
 
-import static com.mygdx.game.Players.PlayerColor.RED;
+import static com.mygdx.game.Players.PlayerColor.ROT;
 
 /**
- * Created by Muhi on 04.04.2017.
+ *Created by Muhi on 04.04.2017.
  */
 
 /**
@@ -31,6 +31,9 @@ public class CharacterSelect extends Activity {
     public static final String PLAYER_COLOR_KEY = "Player_Color";
     public static final String OTHER_PLAYER_COLOR_KEY = "Other_Player_Color";
     public static final String SEED_RANDOM = "RANDOM_SEED";
+    private final String CHOOSE_PLAYER = "Bitte eine Spielfigur auswählen!";
+    private final String WAIT_FOR_OTHER = "Bitte warten Sie auf den anderen Spieler";
+
 
     private Intent intent;
 
@@ -91,25 +94,21 @@ public class CharacterSelect extends Activity {
     public void onClickStartGame(View view) {
         NetworkManager.send(PLAYER_READY_MESSAGE + seedRandom, true);
 
-        if (NetworkManager.isMultiplayer()) {
-            if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {
-                setMessage("Please wait for other player");
-                chosenPlayer.setVisibility(View.VISIBLE);
+        if (NetworkManager.isMultiplayer() && checkIfOtherIsReady()) {
+
+            return;
+        } else if (NetworkManager.isSinglePlayer()) {
+
+            if ("".equals(chosenPlayer.getText().toString()) || CHOOSE_PLAYER.equals(chosenPlayer.getText().toString())) {
+
+                setMessage(CHOOSE_PLAYER);
                 return;
             }
-
-            if (!otherPlayerReady) {
-                setMessage("Please wait for other player!");
-                waitingForOtherPlayer = true;
-                return;
-            }
-
-
         }
 
         if (colorOtherPlayer == null) {
 
-            colorOtherPlayer = color.equals(RED) ? PlayerColor.BLUE : RED;
+            colorOtherPlayer = color.equals(ROT) ? PlayerColor.BLAU : ROT;
         }
 
         intent = new Intent(this, MainGameActivity.class);
@@ -122,6 +121,22 @@ public class CharacterSelect extends Activity {
         startActivity(intent);
     }
 
+    private boolean checkIfOtherIsReady() {
+
+        if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {
+            setMessage(WAIT_FOR_OTHER);
+            chosenPlayer.setVisibility(View.VISIBLE);
+            return true;
+        }
+
+        if (!otherPlayerReady) {
+            setMessage(WAIT_FOR_OTHER);
+            waitingForOtherPlayer = true;
+            return true;
+        }
+
+        return false;
+    }
     private void setMessage(final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -146,7 +161,7 @@ public class CharacterSelect extends Activity {
     }
 
     /**
-     * Red buttonclicked.
+     * Red button clicked.
      *
      * @param view the view
      */
@@ -155,12 +170,12 @@ public class CharacterSelect extends Activity {
         setMessage("Es wurde die rote Spielfigur gewählt.");
 
 
-        color = RED;
+        color = PlayerColor.ROT;
         sendSelectedColor();
     }
 
     /**
-     * Blue buttonclicked.
+     * Blue button clicked.
      *
      * @param view the view
      */
@@ -168,7 +183,7 @@ public class CharacterSelect extends Activity {
 
         setMessage("Es wurde die blaue Spielfigur gewählt.");
 
-        color = PlayerColor.BLUE;
+        color = PlayerColor.BLAU;
         sendSelectedColor();
     }
 
@@ -181,7 +196,7 @@ public class CharacterSelect extends Activity {
 
         setMessage("Es wurde die grüne Spielfigur gewählt.");
 
-        color = PlayerColor.GREEN;
+        color = PlayerColor.GRÜN;
         sendSelectedColor();
     }
 
@@ -194,7 +209,7 @@ public class CharacterSelect extends Activity {
 
         setMessage("Es wurde die gelbe Spielfigur gewählt.");
 
-        color = PlayerColor.YELLOW;
+        color = PlayerColor.GELB;
         sendSelectedColor();
     }
 
@@ -216,14 +231,14 @@ public class CharacterSelect extends Activity {
             if (waitingForOtherPlayer) {
                 onClickStartGame(findViewById(R.id.start_game_button));
             } else {
-                setMessage("Other player is ready!");
+                setMessage("Anderer Spieler ist bereit!");
             }
         }
 
         PlayerColor playerColor = PlayerColor.getFromString(inputString);
 
         if (playerColor != null) {
-            setMessage("Other player chose worm with color: " + inputString);
+            setMessage(String.format("Anderer Spieler wählte die %s Spielfigur", inputString + "e"));
             this.colorOtherPlayer = playerColor;
             GameSync.getSync().otherPlayerHasSelectedWorm();
         }

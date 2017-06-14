@@ -7,19 +7,19 @@ public enum PlayerColor {
     /**
      * Blue player color.
      */
-    BLUE,
+    BLAU,
     /**
      * Red player color.
      */
-    RED,
+    ROT,
     /**
      * Yellow player color.
      */
-    YELLOW,
+    GELB,
     /**
      * Green player color.
      */
-    GREEN;
+    GRÜN;
 
     @Override
     public String toString() {

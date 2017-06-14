@@ -43,7 +43,7 @@ public final class NetworkUtils {
      * @return the string
      */
     public String wifiIpAddress() {
-        WifiManager wifiManager = (WifiManager) appContext.getSystemService(WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) appContext.getApplicationContext().getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 
         // Convert little-endian to big-endianif needed
