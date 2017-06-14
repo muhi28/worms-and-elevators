@@ -68,8 +68,6 @@ public class Dice {
      */
     public int rollTheDice() {
 
-        SoundHandler.getMusicManager().shuffle();
-
         result = random.nextInt(this.range - 1 + 1) + 1;         //(max - min + 1) + min
         return result;
     }

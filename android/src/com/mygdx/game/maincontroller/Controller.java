@@ -212,6 +212,7 @@ public class Controller extends Observable implements InputProcessor {
         if (getWorm(player).stillMoving()) {
             return;
         }
+        SoundHandler.getMusicManager().shuffle();
         int eyeNumber = dice.rollTheDice();
         if (player.getCurrentField().getFieldnumber() > 91 && player.getCurrentField().getFieldnumber() - eyeNumber < 91) {
             eyeNumber = player.getCurrentField().getFieldnumber() - 91;
