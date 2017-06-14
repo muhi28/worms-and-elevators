@@ -23,8 +23,9 @@ import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
-import com.mygdx.game.maincontroller.Controler;
+import com.mygdx.game.maincontroller.Controller;
 import com.mygdx.game.netwoking.NetworkManager;
+import com.mygdx.game.util.SoundHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
     private SpriteBatch batch;
-    private Controler controler;
+    private Controller controller;
     private Sprite texturePlayerOne;
     private Sprite texturePlayerTwo;
     private Texture tileOne;
@@ -62,7 +63,7 @@ public class Main extends ApplicationAdapter implements Observer {
     /**
      * The Stage.
      */
-    private Stage stage;
+    private static Stage stage;
     /**
      * The Player one.
      */
@@ -82,6 +83,7 @@ public class Main extends ApplicationAdapter implements Observer {
     protected Map<Integer, Texture> diceTextures = new HashMap<>();
     private static int time = 0;
     private static boolean diceAnimationActive = false;
+    private Map<Integer, Texture> fieldTextures = new HashMap<>();
 
     /**
      * Instantiates a new Main.
@@ -108,21 +110,20 @@ public class Main extends ApplicationAdapter implements Observer {
         cheatCountDown = new CheatCountDown();
         cheatIcon = new CheatIcon();
 
+        SoundHandler.initializeMusicManager();
 
         stage = new Stage();
         camera = new OrthographicCamera();
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-        Controler.setSinglePlayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
+        Controller.setSinglePlayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
 
         //initialisieren der Textur der Spielfigur
         texturePlayerOne = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorOne))));
         texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorTwo))));
 
 
-        tileOne = new Texture(Gdx.files.internal("background_grass.png"));
-        tileTwo = new Texture(Gdx.files.internal("background_elevator.png"));
 
 
         // DICE
@@ -133,6 +134,8 @@ public class Main extends ApplicationAdapter implements Observer {
         for (int i = 1; i <= diceRange; i++) {
             diceTextures.put(i, new Texture(Gdx.files.internal("dice_" + i + ".png")));
         }
+
+        fillFieldTexturesMap(fieldTextures);
 
 
         //Texture des Wurms
@@ -159,36 +162,11 @@ public class Main extends ApplicationAdapter implements Observer {
 
 
         //setzen des InputProcessors der GUI
-        controler = new Controler(playerOne, playerTwo);
-        Gdx.input.setInputProcessor(controler.getInputProcessor());
+        controller = new Controller(playerOne, playerTwo);
+        Gdx.input.setInputProcessor(controller.getInputProcessor());
 
         lastTimeShaken = TimeUtils.millis();
     }
-
-    private void setFieldTextures(List<Field> fields) {
-
-        for (int i = 1; i <= fields.size(); i++) {
-
-
-            SingleField singleField = new SingleField(tileOne, renderPositionCalculator, i);
-            stage.addActor(singleField);
-        }
-
-    }
-
-    private void generateElevatorFieldTextures() {
-
-        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
-        int[] elevatorFields = Controler.getElevatorFields();
-
-        for (int elevatorField : elevatorFields) {
-
-            SingleField singleField = new SingleField(tileTwo, renderPositionCalculator, elevatorField);
-            stage.addActor(singleField);
-        }
-
-    }
-
 
     @Override
     public void render() {
@@ -198,7 +176,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         stage.addActor(playerOne);
 
-        if (Controler.getSinglePlayerBoolean()) {
+        if (Controller.getSinglePlayerBoolean()) {
             stage.addActor(playerTwo);
         }
 
@@ -219,10 +197,14 @@ public class Main extends ApplicationAdapter implements Observer {
 
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+    }
+
     private void playerSwitchTextOutput() {
 
 
-        if (!playerOne.stillMoving() && !Controler.getPlayerOneTurn()) {
+        if (!playerOne.stillMoving() && !Controller.getPlayerOneTurn()) {
 
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL, Y_LABEL);
@@ -230,7 +212,7 @@ public class Main extends ApplicationAdapter implements Observer {
                 font.draw(batch, "COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
-        } else if (!playerTwo.stillMoving() && Controler.getPlayerOneTurn()) {
+        } else if (!playerTwo.stillMoving() && Controller.getPlayerOneTurn()) {
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Du bist an der Reihe!", X_LABEL, Y_LABEL);
 
@@ -245,7 +227,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         if (TimeUtils.millis() > (lastTimeShaken + 350)) {
 
-            boolean shaken = controler.checkAcceleration();
+            boolean shaken = controller.checkAcceleration();
 
             Gdx.app.log("GESTURE CONTROLL", String.format("Device shaken: %b", shaken));
 
@@ -254,11 +236,54 @@ public class Main extends ApplicationAdapter implements Observer {
         }
     }
 
+    private void fillFieldTexturesMap(Map<Integer, Texture> fieldTextures) {
 
-    @Override
-    public void update(Observable observable, Object o) {
+        fieldTextures.put(1, new Texture(Gdx.files.internal("background_grass.png")));
+        fieldTextures.put(2, new Texture(Gdx.files.internal("elevator_closed.png")));
+        fieldTextures.put(3, new Texture(Gdx.files.internal("start_field.png")));
+        fieldTextures.put(4, new Texture(Gdx.files.internal("goal_field.png")));
+
     }
 
+    private void setFieldTextures(List<Field> fields) {
+
+        for (int i = 1; i <= fields.size(); i++) {
+
+            stage.addActor(checkForFieldTexture(i, renderPositionCalculator, fieldTextures));
+        }
+
+    }
+
+    private void generateElevatorFieldTextures() {
+
+        // generiert die Aufzuege und plaziert sie auf dem Spielfeld
+        int[] elevatorFields = Controller.getElevatorFields();
+
+        for (int elevatorField : elevatorFields) {
+
+            SingleField singleField = new SingleField(fieldTextures.get(2), renderPositionCalculator, elevatorField);
+            stage.addActor(singleField);
+        }
+
+    }
+
+    private SingleField checkForFieldTexture(int i, RenderPositionCalculator renderPositionCalculator, Map<Integer, Texture> list) {
+        SingleField singleField;
+        switch (i) {
+
+            case 1:
+                singleField = new SingleField(list.get(3), renderPositionCalculator, i);
+                break;
+            case 91:
+                singleField = new SingleField(list.get(4), renderPositionCalculator, i);
+                break;
+
+            default:
+                singleField = new SingleField(list.get(1), renderPositionCalculator, i);
+                break;
+        }
+        return singleField;
+    }
 
     /**
      * Gets dice.
@@ -300,6 +325,10 @@ public class Main extends ApplicationAdapter implements Observer {
         return camera;
     }
 
+    public static Stage getStage() {
+        return stage;
+    }
+
 
     /**
      * Sets dice animation true.
@@ -308,7 +337,7 @@ public class Main extends ApplicationAdapter implements Observer {
         diceAnimationActive = true;
     }
 
-    public Texture getDiceTexture() {
+    private Texture getDiceTexture() {
         if (dice.getResult() == null)
             return diceTextureIdle;
         return diceTextures.get(dice.getResult());
@@ -319,7 +348,7 @@ public class Main extends ApplicationAdapter implements Observer {
      *
      * @param batch the batch
      */
-    public void doDiceAnimation(SpriteBatch batch) {
+    private void doDiceAnimation(SpriteBatch batch) {
 
         if (diceAnimationActive) {
             Animation a = dice.createAnimation(diceTextures);

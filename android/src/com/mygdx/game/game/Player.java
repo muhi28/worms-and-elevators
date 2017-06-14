@@ -14,7 +14,7 @@ import java.util.List;
 public class Player {
 
     public static final String PLAYER_ONE_ID = "ONE";
-    public static final String PLAYER_TWO_ID = "TWo";
+    public static final String PLAYER_TWO_ID = "TWO";
 
     private Field currentField;
     private final String plyerId;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GUI.DisplaySizeRatios;
 import com.mygdx.game.GUI.Main;
+import com.mygdx.game.GUI.WinnerScreen;
 import com.mygdx.game.MyRuntimeException;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
@@ -21,6 +22,7 @@ import com.mygdx.game.game.Player;
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
+import com.mygdx.game.util.SoundHandler;
 
 import java.util.Observable;
 
@@ -28,9 +30,9 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
 
 
 /**
- * The type Controler.
+ * The type Controller.
  */
-public class Controler extends Observable implements InputProcessor {
+public class Controller extends Observable implements InputProcessor {
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
 
     private static Sprite diceSprite;
@@ -44,7 +46,7 @@ public class Controler extends Observable implements InputProcessor {
     private static boolean singlePlayerBoolean = false;
     private static boolean turnBlocked = false;
 
-    private static final String TAG = "Controler";
+    private static final String TAG = "Controller";
     private NetworkTrafficReceiver networkTrafficReceiver;
     private final Worm wormOne;
     private final Worm wormTwo;
@@ -59,12 +61,14 @@ public class Controler extends Observable implements InputProcessor {
     private static boolean[] playerCheatedList = new boolean[2];
     private static boolean playerOneTurn = true;
 
+    private WinnerScreen winnerScreen;
+
     /**
      * Instantiates a new Controller.
      *
      * @param wormOne the worm one
      */
-    public Controler(Worm wormOne, Worm wormTwo) {
+    public Controller(Worm wormOne, Worm wormTwo) {
         setInputProcessor();
         this.wormOne = wormOne;
         this.wormTwo = wormTwo;
@@ -76,7 +80,7 @@ public class Controler extends Observable implements InputProcessor {
             playerOneTurn = false;
         }
 
-        final Controler currentInstance = this;
+        final Controller currentInstance = this;
         networkTrafficReceiver = new NetworkTrafficReceiver(new FromNetworkProcessor() {
             public void receiveMessage(String message) {
                 currentInstance.processMessageFromNetwork(message);
@@ -84,6 +88,100 @@ public class Controler extends Observable implements InputProcessor {
         });
     }
 
+
+    //------------------ INPUT PROCESSOR ----------------------
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        this.setChanged();
+        this.notifyObservers(new Coordinates(screenX, screenY));
+
+        Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
+
+        if (Player.getCounter() >= 2) {
+
+            if (cheatUsage(screenX, screenY)) {
+                return true;
+            }
+        }
+
+        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer() && !playerOneTurn) {
+            setPlayerCheated();
+            CheatIcon.setVisibility(false);
+
+        }
+
+        touchInputPlayerTurn();
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        if (cheatCountDown.cheatingIsActive()) {
+
+            if (NetworkManager.isSinglePlayer()) {
+                Integer integer = cheatCountDown.stopCountDown();
+                cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
+                playerOneTurn = false;
+                Player.resetCounter();
+                camera.update();
+
+                return true;
+
+            } else {
+                Integer integer = cheatCountDown.stopCountDown();
+
+                if (Player.getCurrentPlayerIndex() == 0) {
+                    cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
+                } else if (Player.getCurrentPlayerIndex() == 1) {
+                    cheatMovement(gameField.getPlayer(Player.PLAYER_TWO_ID), integer);
+                }
+
+                Player.resetCounter();
+                camera.update();
+
+                return true;
+            }
+
+        }
+
+
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    //---------------------------------------------------------
 
     /**
      * Gets input processor.
@@ -123,6 +221,7 @@ public class Controler extends Observable implements InputProcessor {
         }
         updateCurrentFieldnumber(player);
         checkField(player);
+        checkForWinner();
         Player.increaseCounter();
         if (!turnBlocked) {
             Player.switchCurrentPlayerIndex();
@@ -159,6 +258,7 @@ public class Controler extends Observable implements InputProcessor {
         }
 
         updateCurrentFieldnumber(player);
+        checkForWinner();
         checkField(player);
         Player.switchCurrentPlayerIndex();
 
@@ -217,6 +317,22 @@ public class Controler extends Observable implements InputProcessor {
 
     }
 
+    private void checkForWinner() {
+
+        if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+            Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
+            winnerScreen = new WinnerScreen(gameField.getPlayerOne().getPlyerId(), Main.getStage());
+            SoundHandler.getMusicManager().finishSound();
+
+        } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+            Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
+            winnerScreen = new WinnerScreen(gameField.getPlayerTwo().getPlyerId(), Main.getStage());
+            SoundHandler.getMusicManager().finishSound();
+        }
+
+    }
     /**
      * Port.
      *
@@ -256,6 +372,7 @@ public class Controler extends Observable implements InputProcessor {
         singlePlayerBoolean = state;
     }
 
+    //-------------------- CHEATING PART ----------------------
     private static void setPlayerCheated() {
         Player.switchCurrentPlayerIndex();
         playerCheatedList[Player.getCurrentPlayerIndex()] = true;
@@ -298,10 +415,7 @@ public class Controler extends Observable implements InputProcessor {
         }
         return false;
     }
-
-    public static boolean getPlayerOneTurn() {
-        return playerOneTurn;
-    }
+    //---------------------------------------------------------
 
     /**
      * Checks whether the device is shaken or not.
@@ -375,6 +489,9 @@ public class Controler extends Observable implements InputProcessor {
         camera.update();
     }
 
+    public static boolean getPlayerOneTurn() {
+        return playerOneTurn;
+    }
     /**
      * This method checks whether the dice sprite is touched or not.
      *
@@ -417,105 +534,8 @@ public class Controler extends Observable implements InputProcessor {
      * false -> touch doesn't match with dice sprite Y-position
      */
     private boolean checkTouchY(Vector3 touch) {
-
-
         return touch.y <= Gdx.graphics.getHeight() - DisplaySizeRatios.Y_DICE && touch.y >= Gdx.graphics.getHeight() - (DisplaySizeRatios.Y_DICE + DisplaySizeRatios.DICE_SIZE);
     }
-    //---------------------------------------------------------
-
-
-    //------------------ INPUT PROCESSOR ----------------------
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        this.setChanged();
-        this.notifyObservers(new Coordinates(screenX, screenY));
-
-        Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
-
-        if (Player.getCounter() >= 2) {
-
-            if (cheatUsage(screenX, screenY)) {
-                return true;
-            }
-        }
-
-        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer() && !playerOneTurn) {
-                setPlayerCheated();
-                CheatIcon.setVisibility(false);
-
-        }
-
-        touchInputPlayerTurn();
-
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        if (cheatCountDown.cheatingIsActive()) {
-
-            if (NetworkManager.isSinglePlayer()) {
-                Integer integer = cheatCountDown.stopCountDown();
-                cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-                playerOneTurn = false;
-                Player.resetCounter();
-                camera.update();
-
-                return true;
-
-            } else {
-                Integer integer = cheatCountDown.stopCountDown();
-
-                if (Player.getCurrentPlayerIndex() == 0) {
-                    cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-                } else if (Player.getCurrentPlayerIndex() == 1) {
-                    cheatMovement(gameField.getPlayer(Player.PLAYER_TWO_ID), integer);
-                }
-
-                Player.resetCounter();
-                camera.update();
-
-                return true;
-            }
-
-        }
-
-
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
     //---------------------------------------------------------
 
     /**

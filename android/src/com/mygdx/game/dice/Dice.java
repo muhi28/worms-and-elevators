@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
+import com.mygdx.game.util.SoundHandler;
 
 import java.util.Map;
 import java.util.Random;
@@ -66,6 +67,8 @@ public class Dice {
      * @return : the random value
      */
     public int rollTheDice() {
+
+        SoundHandler.getMusicManager().shuffle();
 
         result = random.nextInt(this.range - 1 + 1) + 1;         //(max - min + 1) + min
         return result;
