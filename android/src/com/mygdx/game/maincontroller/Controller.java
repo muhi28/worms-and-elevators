@@ -62,7 +62,7 @@ public class Controller extends Observable implements InputProcessor {
     private static boolean playerOneTurn = true;
 
     private WinnerScreen winnerScreen;
-    private boolean winnerDecided = false;
+    private static boolean winnerDecided = false;
 
     /**
      * Instantiates a new Controller.
@@ -418,6 +418,10 @@ public class Controller extends Observable implements InputProcessor {
 
         }
         return false;
+    }
+
+    public static boolean getWinnerDecided() {
+        return winnerDecided;
     }
     //---------------------------------------------------------
 

@@ -7,6 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_LABEL;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
+
+
 /**
  * Created by muhamed on 14.06.17.
  */
@@ -20,7 +24,7 @@ public class WinnerScreen {
 
         winnerText = new Label(playerName + " hat das Spiel gewonnen !!", getLabelStyle());
         winnerText.setWidth(500f);
-        winnerText.setPosition(Gdx.graphics.getWidth() / 2 - winnerText.getWidth(), Gdx.graphics.getHeight() / 2);
+        winnerText.setPosition(X_LABEL - 90, Y_LABEL);
 
         stage.addActor(winnerText);
     }
@@ -28,7 +32,7 @@ public class WinnerScreen {
     private BitmapFont getFont() {
 
         BitmapFont font = new BitmapFont();
-        font.getData().setScale(5f);
+        font.getData().setScale(4f);
         return font;
     }
 

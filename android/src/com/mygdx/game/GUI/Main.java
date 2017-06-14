@@ -210,7 +210,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL, Y_LABEL);
-            } else {
+            } else if (!Controller.getWinnerDecided()) {
                 font.draw(batch, "COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
@@ -218,7 +218,7 @@ public class Main extends ApplicationAdapter implements Observer {
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Du bist an der Reihe!", X_LABEL, Y_LABEL);
 
-            } else {
+            } else if (!Controller.getWinnerDecided()) {
                 font.draw(batch, "Spieler 1 ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
