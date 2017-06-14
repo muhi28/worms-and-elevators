@@ -85,6 +85,8 @@ public class Main extends ApplicationAdapter implements Observer {
     private static boolean diceAnimationActive = false;
     private Map<Integer, Texture> fieldTextures = new HashMap<>();
 
+    private boolean textureBoolean = false;
+
     /**
      * Instantiates a new Main.
      *
@@ -242,6 +244,7 @@ public class Main extends ApplicationAdapter implements Observer {
         fieldTextures.put(2, new Texture(Gdx.files.internal("elevator_closed.png")));
         fieldTextures.put(3, new Texture(Gdx.files.internal("start_field.png")));
         fieldTextures.put(4, new Texture(Gdx.files.internal("goal_field.png")));
+        fieldTextures.put(5, new Texture(Gdx.files.internal("background_grassTwo.png")));
 
     }
 
@@ -276,11 +279,20 @@ public class Main extends ApplicationAdapter implements Observer {
                 break;
             case 91:
                 singleField = new SingleField(list.get(4), renderPositionCalculator, i);
+                textureBoolean = true;
                 break;
 
             default:
-                singleField = new SingleField(list.get(1), renderPositionCalculator, i);
-                break;
+                if (!textureBoolean) {
+                    singleField = new SingleField(list.get(1), renderPositionCalculator, i);
+                    textureBoolean = i % 10 != 0;
+                    break;
+                } else {
+                    singleField = new SingleField(list.get(5), renderPositionCalculator, i);
+                    textureBoolean = i % 10 == 0;
+                    break;
+                }
+
         }
         return singleField;
     }

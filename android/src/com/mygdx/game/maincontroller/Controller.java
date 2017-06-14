@@ -62,6 +62,7 @@ public class Controller extends Observable implements InputProcessor {
     private static boolean playerOneTurn = true;
 
     private WinnerScreen winnerScreen;
+    private boolean winnerDecided = false;
 
     /**
      * Instantiates a new Controller.
@@ -325,12 +326,14 @@ public class Controller extends Observable implements InputProcessor {
             Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
             winnerScreen = new WinnerScreen(gameField.getPlayerOne().getPlyerId(), Main.getStage());
             SoundHandler.getMusicManager().finishSound();
+            winnerDecided = true;
 
         } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
             Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
             winnerScreen = new WinnerScreen(gameField.getPlayerTwo().getPlyerId(), Main.getStage());
             SoundHandler.getMusicManager().finishSound();
+            winnerDecided = true;
         }
 
     }
@@ -427,25 +430,28 @@ public class Controller extends Observable implements InputProcessor {
     //------------------ GESTURE CONTROLLER DETECTION ----------
     public boolean checkAcceleration() {
 
-        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+        if (!winnerDecided) {
 
-            float x = Gdx.input.getAccelerometerX();
-            float y = Gdx.input.getAccelerometerY();
-            float z = Gdx.input.getAccelerometerZ();
+            if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
 
-            accelLast = accelVal;
-            accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
-            float delta = accelVal - accelLast;
-            shake = shake * 0.9f + delta;
+                float x = Gdx.input.getAccelerometerX();
+                float y = Gdx.input.getAccelerometerY();
+                float z = Gdx.input.getAccelerometerZ();
 
-            if (shake > 10) {
+                accelLast = accelVal;
+                accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
+                float delta = accelVal - accelLast;
+                shake = shake * 0.9f + delta;
 
-                checkPlayerTurn();
+                if (shake > 10) {
 
-                return true;
+                    checkPlayerTurn();
+
+                    return true;
+                }
             }
-
         }
+
 
         return false;
     }
@@ -504,15 +510,19 @@ public class Controller extends Observable implements InputProcessor {
 
         Vector3 touchPoint = new Vector3();
 
-        if (Gdx.input.isTouched()) {
+        if (!winnerDecided) {
 
-            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPoint);
+            if (Gdx.input.isTouched()) {
 
-            if (checkTouchX(touchPoint) && checkTouchY(touchPoint)) {
+                touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(touchPoint);
 
-                return true;
+                if (checkTouchX(touchPoint) && checkTouchY(touchPoint)) {
+
+                    return true;
+                }
             }
+
         }
 
         return false;
