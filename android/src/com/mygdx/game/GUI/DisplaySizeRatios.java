@@ -43,7 +43,7 @@ public class DisplaySizeRatios {
         Y_DICE = (int) (DICE_SIZE * 0.5);
 
         WORM_SIZE = FIELD_SIZE;
-        WORM_MOVEMENT = 5;
+        WORM_MOVEMENT = 1;
 
         X_LABEL = Gdx.graphics.getWidth() / 5;
         Y_LABEL = Y_START_FIELD;
