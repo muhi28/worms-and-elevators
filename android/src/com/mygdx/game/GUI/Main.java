@@ -51,8 +51,6 @@ public class Main extends ApplicationAdapter implements Observer {
     private Controller controller;
     private Sprite texturePlayerOne;
     private Sprite texturePlayerTwo;
-    private Texture tileOne;
-    private Texture tileTwo;
     private String colorOne;
     private String colorTwo;
     private Long randomSeedDice;
@@ -81,7 +79,7 @@ public class Main extends ApplicationAdapter implements Observer {
     protected static CheatIcon cheatIcon;
     protected Texture diceTextureIdle;
     protected Map<Integer, Texture> diceTextures = new HashMap<>();
-    private static int time = 0;
+    private int time = 0;
     private static boolean diceAnimationActive = false;
     private Map<Integer, Texture> fieldTextures = new HashMap<>();
 
@@ -112,20 +110,17 @@ public class Main extends ApplicationAdapter implements Observer {
         cheatCountDown = new CheatCountDown();
         cheatIcon = new CheatIcon();
 
-        SoundHandler.initializeMusicManager();
-
         stage = new Stage();
         camera = new OrthographicCamera();
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
         Controller.setSinglePlayerBoolean(true);     //THIS IS ONLY TEMPORARY AND NEEDS TO BE REPLACED SOON!
+        SoundHandler.initializeMusicManager();
 
         //initialisieren der Textur der Spielfigur
         texturePlayerOne = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorOne))));
         texturePlayerTwo = new Sprite(new Texture(Gdx.files.internal(String.format("player_%s.png", colorTwo))));
-
-
 
 
         // DICE
@@ -133,10 +128,8 @@ public class Main extends ApplicationAdapter implements Observer {
         dice = new Dice(diceRange, randomSeedDice);
 
         diceTextureIdle = new Texture(Gdx.files.internal("dice_idle.png"));
-        for (int i = 1; i <= diceRange; i++) {
-            diceTextures.put(i, new Texture(Gdx.files.internal("dice_" + i + ".png")));
-        }
 
+        fillDiceTexturesMap(diceRange);
         fillFieldTexturesMap(fieldTextures);
 
 
@@ -156,11 +149,8 @@ public class Main extends ApplicationAdapter implements Observer {
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
         generateElevatorFieldTextures();
 
-
-        // Font
-        font = new BitmapFont();
-        font.setColor(Color.BLACK);
-        font.getData().setScale(4, 4);
+        //Sets the font of text output
+        setFont();
 
 
         //setzen des InputProcessors der GUI
@@ -178,9 +168,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         stage.addActor(playerOne);
 
-        if (Controller.getSinglePlayerBoolean()) {
-            stage.addActor(playerTwo);
-        }
+        checkIfSinglePlayer();
 
         stage.addActor(cheatCountDown);
 
@@ -203,18 +191,23 @@ public class Main extends ApplicationAdapter implements Observer {
     public void update(Observable observable, Object o) {
     }
 
+    private void checkIfSinglePlayer() {
+        if (Controller.getSinglePlayerBoolean()) {
+            stage.addActor(playerTwo);
+        }
+    }
     private void playerSwitchTextOutput() {
 
 
-        if (!playerOne.stillMoving() && !Controller.getPlayerOneTurn()) {
+        if (!playerOne.stillMoving() && !controller.getPlayerOneTurn()) {
 
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL, Y_LABEL);
             } else if (!Controller.getWinnerDecided()) {
-                font.draw(batch, "COM ist an der Reihe", X_LABEL, Y_LABEL);
+                font.draw(batch, "  COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
-        } else if (!playerTwo.stillMoving() && Controller.getPlayerOneTurn()) {
+        } else if (!playerTwo.stillMoving() && controller.getPlayerOneTurn()) {
             if (NetworkManager.isMultiplayer()) {
                 font.draw(batch, "Du bist an der Reihe!", X_LABEL, Y_LABEL);
 
@@ -248,6 +241,13 @@ public class Main extends ApplicationAdapter implements Observer {
 
     }
 
+    private void fillDiceTexturesMap(int diceRange) {
+
+        for (int i = 1; i <= diceRange; i++) {
+            diceTextures.put(i, new Texture(Gdx.files.internal("dice_" + i + ".png")));
+        }
+    }
+
     private void setFieldTextures(List<Field> fields) {
 
         for (int i = 1; i <= fields.size(); i++) {
@@ -255,6 +255,13 @@ public class Main extends ApplicationAdapter implements Observer {
             stage.addActor(checkForFieldTexture(i, renderPositionCalculator, fieldTextures));
         }
 
+    }
+
+    private void setFont() {
+        // Font
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(4, 4);
     }
 
     private void generateElevatorFieldTextures() {
@@ -271,30 +278,34 @@ public class Main extends ApplicationAdapter implements Observer {
     }
 
     private SingleField checkForFieldTexture(int i, RenderPositionCalculator renderPositionCalculator, Map<Integer, Texture> list) {
-        SingleField singleField;
+
+        SingleField fieldColors;
         switch (i) {
 
             case 1:
-                singleField = new SingleField(list.get(3), renderPositionCalculator, i);
+                fieldColors = new SingleField(list.get(3), renderPositionCalculator, i);
                 break;
             case 91:
-                singleField = new SingleField(list.get(4), renderPositionCalculator, i);
+                fieldColors = new SingleField(list.get(4), renderPositionCalculator, i);
                 textureBoolean = true;
                 break;
 
             default:
-                if (!textureBoolean) {
-                    singleField = new SingleField(list.get(1), renderPositionCalculator, i);
-                    textureBoolean = i % 10 != 0;
-                    break;
-                } else {
-                    singleField = new SingleField(list.get(5), renderPositionCalculator, i);
-                    textureBoolean = i % 10 == 0;
-                    break;
-                }
+                fieldColors = setFieldColors(list, i);
+                break;
 
         }
-        return singleField;
+        return fieldColors;
+    }
+
+    private SingleField setFieldColors(Map<Integer, Texture> list, int i) {
+        if (!textureBoolean) {
+            textureBoolean = i % 10 != 0;
+            return new SingleField(list.get(1), renderPositionCalculator, i);
+        } else {
+            textureBoolean = i % 10 == 0;
+            return new SingleField(list.get(5), renderPositionCalculator, i);
+        }
     }
 
     /**

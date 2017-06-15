@@ -15,7 +15,7 @@ public class CheatIcon extends Actor {
 
     private Sprite sprite;
     private static final int TOUCH_AREA_WIDTH = 950;
-    private static final int TOUCH_AREA_HEIGHT = 60;
+    private static final int TOUCH_AREA_HEIGHT = 100;
     private static boolean visible = false;
 
     public CheatIcon(){
@@ -38,7 +38,7 @@ public class CheatIcon extends Actor {
 
     public boolean touchDown (int screenX, int screenY){
 
-        return visible && screenX > TOUCH_AREA_WIDTH && screenY > TOUCH_AREA_HEIGHT;
+        return visible && screenX > TOUCH_AREA_WIDTH && screenY > Gdx.graphics.getHeight() - TOUCH_AREA_HEIGHT;
 
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GUI.DisplaySizeRatios;
 import com.mygdx.game.GUI.Main;
@@ -35,16 +34,15 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
 public class Controller extends Observable implements InputProcessor {
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
 
-    private static Sprite diceSprite;
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
     private static CheatIcon cheatIcon = Main.getCheatIcon();
     private static OrthographicCamera camera = Main.getCamera();
-    private static int currentFieldnumberPlayerOne = gameField.getPlayer(Player.PLAYER_ONE_ID).getCurrentField().getFieldnumber();
-    private static int currentFieldnumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
+    private static int currentFieldNumberPlayerOne = gameField.getPlayer(Player.PLAYER_ONE_ID).getCurrentField().getFieldnumber();
+    private static int currentFieldNumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
     private static int numberOfPlayers = 0;
     private static boolean singlePlayerBoolean = false;
-    private static boolean turnBlocked = false;
+    private boolean turnBlocked = false;
 
     private static final String TAG = "Controller";
     private NetworkTrafficReceiver networkTrafficReceiver;
@@ -59,9 +57,10 @@ public class Controller extends Observable implements InputProcessor {
     private float shake; //Acceleration value differ from gravity
 
     private static boolean[] playerCheatedList = new boolean[2];
-    private static boolean playerOneTurn = true;
+    private boolean playerOneTurn = true;
 
-    private WinnerScreen winnerScreen;
+    private static final ThreadLocal<WinnerScreen> winnerScreen = new ThreadLocal<>();
+
     private static boolean winnerDecided = false;
 
     /**
@@ -114,11 +113,8 @@ public class Controller extends Observable implements InputProcessor {
 
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
-        if (Player.getCounter() >= 2) {
-
-            if (cheatUsage(screenX, screenY)) {
-                return true;
-            }
+        if (Player.getCounter() >= 2 && cheatUsage(screenX, screenY)) {
+            return true;
         }
 
         if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer() && !playerOneTurn) {
@@ -213,14 +209,16 @@ public class Controller extends Observable implements InputProcessor {
         if (getWorm(player).stillMoving()) {
             return;
         }
-        SoundHandler.getMusicManager().shuffle();
         int eyeNumber = dice.rollTheDice();
-        if (player.getCurrentField().getFieldnumber() > 91 && player.getCurrentField().getFieldnumber() - eyeNumber < 91) {
+        SoundHandler.getMusicManager().shuffle();
+        Gdx.input.vibrate(100);
+
+        if (checkForGoalField(player, eyeNumber)) {
             eyeNumber = player.getCurrentField().getFieldnumber() - 91;
         }
-        for (int i = 0; i < eyeNumber; i++) {
-            player.move();
-        }
+
+        doPlayerMovement(player, eyeNumber);
+
         updateCurrentFieldnumber(player);
         checkField(player);
         checkForWinner();
@@ -255,9 +253,8 @@ public class Controller extends Observable implements InputProcessor {
         if (getWorm(player).stillMoving()) {
             return;
         }
-        for (int i = 0; i < cheatCountdown; i++) {
-            player.move();
-        }
+
+        doPlayerMovement(player, cheatCountdown);
 
         updateCurrentFieldnumber(player);
         checkForWinner();
@@ -265,6 +262,18 @@ public class Controller extends Observable implements InputProcessor {
         Player.switchCurrentPlayerIndex();
 
 
+    }
+
+    private boolean checkForGoalField(Player player, int eyeNumber) {
+
+        return player.getCurrentField().getFieldnumber() > 91 && player.getCurrentField().getFieldnumber() - eyeNumber < 91;
+    }
+
+    private void doPlayerMovement(Player player, int eyeNumber) {
+
+        for (int i = 0; i < eyeNumber; i++) {
+            player.move();
+        }
     }
 
     /**
@@ -282,11 +291,11 @@ public class Controller extends Observable implements InputProcessor {
      */
     private static void setCurrentFieldnumberForPlayer(Player player, int fieldNumber) {
         if (player.getPlyerId().equals(Player.PLAYER_ONE_ID)) {
-            currentFieldnumberPlayerOne = fieldNumber;
+            currentFieldNumberPlayerOne = fieldNumber;
         }
 
         if (player.getPlyerId().equals(Player.PLAYER_TWO_ID)) {
-            currentFieldnumberPlayerTwo = fieldNumber;
+            currentFieldNumberPlayerTwo = fieldNumber;
         }
     }
 
@@ -300,7 +309,8 @@ public class Controller extends Observable implements InputProcessor {
 
         setCurrentFieldnumberForPlayer(player, player.getCurrentField().getFieldnumber());
 
-        Gdx.app.log(TAG, Integer.toString(currentFieldnumberPlayerOne)); //test to determine if the method works
+        Gdx.app.log(TAG, Integer.toString(currentFieldNumberPlayerOne));
+        Gdx.app.log(TAG, Integer.toString(currentFieldNumberPlayerTwo));
 
         int[] elevatorNumber = Elevator.getElevatorFields();
 
@@ -319,19 +329,19 @@ public class Controller extends Observable implements InputProcessor {
 
     }
 
-    private void checkForWinner() {
+    private static void checkForWinner() {
 
         if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
             Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
-            winnerScreen = new WinnerScreen(gameField.getPlayerOne().getPlyerId(), Main.getStage());
+            winnerScreen.set(new WinnerScreen(gameField.getPlayerOne().getPlyerId(), Main.getStage()));
             SoundHandler.getMusicManager().finishSound();
             winnerDecided = true;
 
         } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
             Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
-            winnerScreen = new WinnerScreen(gameField.getPlayerTwo().getPlyerId(), Main.getStage());
+            winnerScreen.set(new WinnerScreen(gameField.getPlayerTwo().getPlyerId(), Main.getStage()));
             SoundHandler.getMusicManager().finishSound();
             winnerDecided = true;
         }
@@ -377,7 +387,7 @@ public class Controller extends Observable implements InputProcessor {
     }
 
     //-------------------- CHEATING PART ----------------------
-    private static void setPlayerCheated() {
+    private void setPlayerCheated() {
         Player.switchCurrentPlayerIndex();
         playerCheatedList[Player.getCurrentPlayerIndex()] = true;
         turnBlocked = true;
@@ -434,9 +444,7 @@ public class Controller extends Observable implements InputProcessor {
     //------------------ GESTURE CONTROLLER DETECTION ----------
     public boolean checkAcceleration() {
 
-        if (!winnerDecided) {
-
-            if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+        if (!winnerDecided && Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
 
                 float x = Gdx.input.getAccelerometerX();
                 float y = Gdx.input.getAccelerometerY();
@@ -453,9 +461,7 @@ public class Controller extends Observable implements InputProcessor {
 
                     return true;
                 }
-            }
         }
-
 
         return false;
     }
@@ -500,7 +506,7 @@ public class Controller extends Observable implements InputProcessor {
         camera.update();
     }
 
-    public static boolean getPlayerOneTurn() {
+    public boolean getPlayerOneTurn() {
         return playerOneTurn;
     }
     /**
@@ -514,9 +520,7 @@ public class Controller extends Observable implements InputProcessor {
 
         Vector3 touchPoint = new Vector3();
 
-        if (!winnerDecided) {
-
-            if (Gdx.input.isTouched()) {
+        if (!winnerDecided && Gdx.input.isTouched()) {
 
                 touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchPoint);
@@ -525,8 +529,6 @@ public class Controller extends Observable implements InputProcessor {
 
                     return true;
                 }
-            }
-
         }
 
         return false;
