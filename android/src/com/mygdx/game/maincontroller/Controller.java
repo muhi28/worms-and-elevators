@@ -58,6 +58,7 @@ public class Controller extends Observable implements InputProcessor {
 
     private static boolean[] playerCheatedList = new boolean[2];
     private boolean playerOneTurn = true;
+    private boolean gameStarted= false;
 
     private static final ThreadLocal<WinnerScreen> winnerScreen = new ThreadLocal<>();
 
@@ -205,6 +206,7 @@ public class Controller extends Observable implements InputProcessor {
      * @param dice   the dice
      */
     private void movement(Player player, Dice dice) {
+        gameStarted = true;
 
         if (getWorm(player).stillMoving()) {
             return;
@@ -455,7 +457,7 @@ public class Controller extends Observable implements InputProcessor {
                 float delta = accelVal - accelLast;
                 shake = shake * 0.9f + delta;
 
-                if (shake > 10) {
+                if (shake > 10 && gameStarted) {
 
                     checkPlayerTurn();
 
