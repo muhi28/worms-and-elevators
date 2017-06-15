@@ -53,13 +53,9 @@ public class Worm extends Actor {
 
     }
 
-    /**
-     * Teleport.
-     *
-     * @param field the field
-     */
-    public void teleport(Field field) {
-        wormMovementThread.teleport(field);
+
+    public void teleport(Field elevatorStart, Field elevatorEnd) {
+        wormMovementThread.teleport(elevatorStart, elevatorEnd);
     }
 
 

@@ -351,7 +351,7 @@ public class Controller extends Observable implements InputProcessor {
 
                 int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(player.getCurrentField().getFieldnumber());
                 port(newElevatorFieldnumber, player);
-                getWorm(player).teleport(player.getCurrentField());
+                getWorm(player).teleport(gameField.getFieldFrom(elevatorNumber[i]), gameField.getFieldFrom(newElevatorFieldnumber));
                 break;
             }
 
