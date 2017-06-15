@@ -22,9 +22,7 @@ public class DiceTest {
      */
     @Before
     public void createDice() {
-
         dice = new Dice(6);
-
     }
 
     /**

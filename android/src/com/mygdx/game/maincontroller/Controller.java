@@ -33,6 +33,9 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
  */
 public class Controller extends Observable implements InputProcessor {
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
+    private static final String OTHER_PLAYER_CHEATED_MESSAGE = "Other_Player_Cheated";
+    private static final String OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE = "Other_Player_Successfull=";
+    private static final String OTHER_PLAYER_CHEATED_DETECTED_MESSAGE = "CheatDetected";
 
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
@@ -58,11 +61,13 @@ public class Controller extends Observable implements InputProcessor {
 
     private static boolean[] playerCheatedList = new boolean[2];
     private boolean playerOneTurn = true;
-    private boolean gameStarted= false;
+    private boolean gameStarted = false;
 
     private static final ThreadLocal<WinnerScreen> winnerScreen = new ThreadLocal<>();
 
     private static boolean winnerDecided = false;
+    private boolean coughtEnemyCheating = false;
+    private boolean gotCoughtEnemyCheating = false;
 
     /**
      * Instantiates a new Controller.
@@ -117,12 +122,30 @@ public class Controller extends Observable implements InputProcessor {
         if (Player.getCounter() >= 2 && cheatUsage(screenX, screenY)) {
             return true;
         }
-
-        if (cheatIcon.touchDown(screenX, screenY) && NetworkManager.isSinglePlayer() && !playerOneTurn) {
-            setPlayerCheated();
-            CheatIcon.setVisibility(false);
-
+        if (cheatIcon.touchDown(screenX, screenY)) {
+            Gdx.app.log("CHEAT", "Cheater endeckt");
         }
+        if (cheatIcon.touchDown(screenX, screenY)) {
+            Gdx.app.log("CHEAT", "Cheater endeckt");
+            if (NetworkManager.isSinglePlayer() && !playerOneTurn) {
+                setPlayerCheated();
+                CheatIcon.setVisibility(false);
+
+
+            } else if (NetworkManager.isMultiplayer()) {
+                CheatIcon.setVisibility(false);
+                NetworkManager.send(OTHER_PLAYER_CHEATED_DETECTED_MESSAGE);
+                Player.switchCurrentPlayerIndex();
+                playerCheatedList[Player.getCurrentPlayerIndex()] = true;
+                playerOneTurn = true;
+                coughtEnemyCheating = true;
+                Player.switchCurrentPlayerIndex();
+
+            }
+
+            camera.update();
+        }
+
 
         touchInputPlayerTurn();
 
@@ -141,22 +164,25 @@ public class Controller extends Observable implements InputProcessor {
                 Player.resetCounter();
                 camera.update();
 
-                return true;
-
-            } else {
+            } else if (NetworkManager.isMultiplayer()) {
                 Integer integer = cheatCountDown.stopCountDown();
+                if (gotCoughtEnemyCheating) {
+                    playerOneTurn = false;
+                } else {
 
-                if (Player.getCurrentPlayerIndex() == 0) {
-                    cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-                } else if (Player.getCurrentPlayerIndex() == 1) {
-                    cheatMovement(gameField.getPlayer(Player.PLAYER_TWO_ID), integer);
+                    NetworkManager.send(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE + integer);
+                    if (playerOneTurn) {
+                        cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
+                        playerOneTurn = false;
+                    }
+                    Player.resetCounter();
+                    camera.update();
+
                 }
 
-                Player.resetCounter();
-                camera.update();
-
-                return true;
             }
+
+            return true;
 
         }
 
@@ -225,6 +251,7 @@ public class Controller extends Observable implements InputProcessor {
         checkField(player);
         checkForWinner();
         Player.increaseCounter();
+
         if (!turnBlocked) {
             Player.switchCurrentPlayerIndex();
         }
@@ -257,7 +284,9 @@ public class Controller extends Observable implements InputProcessor {
         }
 
         doPlayerMovement(player, cheatCountdown);
-
+//        if (NetworkManager.isMultiplayer()) {
+//            NetworkManager.send(OTHER_PLAYER_CHEATED_MESSAGE + cheatCountdown);
+//        }
         updateCurrentFieldnumber(player);
         checkForWinner();
         checkField(player);
@@ -349,6 +378,7 @@ public class Controller extends Observable implements InputProcessor {
         }
 
     }
+
     /**
      * Port.
      *
@@ -393,7 +423,7 @@ public class Controller extends Observable implements InputProcessor {
         Player.switchCurrentPlayerIndex();
         playerCheatedList[Player.getCurrentPlayerIndex()] = true;
         turnBlocked = true;
-        CheatCountDown.resetUsageCounter();
+        //CheatCountDown.resetUsageCounter();
         Player.switchCurrentPlayerIndex();
     }
 
@@ -401,9 +431,17 @@ public class Controller extends Observable implements InputProcessor {
 
         CheatCountDown.increaseUsageCounter();
 
-        if (CheatCountDown.getUsageCounter() >= 2) {
+        if (NetworkManager.isSinglePlayer()) {
+            if (CheatCountDown.getUsageCounter() >= 2) {
 
-            CheatIcon.setVisibility(true);
+                if (NetworkManager.isSinglePlayer()) {
+                    CheatIcon.setVisibility(true);
+                }
+            }
+        } else if (NetworkManager.isMultiplayer()) {
+
+            NetworkManager.send(OTHER_PLAYER_CHEATED_MESSAGE);
+
         }
     }
 
@@ -419,7 +457,7 @@ public class Controller extends Observable implements InputProcessor {
             }
 
 
-        } else {
+        } else if (playerOneTurn) {
             if (cheatCountDown.touchDown(screenX, screenY)) {
 
                 checkUsageCounter();
@@ -448,21 +486,21 @@ public class Controller extends Observable implements InputProcessor {
 
         if (!winnerDecided && Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
 
-                float x = Gdx.input.getAccelerometerX();
-                float y = Gdx.input.getAccelerometerY();
-                float z = Gdx.input.getAccelerometerZ();
+            float x = Gdx.input.getAccelerometerX();
+            float y = Gdx.input.getAccelerometerY();
+            float z = Gdx.input.getAccelerometerZ();
 
-                accelLast = accelVal;
-                accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
-                float delta = accelVal - accelLast;
-                shake = shake * 0.9f + delta;
+            accelLast = accelVal;
+            accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = accelVal - accelLast;
+            shake = shake * 0.9f + delta;
 
-                if (shake > 10 && gameStarted) {
+            if (shake > 10 && gameStarted) {
 
-                    checkPlayerTurn();
+                checkPlayerTurn();
 
-                    return true;
-                }
+                return true;
+            }
         }
 
         return false;
@@ -486,24 +524,28 @@ public class Controller extends Observable implements InputProcessor {
     private void checkPlayerTurn() {
 
         if (playerOneTurn && !wormOne.stillMoving()) {
-                movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
-                Main.setDiceAnimationTrue();
-                playerOneTurn = false;
+            movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
+            Main.setDiceAnimationTrue();
+            playerOneTurn = false;
 
+            if (coughtEnemyCheating) {
+                playerOneTurn = true;
+                coughtEnemyCheating = false;
+            }
 
-                if (NetworkManager.isMultiplayer()) {
-                    NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
-                }
+            if (NetworkManager.isMultiplayer()) {
+                NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
+            }
 
         } else if (NetworkManager.isSinglePlayer() && !wormTwo.stillMoving()) {
 
-                movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
-                Main.setDiceAnimationTrue();
-                if (!turnBlocked) {
-                    playerOneTurn = true;
-                } else {
-                    turnBlocked = false;
-                }
+            movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
+            Main.setDiceAnimationTrue();
+            if (!turnBlocked) {
+                playerOneTurn = true;
+            } else {
+                turnBlocked = false;
+            }
         }
         camera.update();
     }
@@ -511,6 +553,7 @@ public class Controller extends Observable implements InputProcessor {
     public boolean getPlayerOneTurn() {
         return playerOneTurn;
     }
+
     /**
      * This method checks whether the dice sprite is touched or not.
      *
@@ -524,13 +567,13 @@ public class Controller extends Observable implements InputProcessor {
 
         if (!winnerDecided && Gdx.input.isTouched()) {
 
-                touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-                camera.unproject(touchPoint);
+            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPoint);
 
-                if (checkTouchX(touchPoint) && checkTouchY(touchPoint)) {
+            if (checkTouchX(touchPoint) && checkTouchY(touchPoint)) {
 
-                    return true;
-                }
+                return true;
+            }
         }
 
         return false;
@@ -546,6 +589,7 @@ public class Controller extends Observable implements InputProcessor {
         return touch.x >= DisplaySizeRatios.X_DICE && touch.x <= DisplaySizeRatios.X_DICE + DICE_SIZE;
 
     }
+
 
     /**
      * @param touch -> Touch Position
@@ -563,15 +607,49 @@ public class Controller extends Observable implements InputProcessor {
      * @param inputString the input string
      */
     public void processMessageFromNetwork(final String inputString) {
+        boolean log = true;
 
         if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
+            Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
             this.setChanged();
-            Player playerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID);
+            Player playerTwo = player;
             movement(playerTwo, Main.getDice());
 
             Main.setDiceAnimationTrue();
+            if (gotCoughtEnemyCheating) {
+                playerOneTurn = false;
+                gotCoughtEnemyCheating = false;
+            } else {
+
+                playerOneTurn = true;
+            }
+            camera.update();
+        } else if (inputString.equals(OTHER_PLAYER_CHEATED_MESSAGE)) {
+            CheatIcon.setVisibility(true);
+
+        } else if (inputString.startsWith(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE)) {
+            CheatIcon.setVisibility(false);
+            Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
+            String replace = inputString.replace(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE, "");
+            Integer cheatedNumberOfSteps = Integer.valueOf(replace);
+            this.setChanged();
+            doPlayerMovement(player, cheatedNumberOfSteps);
+
             playerOneTurn = true;
             camera.update();
+
+        } else if (inputString.equals(OTHER_PLAYER_CHEATED_DETECTED_MESSAGE)) {
+            cheatCountDown.stopCountDown();
+            gotCoughtEnemyCheating = true;
+            this.setChanged();
+            Player.switchCurrentPlayerIndex();
+            playerOneTurn = false;
+            camera.update();
+        } else {
+            log = false;
+        }
+        if (log) {
+            Gdx.app.log(TAG, inputString);
         }
 
     }

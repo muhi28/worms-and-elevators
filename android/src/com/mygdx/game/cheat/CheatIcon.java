@@ -5,6 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.GUI.DisplaySizeRatios;
+
+import static com.mygdx.game.GUI.DisplaySizeRatios.CHEAT_ICON_SIZE;
+import static com.mygdx.game.GUI.DisplaySizeRatios.X_CHEAT_ICON;
+import static com.mygdx.game.GUI.DisplaySizeRatios.Y_CHEAT_ICON;
 
 
 /**
@@ -14,19 +19,33 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class CheatIcon extends Actor {
 
     private Sprite sprite;
-    private static final int TOUCH_AREA_WIDTH = 950;
-    private static final int TOUCH_AREA_HEIGHT = 100;
     private static boolean visible = false;
 
     public CheatIcon(){
         Texture texture = new Texture(Gdx.files.internal("CheatIcon.png"));
         this.sprite = new Sprite(texture);
-        sprite.setBounds(980, 30, 70, 70);
+        sprite.setBounds(X_CHEAT_ICON, Y_CHEAT_ICON, CHEAT_ICON_SIZE, CHEAT_ICON_SIZE);
     }
 
     public static void setVisibility(boolean visibility){
         visible = visibility;
-    }
+        if(visibility){
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(4000);
+                        CheatIcon.setVisibility(false);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            t.start();
+        }
+        }
+
 
     public void draw(Batch batch) {
 
@@ -37,8 +56,7 @@ public class CheatIcon extends Actor {
     }
 
     public boolean touchDown (int screenX, int screenY){
-
-        return visible && screenX > TOUCH_AREA_WIDTH && screenY > Gdx.graphics.getHeight() - TOUCH_AREA_HEIGHT;
+        return visible &&screenX > X_CHEAT_ICON && screenY > Gdx.graphics.getHeight() - CHEAT_ICON_SIZE ;
 
     }
 

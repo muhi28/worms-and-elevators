@@ -26,6 +26,10 @@ public class DisplaySizeRatios {
     public static int X_LABEL;
     public static int Y_LABEL;
 
+    public final static int CHEAT_ICON_SIZE = 70;
+    public static int Y_CHEAT_ICON;
+    public static int X_CHEAT_ICON;
+
 
     public static void calculateRatios() {
 
@@ -43,6 +47,9 @@ public class DisplaySizeRatios {
 
         X_LABEL = Gdx.graphics.getWidth() / 5;
         Y_LABEL = Y_START_FIELD;
+
+        X_CHEAT_ICON = Gdx.graphics.getWidth() -  CHEAT_ICON_SIZE;
+        Y_CHEAT_ICON = (int) (CHEAT_ICON_SIZE * 0.5);
         printSettings();
 
 

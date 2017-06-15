@@ -80,15 +80,15 @@ public class Worm extends Actor {
             if (targetCoordinates == null) {
 
                 targetCoordinates = coordinates.remove(0);
-                LOGGER.debug("new field");
+             //   LOGGER.debug("new field");
             }
             int x = narrowCoordinates(coordinatesCurrent.getX(), targetCoordinates.getX());
             int y = narrowCoordinates(coordinatesCurrent.getY(), targetCoordinates.getY());
 
             coordinatesCurrent = new Coordinates(x, y);
             batch.draw(player, coordinatesCurrent.getX(), coordinatesCurrent.getY(), WORM_SIZE, WORM_SIZE);
-            LOGGER.debug( "move to: " + targetCoordinates);
-            LOGGER.debug("current to: " + coordinatesCurrent);
+//            LOGGER.debug( "move to: " + targetCoordinates);
+//            LOGGER.debug("current to: " + coordinatesCurrent);
             if (targetCoordinates.equals(coordinatesCurrent)) {
                 LOGGER.debug("set tartet to null");
                 targetCoordinates = null;

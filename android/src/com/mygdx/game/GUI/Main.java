@@ -224,7 +224,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
             boolean shaken = controller.checkAcceleration();
 
-            Gdx.app.log("GESTURE CONTROLL", String.format("Device shaken: %b", shaken));
+       //     Gdx.app.log("GESTURE CONTROLL", String.format("Device shaken: %b", shaken));
 
 
             lastTimeShaken = TimeUtils.millis();
