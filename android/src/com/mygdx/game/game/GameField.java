@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.NUMBEROF_HORIZONTAL;
-import static com.mygdx.game.GUI.DisplaySizeRatios.NUMBEROF_VERTICALS;
+import static com.mygdx.game.gui.DisplaySizeRatios.NUMBEROF_HORIZONTAL;
+import static com.mygdx.game.gui.DisplaySizeRatios.NUMBEROF_VERTICALS;
 
 /**
  *Created by Muhi on 11.04.2017.

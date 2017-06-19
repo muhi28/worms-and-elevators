@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.FIELD_SIZE;
+import static com.mygdx.game.gui.DisplaySizeRatios.FIELD_SIZE;
 
 
 

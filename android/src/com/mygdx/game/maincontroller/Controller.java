@@ -1,13 +1,12 @@
 package com.mygdx.game.maincontroller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.GUI.DisplaySizeRatios;
-import com.mygdx.game.GUI.Main;
-import com.mygdx.game.GUI.WinnerScreen;
+import com.mygdx.game.gui.DisplaySizeRatios;
+import com.mygdx.game.gui.Main;
+import com.mygdx.game.gui.WinnerScreen;
 import com.mygdx.game.MyRuntimeException;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
@@ -20,10 +19,10 @@ import com.mygdx.game.game.Player;
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
+import com.mygdx.game.sensor.AccelerationSensor;
 import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
-
-import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
+import static com.mygdx.game.gui.DisplaySizeRatios.DICE_SIZE;
 
 
 /**
@@ -35,6 +34,7 @@ public class Controller implements InputProcessor {
     private static final String OTHER_PLAYER_CHEATED_MESSAGE = "Other_Player_Cheated";
     private static final String OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE = "Other_Player_Successfull=";
     private static final String OTHER_PLAYER_CHEATED_DETECTED_MESSAGE = "CheatDetected";
+    private static final String TAG = "Controller";
 
     private static GameField gameField = Main.getGameField();
     private static CheatCountDown cheatCountDown = Main.getCheatCountdown();
@@ -44,19 +44,13 @@ public class Controller implements InputProcessor {
     private static int currentFieldNumberPlayerTwo = gameField.getPlayer(Player.PLAYER_TWO_ID).getCurrentField().getFieldnumber();
     private static int numberOfPlayers = 0;
     private static boolean singlePlayerBoolean = false;
-    private boolean turnBlocked = false;
 
-    private static final String TAG = "Controller";
-    private NetworkTrafficReceiver networkTrafficReceiver;
     private final Worm wormOne;
     private final Worm wormTwo;
 
-    /**
-     * Sensor Items
-     */
-    private float accelLast;  //Current acceleration value and gravity
-    private float accelVal; //Last acceleration value and gravity
-    private float shake; //Acceleration value differ from gravity
+    private boolean turnBlocked = false;
+    private NetworkTrafficReceiver networkTrafficReceiver;
+
 
     private static boolean[] playerCheatedList = new boolean[2];
     private boolean playerOneTurn = true;
@@ -214,7 +208,6 @@ public class Controller implements InputProcessor {
 
         }
     }
-
     /**
      * Gets input processor.
      *
@@ -397,8 +390,6 @@ public class Controller implements InputProcessor {
     }
 
 
-//The following methods exist, so that the logic classes are separated from each other and from the GUI classes. Architectural purposes
-
     /**
      * Get elevator fields int [ ].
      *
@@ -481,23 +472,9 @@ public class Controller implements InputProcessor {
      * false -> no acceleration detected
      */
     //------------------ GESTURE CONTROLLER DETECTION ----------
-    public void checkAcceleration() {
-
-        if (!winnerDecided && Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-
-            float x = Gdx.input.getAccelerometerX();
-            float y = Gdx.input.getAccelerometerY();
-
-            accelLast = accelVal;
-            accelVal = (float) Math.sqrt((double) (x * x + y * y));
-            float delta = accelVal - accelLast;
-            shake = shake * 0.9f + delta;
-
-            if (shake > 6 && gameStarted) {
-
-                checkPlayerTurn();
-
-            }
+    public void checkSensorInput(AccelerationSensor sensor) {
+        if(sensor.checkAcceleration(winnerDecided,gameStarted)){
+            checkPlayerTurn();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.mygdx.game.Players;
+package com.mygdx.game.players;
 
 /**
  * Created by Muhi on 05.04.2017.

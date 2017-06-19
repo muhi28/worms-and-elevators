@@ -1,17 +1,18 @@
-package com.mygdx.game.GUI;
+package com.mygdx.game.gui;
 
 
 import com.badlogic.gdx.Gdx;
 
 public class DisplaySizeRatios {
 
-    private DisplaySizeRatios() {
-    }
+
 
     public static final int NUMBEROF_VERTICALS = 10;
     public static final int NUMBEROF_HORIZONTAL = 10;
     public static final int CHEAT_ICON_SIZE = 65;
     private static final String TAG = "DisplaySizeRatios";
+
+
 
     public static int FIELD_SIZE;
     public static int X_START_FIELD;
@@ -31,7 +32,8 @@ public class DisplaySizeRatios {
     public static int Y_CHEAT_ICON;
     public static int X_CHEAT_ICON;
 
-
+    private DisplaySizeRatios() {
+    }
     public static void calculateRatios() {
 
 
@@ -64,4 +66,51 @@ public class DisplaySizeRatios {
         Gdx.app.log(TAG, "Y_START_FIELD: " + Y_START_FIELD);
     }
 
+    public static int getFieldSize() {
+        return FIELD_SIZE;
+    }
+
+    public static int getxStartField() {
+        return X_START_FIELD;
+    }
+
+    public static int getyStartField() {
+        return Y_START_FIELD;
+    }
+
+    public static int getDiceSize() {
+        return DICE_SIZE;
+    }
+
+    public static int getyDice() {
+        return Y_DICE;
+    }
+
+    public static int getxDice() {
+        return X_DICE;
+    }
+
+    public static int getWormSize() {
+        return WORM_SIZE;
+    }
+
+    public static int getWormMovement() {
+        return WORM_MOVEMENT;
+    }
+
+    public static int getxLabel() {
+        return X_LABEL;
+    }
+
+    public static int getyLabel() {
+        return Y_LABEL;
+    }
+
+    public static int getyCheatIcon() {
+        return Y_CHEAT_ICON;
+    }
+
+    public static int getxCheatIcon() {
+        return X_CHEAT_ICON;
+    }
 }

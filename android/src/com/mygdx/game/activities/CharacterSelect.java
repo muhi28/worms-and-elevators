@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mygdx.game.Players.PlayerColor;
+import com.mygdx.game.players.PlayerColor;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.GameSync;
@@ -16,7 +16,7 @@ import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 
 import java.util.Random;
 
-import static com.mygdx.game.Players.PlayerColor.ROT;
+import static com.mygdx.game.players.PlayerColor.ROT;
 
 /**
  *Created by Muhi on 04.04.2017.

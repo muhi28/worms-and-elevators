@@ -1,4 +1,4 @@
-package com.mygdx.game.Players;
+package com.mygdx.game.players;
 
 /**
  * The enum Player color.

@@ -1,4 +1,4 @@
-package com.mygdx.game.GUI;
+package com.mygdx.game.gui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.X_LABEL;
-import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
+import static com.mygdx.game.gui.DisplaySizeRatios.X_LABEL;
+import static com.mygdx.game.gui.DisplaySizeRatios.Y_LABEL;
 
 
 /**

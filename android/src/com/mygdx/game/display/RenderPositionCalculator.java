@@ -8,9 +8,9 @@ import com.mygdx.game.game.GameField;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.FIELD_SIZE;
-import static com.mygdx.game.GUI.DisplaySizeRatios.X_START_FIELD;
-import static com.mygdx.game.GUI.DisplaySizeRatios.Y_START_FIELD;
+import static com.mygdx.game.gui.DisplaySizeRatios.getFieldSize;
+import static com.mygdx.game.gui.DisplaySizeRatios.X_START_FIELD;
+import static com.mygdx.game.gui.DisplaySizeRatios.Y_START_FIELD;
 
 public class RenderPositionCalculator {
 
@@ -25,8 +25,8 @@ public class RenderPositionCalculator {
     public Coordinates getCoordinatesOfPlayer(String playerId) {
 
         Field field = game.getPlayer(playerId).getCurrentField();
-        return new Coordinates(X_START_FIELD + (field.getPosX() * FIELD_SIZE),
-                Y_START_FIELD + (field.getPosY() * FIELD_SIZE));
+        return new Coordinates(X_START_FIELD + (field.getPosX() * getFieldSize()),
+                Y_START_FIELD + (field.getPosY() * getFieldSize()));
     }
 
     public Field getPlayerField(String playerId) {
@@ -53,8 +53,8 @@ public class RenderPositionCalculator {
 
     public Coordinates getCoordinatesOfField(int fieldNumber) {
         Field field = game.getFieldFrom(fieldNumber);
-        int xPos = field.getPosX() * FIELD_SIZE + X_START_FIELD;
-        int yPos = field.getPosY() * FIELD_SIZE + Y_START_FIELD;
+        int xPos = field.getPosX() * getFieldSize() + X_START_FIELD;
+        int yPos = field.getPosY() * getFieldSize() + Y_START_FIELD;
 
         return new Coordinates(xPos, yPos);
 

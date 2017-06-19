@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.mygdx.game.Players.Player;
+import com.mygdx.game.players.Player;
 import com.mygdx.game.R;
 import com.mygdx.game.netwoking.NetworkUtils;
 

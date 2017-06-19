@@ -6,7 +6,7 @@ import com.mygdx.game.util.CustomLogger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_MOVEMENT;
+import static com.mygdx.game.gui.DisplaySizeRatios.WORM_MOVEMENT;
 
 
 /**

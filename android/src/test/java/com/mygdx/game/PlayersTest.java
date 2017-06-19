@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
-import com.mygdx.game.Players.Player;
-import com.mygdx.game.Players.PlayerColor;
+import com.mygdx.game.players.Player;
+import com.mygdx.game.players.PlayerColor;
 
 import org.junit.After;
 import org.junit.Assert;

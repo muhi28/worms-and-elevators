@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.util.CustomLogger;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.CHEAT_ICON_SIZE;
-import static com.mygdx.game.GUI.DisplaySizeRatios.X_CHEAT_ICON;
-import static com.mygdx.game.GUI.DisplaySizeRatios.Y_CHEAT_ICON;
+import static com.mygdx.game.gui.DisplaySizeRatios.CHEAT_ICON_SIZE;
+import static com.mygdx.game.gui.DisplaySizeRatios.X_CHEAT_ICON;
+import static com.mygdx.game.gui.DisplaySizeRatios.Y_CHEAT_ICON;
 
 
 /**

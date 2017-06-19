@@ -1,4 +1,4 @@
-package com.mygdx.game.GUI;
+package com.mygdx.game.gui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -25,6 +25,7 @@ import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 import com.mygdx.game.maincontroller.Controller;
 import com.mygdx.game.netwoking.NetworkManager;
+import com.mygdx.game.sensor.AccelerationSensor;
 import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
 
@@ -36,11 +37,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
-import static com.mygdx.game.GUI.DisplaySizeRatios.X_DICE;
-import static com.mygdx.game.GUI.DisplaySizeRatios.X_LABEL;
-import static com.mygdx.game.GUI.DisplaySizeRatios.Y_DICE;
-import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
+import static com.mygdx.game.gui.DisplaySizeRatios.DICE_SIZE;
+import static com.mygdx.game.gui.DisplaySizeRatios.X_DICE;
+import static com.mygdx.game.gui.DisplaySizeRatios.X_LABEL;
+import static com.mygdx.game.gui.DisplaySizeRatios.Y_DICE;
+import static com.mygdx.game.gui.DisplaySizeRatios.Y_LABEL;
 
 /**
  * The type Main.
@@ -85,6 +86,8 @@ public class Main extends ApplicationAdapter  {
     private Map<Integer, Texture> fieldTextures = new HashMap<>();
 
     private boolean textureBoolean = false;
+
+    private AccelerationSensor accelerationSensor = new AccelerationSensor();
 
     /**
      * Instantiates a new Main.
@@ -154,7 +157,7 @@ public class Main extends ApplicationAdapter  {
         setFont();
 
 
-        //setzen des InputProcessors der GUI
+        //setzen des InputProcessors der gui
         controller = new Controller(playerOne, playerTwo);
         Gdx.input.setInputProcessor(controller.getInputProcessor());
 
@@ -179,7 +182,7 @@ public class Main extends ApplicationAdapter  {
 
         batch.begin();
 
-        checkDeviceShaken();
+        checkShake();
         playerSwitchTextOutput();
         cheatIcon.draw(batch);
         doDiceAnimation(batch);
@@ -215,11 +218,11 @@ public class Main extends ApplicationAdapter  {
         }
     }
 
-    private void checkDeviceShaken() {
+    private void checkShake() {
 
-        if (TimeUtils.millis() > (lastTimeShaken + 350)) {
+        if (accelerationSensor.deviceShaken(lastTimeShaken)) {
 
-            controller.checkAcceleration();
+            controller.checkSensorInput(accelerationSensor);
 
             lastTimeShaken = TimeUtils.millis();
         }
