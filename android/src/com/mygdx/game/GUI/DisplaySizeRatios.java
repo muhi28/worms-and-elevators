@@ -10,7 +10,7 @@ public class DisplaySizeRatios {
 
     public static final int NUMBEROF_VERTICALS = 10;
     public static final int NUMBEROF_HORIZONTAL = 10;
-
+    public static final int CHEAT_ICON_SIZE = 65;
     private static final String TAG = "DisplaySizeRatios";
 
     public static int FIELD_SIZE;
@@ -28,7 +28,6 @@ public class DisplaySizeRatios {
     public static int X_LABEL;
     public static int Y_LABEL;
 
-    public static final int CHEAT_ICON_SIZE = 65;
     public static int Y_CHEAT_ICON;
     public static int X_CHEAT_ICON;
 

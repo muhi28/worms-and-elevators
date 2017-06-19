@@ -189,6 +189,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+        //Do Nothing
     }
 
     private void checkIfSinglePlayer() {

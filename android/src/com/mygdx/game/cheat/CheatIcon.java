@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.util.CustomLogger;
 
 import static com.mygdx.game.GUI.DisplaySizeRatios.CHEAT_ICON_SIZE;
 import static com.mygdx.game.GUI.DisplaySizeRatios.X_CHEAT_ICON;
@@ -16,6 +17,8 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.Y_CHEAT_ICON;
  */
 
 public class CheatIcon extends Actor {
+
+    private static final CustomLogger LOGGER = new CustomLogger("Cheat Icon:");
 
     private Sprite sprite;
     private static boolean visible = false;
@@ -36,7 +39,9 @@ public class CheatIcon extends Actor {
                         Thread.sleep(4000);
                         CheatIcon.setVisibility(false);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+
+                        LOGGER.error("Interrupted!!", e);
+                        Thread.currentThread().interrupt();
                     }
                 }
             });

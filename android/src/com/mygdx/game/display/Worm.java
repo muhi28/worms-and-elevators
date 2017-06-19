@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.game.Field;
-import com.mygdx.game.util.CustomLogger;
 
 import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_SIZE;
 

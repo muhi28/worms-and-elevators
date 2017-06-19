@@ -8,10 +8,11 @@ import com.mygdx.game.MusicManager;
 
 public class SoundHandler {
 
+    private static MusicManager musicManager;
+
     private SoundHandler() {
     }
 
-    private static MusicManager musicManager;
 
     public static void initializeMusicManager() {
         musicManager = new MusicManager();

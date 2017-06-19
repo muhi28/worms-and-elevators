@@ -1,4 +1,4 @@
-package com.mygdx.game.Activities;
+package com.mygdx.game.activities;
 
 import android.app.Activity;
 import android.content.Intent;

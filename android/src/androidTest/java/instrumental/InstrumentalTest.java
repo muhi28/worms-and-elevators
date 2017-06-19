@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.mygdx.game.Activities.MainMenu;
+import com.mygdx.game.activities.MainMenu;
 
 import junit.framework.Assert;
 

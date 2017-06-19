@@ -7,14 +7,12 @@ import java.util.Random;
  */
 public class Elevator {
 
-    public static Random random = new Random();
-
     private static final int ELEVATORS = 12;
     private static final int GAMEFIELDS = 100;
 
     private static final int[] elevatorFields = new int[ELEVATORS];
     private static int randomElevatorFieldnumber;
-
+    public static Random random = new Random();
 
     private Elevator() {
     }
