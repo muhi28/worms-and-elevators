@@ -626,7 +626,8 @@ public class Controller extends Observable implements InputProcessor {
             Integer cheatedNumberOfSteps = Integer.valueOf(replace);
             this.setChanged();
             doPlayerMovement(player, cheatedNumberOfSteps);
-
+            checkForWinner();
+            checkField(player);
             playerOneTurn = true;
             camera.update();
 
