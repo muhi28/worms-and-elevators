@@ -25,6 +25,7 @@ import com.mygdx.game.game.GameField;
 import com.mygdx.game.game.Player;
 import com.mygdx.game.maincontroller.Controller;
 import com.mygdx.game.netwoking.NetworkManager;
+import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.Y_LABEL;
 /**
  * The type Main.
  */
-public class Main extends ApplicationAdapter implements Observer {
+public class Main extends ApplicationAdapter  {
 
 
     private SpriteBatch batch;
@@ -185,11 +186,6 @@ public class Main extends ApplicationAdapter implements Observer {
 
         batch.end();
 
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        //Do Nothing
     }
 
     private void checkIfSinglePlayer() {

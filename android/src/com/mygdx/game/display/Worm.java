@@ -48,7 +48,7 @@ public class Worm extends Actor {
      *
      * @return the boolean
      */
-    public boolean stillMoving() {
+    public synchronized boolean stillMoving() {
         return wormMovementThread.stillMoving();
     }
 

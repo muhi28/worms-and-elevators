@@ -12,7 +12,6 @@ import com.mygdx.game.MyRuntimeException;
 import com.mygdx.game.cheat.CheatCountDown;
 import com.mygdx.game.cheat.CheatIcon;
 import com.mygdx.game.dice.Dice;
-import com.mygdx.game.display.Coordinates;
 import com.mygdx.game.display.Worm;
 import com.mygdx.game.game.Elevator;
 import com.mygdx.game.game.Field;
@@ -21,9 +20,8 @@ import com.mygdx.game.game.Player;
 import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
+import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
-
-import java.util.Observable;
 
 import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
 
@@ -31,7 +29,8 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.DICE_SIZE;
 /**
  * The type Controller.
  */
-public class Controller extends Observable implements InputProcessor {
+public class Controller implements InputProcessor {
+    private static final CustomLogger LOGGER = new CustomLogger("CONTROLLER");
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
     private static final String OTHER_PLAYER_CHEATED_MESSAGE = "Other_Player_Cheated";
     private static final String OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE = "Other_Player_Successfull=";
@@ -74,7 +73,7 @@ public class Controller extends Observable implements InputProcessor {
      *
      * @param wormOne the worm one
      */
-    public Controller(Worm wormOne, Worm wormTwo) {
+    public Controller(final Worm wormOne, final Worm wormTwo) {
         setInputProcessor();
         this.wormOne = wormOne;
         this.wormTwo = wormTwo;
@@ -92,6 +91,13 @@ public class Controller extends Observable implements InputProcessor {
                 currentInstance.processMessageFromNetwork(message);
             }
         });
+        if (NetworkManager.isSinglePlayer()) {
+            Bot bot = new Bot(wormOne, wormTwo, this);
+        }
+    }
+
+    public synchronized boolean isPlayerOneTurn() {
+        return playerOneTurn;
     }
 
 
@@ -113,10 +119,6 @@ public class Controller extends Observable implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        this.setChanged();
-        this.notifyObservers(new Coordinates(screenX, screenY));
-
         Gdx.app.log("Main.touchDown", "X=" + screenX + "Y=" + screenY);
 
         if (Player.getCounter() >= 2 && cheatUsage(screenX, screenY)) {
@@ -212,6 +214,7 @@ public class Controller extends Observable implements InputProcessor {
 
         }
     }
+
     /**
      * Gets input processor.
      *
@@ -436,7 +439,7 @@ public class Controller extends Observable implements InputProcessor {
         if (NetworkManager.isSinglePlayer()) {
             if (CheatCountDown.getUsageCounter() >= 2) {
 
-                    CheatIcon.setVisibility(true);
+                CheatIcon.setVisibility(true);
 
             }
         } else if (NetworkManager.isMultiplayer()) {
@@ -460,8 +463,8 @@ public class Controller extends Observable implements InputProcessor {
 
         } else if (playerOneTurn && cheatCountDown.touchDown(screenX, screenY)) {
 
-                checkUsageCounter();
-                return true;
+            checkUsageCounter();
+            return true;
         }
         return false;
     }
@@ -504,7 +507,7 @@ public class Controller extends Observable implements InputProcessor {
     //------------------ TOUCH DETECTION PLAYER TURN -----------
     private void touchInputPlayerTurn() {
 
-        if (diceSpriteTouched()) {
+        if (diceSpriteTouched() && playerOneTurn && !wormOne.stillMoving() && !wormTwo.stillMoving()) {
             checkPlayerTurn();
         }
     }
@@ -513,9 +516,9 @@ public class Controller extends Observable implements InputProcessor {
      * Switch between players.
      */
     //------------------ GESTURE CONTROL PLAYER TURN -----------
-    private void checkPlayerTurn() {
+    void checkPlayerTurn() {
 
-        if (playerOneTurn && !wormOne.stillMoving()) {
+        if (playerOneTurn) {
             movement(gameField.getPlayer(Player.PLAYER_ONE_ID), Main.getDice());
             Main.setDiceAnimationTrue();
             playerOneTurn = false;
@@ -529,7 +532,7 @@ public class Controller extends Observable implements InputProcessor {
                 NetworkManager.send(OTHER_PLAYER_ROLLED_DICE_MESSAGE);
             }
 
-        } else if (NetworkManager.isSinglePlayer() && !wormTwo.stillMoving()) {
+        } else if (NetworkManager.isSinglePlayer()) {
 
             movement(gameField.getPlayer(Player.PLAYER_TWO_ID), Main.getDice());
             Main.setDiceAnimationTrue();
@@ -603,7 +606,6 @@ public class Controller extends Observable implements InputProcessor {
 
         if (inputString.equals(OTHER_PLAYER_ROLLED_DICE_MESSAGE)) {
             Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
-            this.setChanged();
             Player playerTwo = player;
             movement(playerTwo, Main.getDice());
 
@@ -624,7 +626,6 @@ public class Controller extends Observable implements InputProcessor {
             Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
             String replace = inputString.replace(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE, "");
             Integer cheatedNumberOfSteps = Integer.valueOf(replace);
-            this.setChanged();
             doPlayerMovement(player, cheatedNumberOfSteps);
             checkForWinner();
             checkField(player);
@@ -634,7 +635,6 @@ public class Controller extends Observable implements InputProcessor {
         } else if (inputString.equals(OTHER_PLAYER_CHEATED_DETECTED_MESSAGE)) {
             cheatCountDown.stopCountDown();
             gotCoughtEnemyCheating = true;
-            this.setChanged();
             Player.switchCurrentPlayerIndex();
             playerOneTurn = false;
             camera.update();
