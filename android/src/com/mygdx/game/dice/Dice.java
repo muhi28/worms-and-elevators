@@ -1,11 +1,8 @@
 package com.mygdx.game.dice;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.mygdx.game.util.SoundHandler;
 
 import java.util.Map;
 import java.util.Random;
@@ -68,66 +65,8 @@ public class Dice {
      */
     public int rollTheDice() {
 
-        result = random.nextInt(this.range - 1 + 1) + 1;         //(max - min + 1) + min
+        result = random.nextInt(this.range) + 1;         //(max - min + 1) + min
         return result;
-    }
-
-
-    /**
-     * The method cheatDice sets the diceTextureIdle on the texture the player clicked.
-     *
-     * @param dice_p the dice p
-     * @return : the int value of the dice number
-     */
-    public int cheatDice(Texture dice_p) {
-        int result = 0;
-
-        /*
-            The paths from the dice texture are saved, in the String Array pathOfDices..
-         */
-
-
-        //Here I get the path from the given texture
-        String pathOfGivenTexture = ((FileTextureData) dice_p.getTextureData()).getFileHandle().path();
-
-
-        for (int i = 1; i <= this.getRange(); i++) {
-            String vgl = ((FileTextureData) (new Texture(Gdx.files.internal("dice_" + i + ".png"))).getTextureData()).getFileHandle().path();
-
-            if (vgl.equals(pathOfGivenTexture)) {
-                result = i;
-            }
-        }
-
-        /*
-        sets diceTextureIdle depending on the given texture
-         */
-        /*
-        switch (result) {
-            case 1:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_one.png")));
-                break;
-            case 2:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_two.png")));
-                break;
-            case 3:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_three.png")));
-                break;
-            case 4:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_four.png")));
-                break;
-            case 5:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_five.png")));
-                break;
-            case 6:
-                this.diceTextureIdle = (new Texture(Gdx.files.internal("dice_six.png")));
-                break;
-            default:
-                System.out.println("Falscher Value uebergeben!");
-
-        }*/
-        return result;
-
     }
 
     /**
@@ -143,7 +82,6 @@ public class Dice {
         }
 
         //Cast to Object because of warning.
-        Animation diceAnimation = new Animation(0.15f, (Object[]) text);
-        return diceAnimation;
+        return new Animation(0.15f, (Object[]) text);
     }
 }

@@ -3,6 +3,7 @@ package com.mygdx.game.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.mygdx.game.R;
@@ -17,6 +18,8 @@ public class SplashScreen extends Activity {
 
     private static final String TAG = "SplashScreenActivity";
 
+    private static final int SPLASH_TIME_OUT = 3000;
+
     /**
      * onCreate-Method is used to set the content view of the class to the main menu activity.
      * Further the thread which is within the method is used to make the splash screen sleep for 3000
@@ -29,30 +32,15 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
-        Thread timerThread = new Thread() {
+        new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-
-                try {
-
-                    sleep(3000);
-
-                } catch (InterruptedException e) {
-
-                    Log.d(TAG,"Interrupted Thread !", e);
-                    Thread.currentThread().interrupt();
-
-                } finally {
-
-
-                    intent = new Intent(SplashScreen.this, MainMenu.class);
-                    startActivity(intent);
-                }
+                intent = new Intent(SplashScreen.this, MainMenu.class);
+                startActivity(intent);
             }
-        };
+        }, SPLASH_TIME_OUT);
 
-        timerThread.start();
     }
 
     @Override

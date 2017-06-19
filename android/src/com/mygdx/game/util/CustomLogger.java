@@ -66,7 +66,7 @@ public class CustomLogger extends Logger {
 
     private void writeToConsole(String message) {
         if (writeToConsole) {
-            System.out.println(tag + ": " + message);
+            Log.d(tag, ":" + message);
         }
     }
 }

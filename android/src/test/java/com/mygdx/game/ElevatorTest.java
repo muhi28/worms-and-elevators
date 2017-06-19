@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class ElevatorTest {
 
-    private int [] elevs = new int[7];
+    private int[] elevs = new int[Elevator.getElevatorFields().length];
 
     @Before
     public void generateElevators(){
@@ -45,7 +45,8 @@ public class ElevatorTest {
 
         for (int aData : data) {
 
-            if (aData == value) return true;
+            if (aData == value)
+                return true;
         }
 
         return false;

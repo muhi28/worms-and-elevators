@@ -14,19 +14,43 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_MOVEMENT;
  */
 public final class WormMovementThread implements Runnable {
 
+    /**
+     * Logger.
+     */
     private static final CustomLogger LOGGER = new CustomLogger("WORM");
 
-
+    /**
+     * Used to calculate the position of the worm.
+     */
     private final RenderPositionCalculator renderPositionCalculator;
+
+    /**
+     * ID from the player.
+     */
     private final String playerId;
+
+    /**
+     * Current coordinates of player field.
+     */
     private Coordinates coordinatesCurrent;
+
+    /**
+     * Current player field.
+     */
     private Field fieldCurrent;
+
+    /**
+     * List which is used to hold the coordinates between two fields.
+     */
     private List<Coordinates> coordinates = new ArrayList<>();
 
+    /**
+     *
+     */
     private Coordinates targetCoordinates = null;
     private Field teleportFieldEnd;
     private final Thread thread;
-
+    private Field teleportFieldStart;
 
     /**
      * Instantiates a new Worm movement thread.
@@ -53,6 +77,11 @@ public final class WormMovementThread implements Runnable {
         return coordinatesCurrent;
     }
 
+    /**
+     * Used to set the current coordinates.
+     *
+     * @param current current Coordinates
+     */
     private synchronized void setCoordinatesCurrent(Coordinates current) {
         this.coordinatesCurrent = current;
     }
@@ -68,9 +97,13 @@ public final class WormMovementThread implements Runnable {
     }
 
 
-  private Field teleportFieldStart;
+    /**
+     * Used to teleport the player from one elevator field to another.
+     *
+     * @param elevatorStart Start Field
+     * @param elevatorEnd   Goal Field
+     */
     public void teleport(Field elevatorStart, Field elevatorEnd) {
-     //   targetCoordinates = null;
         this.teleportFieldStart = elevatorStart;
         this.teleportFieldEnd = elevatorEnd;
 
@@ -95,66 +128,72 @@ public final class WormMovementThread implements Runnable {
             try {
                 Thread.sleep(3);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error("Interrupted!!", e);
+                Thread.currentThread().interrupt();
             }
             Field targetPlayerField = renderPositionCalculator.getPlayerField(playerId);
 
-            if(teleportFieldEnd != null){
+            if (teleportFieldEnd != null) {
                 targetPlayerField = teleportFieldStart;
             }
 
-            Coordinates coordinatesCurrent = getCoordinatesCurrent();
-            if (renderPositionCalculator.getCoordinatesOfField(targetPlayerField).equals(coordinatesCurrent)
-                    && !fieldCurrent.sameField(targetPlayerField)) {
-                LOGGER.debug("Ziel erreicht");
-                fieldCurrent = targetPlayerField;
-
-                if(teleportFieldEnd != null){
-                    setCoordinatesCurrent(renderPositionCalculator.getCoordinatesOfField(teleportFieldEnd));
-
-                    teleportFieldEnd = null;
-                    teleportFieldStart = null;
-                    targetCoordinates = null;
-                    coordinates.clear();
-                }
-            }
+            Coordinates currentCoordinates = getCoordinatesCurrent();
+            checkTargetField(currentCoordinates, targetPlayerField);
 
 
             if (coordinates.isEmpty() && targetCoordinates == null) {
+                reinitializeCoordinates(targetPlayerField);
 
-
-                if (fieldCurrent.sameField(targetPlayerField)) {
-                    if(teleportFieldEnd != null){
-                        setCoordinatesCurrent(renderPositionCalculator.getCoordinatesOfField(teleportFieldEnd));
-                        teleportFieldEnd = null;
-                        teleportFieldStart = null;
-                        targetCoordinates = null;
-                        coordinates.clear();
-                    }
-                } else {
-                    coordinates = renderPositionCalculator.getCoordinatesBetween(fieldCurrent, targetPlayerField);
-                    LOGGER.debug("getCoordinatesBetween");
-                }
             } else {
 
-                if (targetCoordinates == null) {
-
-                    targetCoordinates = coordinates.remove(0);
-                    //   LOGGER.debug("new field");
-                }
-                int x = narrowCoordinates(coordinatesCurrent.getX(), targetCoordinates.getX());
-                int y = narrowCoordinates(coordinatesCurrent.getY(), targetCoordinates.getY());
-
-                setCoordinatesCurrent(new Coordinates(x, y));
-
-//            LOGGER.debug( "move to: " + targetCoordinates);
-//            LOGGER.debug("current to: " + coordinatesCurrent);
-                if (targetCoordinates.equals(coordinatesCurrent)) {
-                    LOGGER.debug("set tartet to null");
-                    targetCoordinates = null;
-                }
-
+                initializeNarrowCoordinates(currentCoordinates);
             }
         } while (true);
+    }
+
+    private void checkTargetField(Coordinates currentCoordinates, Field targetPlayerField) {
+
+        if (renderPositionCalculator.getCoordinatesOfField(targetPlayerField).equals(currentCoordinates)
+                && !fieldCurrent.sameField(targetPlayerField)) {
+            LOGGER.debug("Ziel erreicht");
+            fieldCurrent = targetPlayerField;
+
+            clearFieldsAndCoordinates();
+        }
+    }
+
+    private void reinitializeCoordinates(Field targetPlayerField) {
+
+        if (fieldCurrent.sameField(targetPlayerField)) {
+            clearFieldsAndCoordinates();
+        } else {
+            coordinates = renderPositionCalculator.getCoordinatesBetween(fieldCurrent, targetPlayerField);
+            LOGGER.debug("getCoordinatesBetween");
+        }
+    }
+
+    private void initializeNarrowCoordinates(Coordinates currentCoordinates) {
+        if (targetCoordinates == null) {
+            targetCoordinates = coordinates.remove(0);
+        }
+        int x = narrowCoordinates(currentCoordinates.getX(), targetCoordinates.getX());
+        int y = narrowCoordinates(currentCoordinates.getY(), targetCoordinates.getY());
+
+        setCoordinatesCurrent(new Coordinates(x, y));
+
+        if (targetCoordinates.equals(currentCoordinates)) {
+            LOGGER.debug("set target to null");
+            targetCoordinates = null;
+        }
+    }
+
+    private void clearFieldsAndCoordinates() {
+        if (teleportFieldEnd != null) {
+            setCoordinatesCurrent(renderPositionCalculator.getCoordinatesOfField(teleportFieldEnd));
+            teleportFieldEnd = null;
+            teleportFieldStart = null;
+            targetCoordinates = null;
+            coordinates.clear();
+        }
     }
 }

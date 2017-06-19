@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.GUI.DisplaySizeRatios;
 
 import static com.mygdx.game.GUI.DisplaySizeRatios.CHEAT_ICON_SIZE;
 import static com.mygdx.game.GUI.DisplaySizeRatios.X_CHEAT_ICON;

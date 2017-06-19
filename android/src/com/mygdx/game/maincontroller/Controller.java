@@ -166,19 +166,8 @@ public class Controller extends Observable implements InputProcessor {
 
             } else if (NetworkManager.isMultiplayer()) {
                 Integer integer = cheatCountDown.stopCountDown();
-                if (gotCoughtEnemyCheating) {
-                    playerOneTurn = false;
-                } else {
 
-                    NetworkManager.send(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE + integer);
-                    if (playerOneTurn) {
-                        cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), integer);
-                        playerOneTurn = false;
-                    }
-                    Player.resetCounter();
-                    camera.update();
-
-                }
+                checkIfEnemyCaught(integer);
 
             }
 
@@ -189,6 +178,7 @@ public class Controller extends Observable implements InputProcessor {
 
         return false;
     }
+
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -207,6 +197,21 @@ public class Controller extends Observable implements InputProcessor {
 
     //---------------------------------------------------------
 
+    private void checkIfEnemyCaught(Integer steps) {
+        if (gotCoughtEnemyCheating) {
+            playerOneTurn = false;
+        } else {
+
+            NetworkManager.send(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE + steps);
+            if (playerOneTurn) {
+                cheatMovement(gameField.getPlayer(Player.PLAYER_ONE_ID), steps);
+                playerOneTurn = false;
+            }
+            Player.resetCounter();
+            camera.update();
+
+        }
+    }
     /**
      * Gets input processor.
      *
@@ -284,9 +289,7 @@ public class Controller extends Observable implements InputProcessor {
         }
 
         doPlayerMovement(player, cheatCountdown);
-//        if (NetworkManager.isMultiplayer()) {
-//            NetworkManager.send(OTHER_PLAYER_CHEATED_MESSAGE + cheatCountdown);
-//        }
+
         updateCurrentFieldnumber(player);
         checkForWinner();
         checkField(player);
@@ -345,13 +348,13 @@ public class Controller extends Observable implements InputProcessor {
 
         int[] elevatorNumber = Elevator.getElevatorFields();
 
-        for (int i = 0; i < 7; i++) {
+        for (int anElevatorNumber : elevatorNumber) {
 
-            if (player.getCurrentField().getFieldnumber() == elevatorNumber[i]) {
+            if (player.getCurrentField().getFieldnumber() == anElevatorNumber) {
 
                 int newElevatorFieldnumber = Elevator.getNewElevatorFieldnumber(player.getCurrentField().getFieldnumber());
                 port(newElevatorFieldnumber, player);
-                getWorm(player).teleport(gameField.getFieldFrom(elevatorNumber[i]), gameField.getFieldFrom(newElevatorFieldnumber));
+                getWorm(player).teleport(gameField.getFieldFrom(anElevatorNumber), gameField.getFieldFrom(newElevatorFieldnumber));
                 break;
             }
 
@@ -423,7 +426,6 @@ public class Controller extends Observable implements InputProcessor {
         Player.switchCurrentPlayerIndex();
         playerCheatedList[Player.getCurrentPlayerIndex()] = true;
         turnBlocked = true;
-        //CheatCountDown.resetUsageCounter();
         Player.switchCurrentPlayerIndex();
     }
 
@@ -434,9 +436,8 @@ public class Controller extends Observable implements InputProcessor {
         if (NetworkManager.isSinglePlayer()) {
             if (CheatCountDown.getUsageCounter() >= 2) {
 
-                if (NetworkManager.isSinglePlayer()) {
                     CheatIcon.setVisibility(true);
-                }
+
             }
         } else if (NetworkManager.isMultiplayer()) {
 
@@ -457,15 +458,10 @@ public class Controller extends Observable implements InputProcessor {
             }
 
 
-        } else if (playerOneTurn) {
-            if (cheatCountDown.touchDown(screenX, screenY)) {
+        } else if (playerOneTurn && cheatCountDown.touchDown(screenX, screenY)) {
 
                 checkUsageCounter();
-
                 return true;
-            }
-
-
         }
         return false;
     }
@@ -482,28 +478,24 @@ public class Controller extends Observable implements InputProcessor {
      * false -> no acceleration detected
      */
     //------------------ GESTURE CONTROLLER DETECTION ----------
-    public boolean checkAcceleration() {
+    public void checkAcceleration() {
 
         if (!winnerDecided && Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
 
             float x = Gdx.input.getAccelerometerX();
             float y = Gdx.input.getAccelerometerY();
-            float z = Gdx.input.getAccelerometerZ();
 
             accelLast = accelVal;
-            accelVal = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            accelVal = (float) Math.sqrt((double) (x * x + y * y));
             float delta = accelVal - accelLast;
             shake = shake * 0.9f + delta;
 
-            if (shake > 10 && gameStarted) {
+            if (shake > 6 && gameStarted) {
 
                 checkPlayerTurn();
 
-                return true;
             }
         }
-
-        return false;
     }
 
     /**
@@ -654,4 +646,7 @@ public class Controller extends Observable implements InputProcessor {
 
     }
 
+    public NetworkTrafficReceiver getNetworkTrafficReceiver() {
+        return networkTrafficReceiver;
+    }
 }

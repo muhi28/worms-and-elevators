@@ -14,10 +14,19 @@ import static com.mygdx.game.GUI.DisplaySizeRatios.WORM_SIZE;
  */
 public class Worm extends Actor {
 
-    private static final CustomLogger LOGGER = new CustomLogger("WORM");
-
+    /**
+     * Worm Sprite
+     */
     private final Sprite player;
+
+    /**
+     * ID of matching player.
+     */
     private final String playerId;
+
+    /**
+     * Used for the worm movement.
+     */
     private final WormMovementThread wormMovementThread;
 
 
@@ -45,6 +54,12 @@ public class Worm extends Actor {
     }
 
 
+    /**
+     * Used to draw the worm to the game field.
+     *
+     * @param batch       draws the worm to the stage
+     * @param parentAlpha
+     */
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Coordinates coordinatesCurrent = wormMovementThread.getCoordinatesCurrent();
@@ -53,7 +68,12 @@ public class Worm extends Actor {
 
     }
 
-
+    /**
+     * Used to move the worm to the target field.
+     *
+     * @param elevatorStart Start Field
+     * @param elevatorEnd   Target Field
+     */
     public void teleport(Field elevatorStart, Field elevatorEnd) {
         wormMovementThread.teleport(elevatorStart, elevatorEnd);
     }

@@ -202,17 +202,17 @@ public class Main extends ApplicationAdapter implements Observer {
         if (!playerOne.stillMoving() && !controller.getPlayerOneTurn()) {
 
             if (NetworkManager.isMultiplayer()) {
-                font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL, Y_LABEL);
+                font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL - 10, Y_LABEL);
             } else if (!Controller.getWinnerDecided()) {
-                font.draw(batch, "  COM ist an der Reihe", X_LABEL, Y_LABEL);
+                font.draw(batch, " COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
         } else if (!playerTwo.stillMoving() && controller.getPlayerOneTurn()) {
             if (NetworkManager.isMultiplayer()) {
-                font.draw(batch, "Du bist an der Reihe!", X_LABEL, Y_LABEL);
+                font.draw(batch, " Du bist an der Reihe!", X_LABEL, Y_LABEL);
 
             } else if (!Controller.getWinnerDecided()) {
-                font.draw(batch, "Spieler 1 ist an der Reihe", X_LABEL, Y_LABEL);
+                font.draw(batch, "Spieler ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
         }
@@ -222,10 +222,7 @@ public class Main extends ApplicationAdapter implements Observer {
 
         if (TimeUtils.millis() > (lastTimeShaken + 350)) {
 
-            boolean shaken = controller.checkAcceleration();
-
-       //     Gdx.app.log("GESTURE CONTROLL", String.format("Device shaken: %b", shaken));
-
+            controller.checkAcceleration();
 
             lastTimeShaken = TimeUtils.millis();
         }
@@ -261,7 +258,7 @@ public class Main extends ApplicationAdapter implements Observer {
         // Font
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        font.getData().setScale(4, 4);
+        font.getData().setScale(4f, 4f);
     }
 
     private void generateElevatorFieldTextures() {

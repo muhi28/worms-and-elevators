@@ -31,8 +31,8 @@ public class CharacterSelect extends Activity {
     public static final String PLAYER_COLOR_KEY = "Player_Color";
     public static final String OTHER_PLAYER_COLOR_KEY = "Other_Player_Color";
     public static final String SEED_RANDOM = "RANDOM_SEED";
-    private final String CHOOSE_PLAYER = "Bitte eine Spielfigur auswählen!";
-    private final String WAIT_FOR_OTHER = "Bitte warten Sie auf den anderen Spieler";
+    private static final String CHOOSE_PLAYER = "Bitte eine Spielfigur auswählen!";
+    private static final String WAIT_FOR_OTHER = "Bitte warten Sie auf den anderen Spieler";
 
 
     private Intent intent;
@@ -97,13 +97,11 @@ public class CharacterSelect extends Activity {
         if (NetworkManager.isMultiplayer() && checkIfOtherIsReady()) {
 
             return;
-        } else if (NetworkManager.isSinglePlayer()) {
-
-            if ("".equals(chosenPlayer.getText().toString()) || CHOOSE_PLAYER.equals(chosenPlayer.getText().toString())) {
+        } else if (NetworkManager.isSinglePlayer() && wormColorChosen()) {
 
                 setMessage(CHOOSE_PLAYER);
                 return;
-            }
+
         }
 
         if (colorOtherPlayer == null) {
@@ -121,6 +119,10 @@ public class CharacterSelect extends Activity {
         startActivity(intent);
     }
 
+    private boolean wormColorChosen() {
+        return "".equals(chosenPlayer.getText().toString()) || CHOOSE_PLAYER.equals(chosenPlayer.getText().toString());
+
+    }
     private boolean checkIfOtherIsReady() {
 
         if (NetworkMonitor.isConnected() && colorOtherPlayer == null) {
@@ -244,4 +246,7 @@ public class CharacterSelect extends Activity {
         }
     }
 
+    public NetworkTrafficReceiver getNetworkTrafficReceiver() {
+        return networkTrafficReceiver;
+    }
 }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 
 public class DisplaySizeRatios {
 
+    private DisplaySizeRatios() {
+    }
 
     public static final int NUMBEROF_VERTICALS = 10;
     public static final int NUMBEROF_HORIZONTAL = 10;
@@ -26,7 +28,7 @@ public class DisplaySizeRatios {
     public static int X_LABEL;
     public static int Y_LABEL;
 
-    public final static int CHEAT_ICON_SIZE = 70;
+    public static final int CHEAT_ICON_SIZE = 65;
     public static int Y_CHEAT_ICON;
     public static int X_CHEAT_ICON;
 
@@ -48,7 +50,7 @@ public class DisplaySizeRatios {
         X_LABEL = Gdx.graphics.getWidth() / 5;
         Y_LABEL = Y_START_FIELD;
 
-        X_CHEAT_ICON = Gdx.graphics.getWidth() -  CHEAT_ICON_SIZE;
+        X_CHEAT_ICON = Gdx.graphics.getWidth() - CHEAT_ICON_SIZE - 20;
         Y_CHEAT_ICON = (int) (CHEAT_ICON_SIZE * 0.5);
         printSettings();
 

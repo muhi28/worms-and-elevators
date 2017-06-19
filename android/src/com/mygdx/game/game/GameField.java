@@ -34,14 +34,19 @@ public class GameField {
      * Instantiates a new Game field.
      *
      * @param fields  the fields
-     * @param players the player
+     * @param playerOne first player
+     * @param playerTwo second player
      */
-    public GameField(List<Field> fields, Player playersOne, Player playerTwo) {
-        this.playerOne = playersOne;
+    private GameField(List<Field> fields, Player playerOne, Player playerTwo) {
+        this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.fields = fields;
 
 
+    }
+
+    public static int getCurrentPlayerNumber() {
+        return currentPlayerNumber;
     }
 
     /**
