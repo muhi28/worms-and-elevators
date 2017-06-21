@@ -195,24 +195,29 @@ public class Main extends ApplicationAdapter  {
     }
     private void playerSwitchTextOutput() {
 
+        String s1, s2;
 
         if (!playerOne.stillMoving() && !controller.getPlayerOneTurn()) {
 
-            if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
-                font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL - 10, Y_LABEL);
-            } else if (!Controller.getWinnerDecided() && NetworkManager.isSinglePlayer()) {
-                font.draw(batch, " COM ist an der Reihe", X_LABEL, Y_LABEL);
-            }
+            s1 = "Anderer Spieler ist an der Reihe";
+            s2 = " COM ist an der Reihe";
+
+            showPlayerTurn(s1, s2);
 
 
         } else if (!playerTwo.stillMoving() && controller.getPlayerOneTurn()) {
-            if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
-                font.draw(batch, " Du bist an der Reihe!", X_LABEL, Y_LABEL);
+            s1 = "   Du bist dran";
+            s2 = "Spieler ist dran";
 
-            } else if (!Controller.getWinnerDecided() && NetworkManager.isSinglePlayer()) {
-                font.draw(batch, "Spieler ist an der Reihe", X_LABEL, Y_LABEL);
-            }
+            showPlayerTurn(s1, s2);
+        }
+    }
 
+    private void showPlayerTurn(String p1, String p2) {
+        if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
+            font.draw(batch, p1, X_LABEL - 5, Y_LABEL);
+        } else if (!Controller.getWinnerDecided() && NetworkManager.isSinglePlayer()) {
+            font.draw(batch, p2, X_LABEL, Y_LABEL);
         }
     }
 

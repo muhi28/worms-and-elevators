@@ -1,7 +1,5 @@
 package com.mygdx.game.display;
 
-import android.util.Log;
-
 import com.mygdx.game.game.Field;
 import com.mygdx.game.game.GameField;
 

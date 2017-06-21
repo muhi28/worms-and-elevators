@@ -15,8 +15,6 @@ public class SplashScreen extends Activity {
 
     private Intent intent;
 
-    private static final String TAG = "SplashScreenActivity";
-
     private static final int SPLASH_TIME_OUT = 3000;
 
     /**
