@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.activities.Network;
 import com.mygdx.game.gui.DisplaySizeRatios;
 import com.mygdx.game.gui.Main;
 import com.mygdx.game.gui.WinnerScreen;
@@ -362,39 +361,31 @@ public class Controller implements InputProcessor {
     private static void checkForWinner() {
 
 
-        if (NetworkManager.isMultiplayer()) {
+        if (NetworkManager.isMultiplayer() && gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+            showWinner("Spieler 1");
+
+        } else if (NetworkManager.isMultiplayer() && gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+            showWinner("Spieler 2");
+        } else if (NetworkManager.isSinglePlayer()) {
+
             if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
-                Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
-                winnerScreen.set(new WinnerScreen("Spieler 1", Main.getStage()));
-                SoundHandler.getMusicManager().finishSound();
-                winnerDecided = true;
+                showWinner("Spieler");
 
             } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
-                Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
-                winnerScreen.set(new WinnerScreen("Spieler 2", Main.getStage()));
-                SoundHandler.getMusicManager().finishSound();
-                winnerDecided = true;
+                showWinner("COM");
             }
         }
-        if (NetworkManager.isSinglePlayer()) {
-            if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
+    }
 
-                Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
-                winnerScreen.set(new WinnerScreen("Spieler", Main.getStage()));
-                SoundHandler.getMusicManager().finishSound();
-                winnerDecided = true;
-
-            } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
-
-                Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
-                winnerScreen.set(new WinnerScreen("COM", Main.getStage()));
-                SoundHandler.getMusicManager().finishSound();
-                winnerDecided = true;
-            }
-        }
-
+    private static void showWinner(String winner) {
+        Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
+        winnerScreen.set(new WinnerScreen(winner, Main.getStage()));
+        SoundHandler.getMusicManager().finishSound();
+        winnerDecided = true;
     }
 
     /**

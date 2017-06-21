@@ -11,7 +11,7 @@ import org.junit.Test;
 
 
 /**
- *Created by Muhi on 28.04.2017.
+ *Created by Muhamed on 28.04.2017.
  */
 public class DiceTest {
 
