@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2">
+
+    <Switch
+        android:id="@+id/mySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="251dp"
+        android:text="Musik Menue"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/back_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:text="Zurück"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/mySwitch"
+        android:layout_alignStart="@+id/mySwitch"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:onClick="onClickBackButton" />
+
+    <Switch
+        android:id="@+id/switchGameMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/mySwitch"
+        android:layout_alignRight="@+id/mySwitch"
+        android:layout_below="@+id/mySwitch"
+        android:layout_marginTop="31dp"
+        android:text="Musik Spiel"
+        android:layout_alignLeft="@+id/mySwitch"
+        android:layout_alignStart="@+id/mySwitch" />
+
+    <Switch
+        android:id="@+id/switchEffects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/switchGameMusic"
+        android:layout_alignRight="@+id/switchGameMusic"
+        android:layout_below="@+id/switchGameMusic"
+        android:layout_marginTop="24dp"
+        android:text="Effekte"
+        android:layout_alignLeft="@+id/switchGameMusic"
+        android:layout_alignStart="@+id/switchGameMusic" />
+
+</RelativeLayout>

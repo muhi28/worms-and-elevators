@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2">
+
+    <Button
+        android:id="@+id/single_player_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="97dp"
+        android:fontFamily="casual"
+        android:onClick="onClickChangeToCharacterSelect"
+        android:text="@string/single_player"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        tools:targetApi="honeycomb" />
+
+    <Button
+        android:id="@+id/multi_player_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:fontFamily="casual"
+        android:onClick="onButtonClickStartNetworking"
+        android:text="@string/multi_player"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        tools:targetApi="honeycomb" />
+
+    <TextView
+        android:id="@+id/textview_wuermer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/instr_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:fontFamily="casual"
+        android:text="@string/gamename"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textview_start_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_wuermer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:fontFamily="casual"
+        android:text="@string/start_menu"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/instr_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="casual"
+        android:onClick="onButtonClickCreateInstr"
+        android:text="@string/instructions"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:ignore="NewApi,RelativeOverlap"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textview_start_menu"
+        android:layout_toStartOf="@+id/textview_start_menu" />
+
+    <EditText
+        android:id="@+id/inputname_edittxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/single_player_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:text="McWorm" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="Bitte Namen eingeben:"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_above="@+id/inputname_edittxt"
+        android:layout_alignLeft="@+id/inputname_edittxt"
+        android:layout_alignStart="@+id/inputname_edittxt" />
+
+    <Button
+        android:id="@+id/option_button"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Optionen"
+        android:layout_above="@+id/textview_wuermer"
+        android:layout_alignRight="@+id/textview_wuermer"
+        android:layout_alignEnd="@+id/textview_wuermer"
+        android:onClick="onClickOptionButton" />
+
+
+</RelativeLayout>

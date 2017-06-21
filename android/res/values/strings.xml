@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Wuermer-und-Aufzuege</string>
+    <string name="app_name">Würmer und Aufzüge</string>
+    <string name="start_game">Starte Spiel</string>
+    <string name="gamename">Würmer und Aufzüge</string>
+    <string name="start_menu">Start Menü</string>
+    <string name="einleitung">Einleitung</string>
+    <string name="zurueck">Zurück</string>
+    <string name="connect">Connect</string>
+    <string name="instructions">Instructions</string>
+    <string name="network">Network</string>
+    <string name="logotext">Würmer und Aufzüge</string>
+    <string name="single_player">Single Player</string>
+    <string name="multi_player">Multi Player</string>
+    <string name="blueplayer">Blau</string>
+    <string name="yellowPlayer">Gelb</string>
+    <string name="greenPlayer">Grün</string>
+    <string name="redPlayer">Rot</string>
+    <string name="back">Zurück</string>
+    <string name="playerName">Spielername:</string>
+    <string name="spielbeschreibung">
+        In dem beliebten Brettspiel "Würmer und Aufzüge" geht es darum, mit seiner
+        eigenen Spielfigur so schnell wie möglich vom Startfeld aus über das Spielbrett
+        ins Ziel zu kommen.
+
+
+        Auf dem Spielbrett sind zufällig Aufzüge verteilt.
+
+        Wenn nun die Spielfigur auf ein Feld steigt, wo sich ein Aufzug befindet kann es sein,
+        dass die Spielfigur einige Felder Richtung Ziel wandert,
+        wenn man Glück hat, oder die Spielfigur wandert
+        einige Felder Richtung Start, wenn man Pech hat.
+
+
+        Wer als erster seine Spielfigur ins Ziel gebracht hat, gewinnt das Spiel.
+
+        Spielablauf: Bei einem Spiel können maximal 2 Personen im Multiplayermodus teilnehmen bzw. mindestens 1 Person im Singleplayermodus.
+        Jeder der 2 Spieler würfelt einmal. Der Spieler der die höchste Augenzahl gewürfelt hat beginnt mit dem ersten Spielzug.
+        Der erste Spieler ist am Zug und kann durch das schütteln des Smartphones würfeln.
+        Nach dem der erste Spieler seine Spielfigur bewegt hat, ist ein anderer Spieler am Zug.
+        Um das Spiel lustiger zu gestalten kann man auch Schummeln. Wenn ein Spieler bei seinem Zug schummeln will,
+        kann er durch das betätigen des Buttons "schummeln" eine Augenzahl auswählen. Nachdem der Spieler
+        geschummelt hat wird ein Symbol auf seinem Smartphone angezeigt. Um zu erkennen ob ein Spieler geschummelt hat,
+        muss man nun auf den Bildschirm vom Spieler schauen. Findet man das Schummler-Symbol auf dem Bildschirm des Spielers,
+        so muss dieser dieses Icon anklicken, wodurch er eine Runde aussetzen muss.
+
+
+    </string>
+    <string name="start_server">Start Server</string>
+    <string name="title_activity_option">OptionActivity</string>
 
 </resources>
