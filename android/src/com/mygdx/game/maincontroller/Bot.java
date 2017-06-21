@@ -22,13 +22,18 @@ class Bot implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted() && !Controller.getWinnerDecided()) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 do {
                     Thread.sleep(500);
                 }
                 while (wormOne.stillMoving() || wormTwo.stillMoving() || controller.isPlayerOneTurn());
                 Thread.sleep(2000);
+                if(Controller.getWinnerDecided())
+                {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
                 LOGGER.info("Bot rolled the dice!");
                 controller.checkPlayerTurn();
                 Thread.sleep(1000);

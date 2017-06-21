@@ -470,7 +470,7 @@ public class Controller implements InputProcessor {
         return false;
     }
 
-    public static boolean getWinnerDecided() {
+    public synchronized static boolean getWinnerDecided() {
         return winnerDecided;
     }
     //---------------------------------------------------------
