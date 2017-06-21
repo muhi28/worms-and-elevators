@@ -22,7 +22,7 @@ class Bot implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted() && !Controller.getWinnerDecided()) {
             try {
                 do {
                     Thread.sleep(500);

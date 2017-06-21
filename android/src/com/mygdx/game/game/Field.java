@@ -5,30 +5,10 @@ package com.mygdx.game.game;
  */
 public class Field {
 
-    /**
-     * The enum Field typs.
-     */
-    public enum FieldTyps {
-
-        /**
-         * Normal field typs.
-         */
-        NORMAL,
-        /**
-         * Wurm field typs.
-         */
-        WURM,
-        /**
-         * Aufzug field typs.
-         */
-        AUFZUG
-    }
-
     private int posX;
     private int posY;
 
     private Field nextField;
-    private Field previousField;
     private final int fieldnumber;
 
     /**
@@ -64,26 +44,6 @@ public class Field {
     public Field getNextField() {
 
         return nextField;
-    }
-
-    /**
-     * Sets previous field.
-     *
-     * @param previousField the previous field
-     */
-    public void setPreviousField(Field previousField) {
-
-        this.previousField = previousField;
-    }
-
-    /**
-     * Gets previous.
-     *
-     * @return the previous
-     */
-    public Field getPrevious() {
-
-        return previousField;
     }
 
     /**

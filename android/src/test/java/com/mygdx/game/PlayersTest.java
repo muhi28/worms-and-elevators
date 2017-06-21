@@ -45,8 +45,8 @@ public class PlayersTest {
         }
 
         //test change player name
-        player.setSpielername("Muhamed Siljic");
-        Assert.assertEquals("Muhamed Siljic", player.getSpielername());
+        player.setPlayerName("Muhamed Siljic");
+        Assert.assertEquals("Muhamed Siljic", player.getPlayerName());
 
     }
 

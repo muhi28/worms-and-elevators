@@ -28,8 +28,6 @@ public class GameField {
     private final Player playerOne;
     private final Player playerTwo;
 
-    private static int currentPlayerNumber;
-
     /**
      * Instantiates a new Game field.
      *
@@ -43,10 +41,6 @@ public class GameField {
         this.fields = fields;
 
 
-    }
-
-    public static int getCurrentPlayerNumber() {
-        return currentPlayerNumber;
     }
 
     /**
@@ -77,7 +71,7 @@ public class GameField {
      */
     public Field getStartField() {
 
-        return getFieldFromPos(0, 0);
+        return getFieldFromPos(1, 1);
     }
 
     /**
@@ -119,6 +113,7 @@ public class GameField {
      */
     public Field getGoal() {
 
+        goal = getFieldFrom(91);
         return goal;
     }
 
@@ -133,19 +128,9 @@ public class GameField {
 
         int number = NUMBEROF_VERTICALS * NUMBEROF_HORIZONTAL;
 
-        goal = new Field(NUMBEROF_VERTICALS, NUMBEROF_HORIZONTAL, number--);
-
-        fields.add(goal);
-
         for (int i = NUMBEROF_HORIZONTAL; i > 0; i--) {
 
             for (int j = NUMBEROF_VERTICALS; j > 0; j--) {
-
-                if (i == NUMBEROF_HORIZONTAL && j == NUMBEROF_VERTICALS) {
-
-                    continue;
-                }
-
 
                 Field field = new Field(i, j, number--);
                 fields.add(field);
@@ -161,8 +146,6 @@ public class GameField {
 
         Player playerOne = new Player(sortedFields.get(sortedFields.size() - 1), Player.PLAYER_ONE_ID);
         Player playerTwo = new Player(sortedFields.get(sortedFields.size() - 1), Player.PLAYER_TWO_ID);
-
-        currentPlayerNumber = 0;
 
         return new GameField(sortedFields, playerOne, playerTwo);
 

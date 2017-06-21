@@ -26,15 +26,12 @@ import com.mygdx.game.game.Player;
 import com.mygdx.game.maincontroller.Controller;
 import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.sensor.AccelerationSensor;
-import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 
 import static com.mygdx.game.gui.DisplaySizeRatios.DICE_SIZE;
@@ -201,17 +198,18 @@ public class Main extends ApplicationAdapter  {
 
         if (!playerOne.stillMoving() && !controller.getPlayerOneTurn()) {
 
-            if (NetworkManager.isMultiplayer()) {
+            if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
                 font.draw(batch, "Anderer Spieler ist an der Reihe!", X_LABEL - 10, Y_LABEL);
-            } else if (!Controller.getWinnerDecided()) {
+            } else if (!Controller.getWinnerDecided() && NetworkManager.isSinglePlayer()) {
                 font.draw(batch, " COM ist an der Reihe", X_LABEL, Y_LABEL);
             }
 
+
         } else if (!playerTwo.stillMoving() && controller.getPlayerOneTurn()) {
-            if (NetworkManager.isMultiplayer()) {
+            if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
                 font.draw(batch, " Du bist an der Reihe!", X_LABEL, Y_LABEL);
 
-            } else if (!Controller.getWinnerDecided()) {
+            } else if (!Controller.getWinnerDecided() && NetworkManager.isSinglePlayer()) {
                 font.draw(batch, "Spieler ist an der Reihe", X_LABEL, Y_LABEL);
             }
 

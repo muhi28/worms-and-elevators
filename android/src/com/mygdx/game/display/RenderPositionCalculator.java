@@ -37,8 +37,6 @@ public class RenderPositionCalculator {
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         Field nextField = from.getNextField();
 
-        int fields = to.getFieldnumber() - nextField.getFieldnumber();
-        Log.d("RenderPosition", "fields: " + fields);
         while (true) {
             Coordinates coordinatesOfField = getCoordinatesOfField(nextField);
             coordinates.add(coordinatesOfField);

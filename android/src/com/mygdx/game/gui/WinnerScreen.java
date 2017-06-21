@@ -21,7 +21,7 @@ public class WinnerScreen {
 
     public WinnerScreen(String playerName, Stage stage) {
 
-        winnerText = new Label(playerName + " hat das Spiel gewonnen !!", getLabelStyle());
+        winnerText = new Label(playerName + " gewinnt!!", getLabelStyle());
         winnerText.setWidth(450f);
         winnerText.setPosition(X_LABEL - 40, Y_LABEL);
 

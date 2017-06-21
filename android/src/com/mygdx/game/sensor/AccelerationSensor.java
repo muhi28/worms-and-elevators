@@ -3,7 +3,6 @@ package com.mygdx.game.sensor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mygdx.game.maincontroller.Controller;
 
 /**
  * Created by muhamed on 19.06.17.
@@ -11,16 +10,16 @@ import com.mygdx.game.maincontroller.Controller;
 
 public class AccelerationSensor {
 
-    private Long lastTimeShaken;
     /**
      * Sensor Items
      */
     float accelLast;  //Current acceleration value and gravity
     float accelVal; //Last acceleration value and gravity
     float shake; //Acceleration value differ from gravity
-    public AccelerationSensor(){
 
-        lastTimeShaken = TimeUtils.millis();
+    Long lastTimeShaken;
+
+    public AccelerationSensor() {
     }
 
 

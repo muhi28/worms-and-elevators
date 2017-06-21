@@ -167,7 +167,7 @@
         android:layout_alignStart="@+id/blue_worm_button"
         android:layout_marginTop="39dp"
         android:fontFamily="casual"
-        android:text="@string/spielername"
+        android:text="@string/playerName"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="18sp"

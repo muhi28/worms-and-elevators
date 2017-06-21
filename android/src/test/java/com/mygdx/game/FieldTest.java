@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -59,7 +58,7 @@ public class FieldTest {
 
         }
 
-        assertEquals(null,player.getCurrentField().getNextField());
+        Assert.assertEquals(null, player.getCurrentField().getNextField());
     }
 
     /**
@@ -73,8 +72,36 @@ public class FieldTest {
 
         for (int i = fields.size(); i > 0; i--) {
 
-            assertEquals(fieldnumber,gameField.getFieldFrom(i).getFieldnumber());
+            Assert.assertEquals(fieldnumber, gameField.getFieldFrom(i).getFieldnumber());
+            boolean same = gameField.getFieldFrom(i).sameField(gameField.getFieldFrom(i));
+            Assert.assertEquals(true, same);
             fieldnumber--;
         }
+    }
+
+    @Test
+    public void testPos() {
+
+        Player player = gameField.getPlayer(Player.PLAYER_ONE_ID);
+
+        int posX = player.getCurrentField().getPosX();
+        int posY = player.getCurrentField().getPosY();
+
+        //check spawn position equality
+        Assert.assertEquals(gameField.getStartField().getPosX(), posX);
+        Assert.assertEquals(gameField.getStartField().getPosY(), posY);
+
+        //check moved position
+        for (int i = 0; i < 5; i++) {
+
+            player.move();
+        }
+
+        posX = player.getCurrentField().getPosX();
+        posY = player.getCurrentField().getPosY();
+
+        Assert.assertEquals(gameField.getPlayerOne().getCurrentField().getPosX(), posX);
+        Assert.assertEquals(gameField.getPlayerOne().getCurrentField().getPosY(), posY);
+
     }
 }

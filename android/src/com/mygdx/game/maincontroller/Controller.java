@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.activities.Network;
 import com.mygdx.game.gui.DisplaySizeRatios;
 import com.mygdx.game.gui.Main;
 import com.mygdx.game.gui.WinnerScreen;
@@ -20,7 +21,6 @@ import com.mygdx.game.netwoking.FromNetworkProcessor;
 import com.mygdx.game.netwoking.NetworkManager;
 import com.mygdx.game.netwoking.NetworkTrafficReceiver;
 import com.mygdx.game.sensor.AccelerationSensor;
-import com.mygdx.game.util.CustomLogger;
 import com.mygdx.game.util.SoundHandler;
 import static com.mygdx.game.gui.DisplaySizeRatios.DICE_SIZE;
 
@@ -29,7 +29,6 @@ import static com.mygdx.game.gui.DisplaySizeRatios.DICE_SIZE;
  * The type Controller.
  */
 public class Controller implements InputProcessor {
-    private static final CustomLogger LOGGER = new CustomLogger("CONTROLLER");
     private static final String OTHER_PLAYER_ROLLED_DICE_MESSAGE = "Other_Player_Rolled_Dice";
     private static final String OTHER_PLAYER_CHEATED_MESSAGE = "Other_Player_Cheated";
     private static final String OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE = "Other_Player_Successfull=";
@@ -61,6 +60,7 @@ public class Controller implements InputProcessor {
     private static boolean winnerDecided = false;
     private boolean coughtEnemyCheating = false;
     private boolean gotCoughtEnemyCheating = false;
+    private Bot bot;
 
     /**
      * Instantiates a new Controller.
@@ -86,7 +86,7 @@ public class Controller implements InputProcessor {
             }
         });
         if (NetworkManager.isSinglePlayer()) {
-            Bot bot = new Bot(wormOne, wormTwo, this);
+            bot = new Bot(wormOne, wormTwo, this);
         }
     }
 
@@ -361,19 +361,38 @@ public class Controller implements InputProcessor {
 
     private static void checkForWinner() {
 
-        if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
-            Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
-            winnerScreen.set(new WinnerScreen(gameField.getPlayerOne().getPlyerId(), Main.getStage()));
-            SoundHandler.getMusicManager().finishSound();
-            winnerDecided = true;
+        if (NetworkManager.isMultiplayer()) {
+            if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
 
-        } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
+                Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
+                winnerScreen.set(new WinnerScreen("Spieler 1", Main.getStage()));
+                SoundHandler.getMusicManager().finishSound();
+                winnerDecided = true;
 
-            Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
-            winnerScreen.set(new WinnerScreen(gameField.getPlayerTwo().getPlyerId(), Main.getStage()));
-            SoundHandler.getMusicManager().finishSound();
-            winnerDecided = true;
+            } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+                Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
+                winnerScreen.set(new WinnerScreen("Spieler 2", Main.getStage()));
+                SoundHandler.getMusicManager().finishSound();
+                winnerDecided = true;
+            }
+        }
+        if (NetworkManager.isSinglePlayer()) {
+            if (gameField.getPlayerOne().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+                Gdx.app.log(TAG, "SPIELER 1 hat gewonnen !!");
+                winnerScreen.set(new WinnerScreen("Spieler", Main.getStage()));
+                SoundHandler.getMusicManager().finishSound();
+                winnerDecided = true;
+
+            } else if (gameField.getPlayerTwo().getCurrentField().equals(gameField.getFieldFrom(91))) {
+
+                Gdx.app.log(TAG, "SPIELER 2 hat gewonnen!!");
+                winnerScreen.set(new WinnerScreen("COM", Main.getStage()));
+                SoundHandler.getMusicManager().finishSound();
+                winnerDecided = true;
+            }
         }
 
     }
@@ -573,6 +592,9 @@ public class Controller implements InputProcessor {
     }
     //---------------------------------------------------------
 
+    public Bot getBot() {
+        return bot;
+    }
     /**
      * Process message from network.
      *
@@ -599,22 +621,10 @@ public class Controller implements InputProcessor {
             CheatIcon.setVisibility(true);
 
         } else if (inputString.startsWith(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE)) {
-            CheatIcon.setVisibility(false);
-            Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
-            String replace = inputString.replace(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE, "");
-            Integer cheatedNumberOfSteps = Integer.valueOf(replace);
-            doPlayerMovement(player, cheatedNumberOfSteps);
-            checkForWinner();
-            checkField(player);
-            playerOneTurn = true;
-            camera.update();
+            cheatedSuccessfull(inputString);
 
         } else if (inputString.equals(OTHER_PLAYER_CHEATED_DETECTED_MESSAGE)) {
-            cheatCountDown.stopCountDown();
-            gotCoughtEnemyCheating = true;
-            Player.switchCurrentPlayerIndex();
-            playerOneTurn = false;
-            camera.update();
+            cheaterDetected();
         } else {
             log = false;
         }
@@ -624,7 +634,29 @@ public class Controller implements InputProcessor {
 
     }
 
+    private void cheatedSuccessfull(String inputString) {
+
+        CheatIcon.setVisibility(false);
+        Player player = gameField.getPlayer(Player.PLAYER_TWO_ID);
+        String replace = inputString.replace(OTHER_PLAYER_CHEATED_SUCCESSFULL_MESSAGE, "");
+        Integer cheatedNumberOfSteps = Integer.valueOf(replace);
+        doPlayerMovement(player, cheatedNumberOfSteps);
+        checkForWinner();
+        checkField(player);
+        playerOneTurn = true;
+        camera.update();
+    }
+
+    private void cheaterDetected() {
+        cheatCountDown.stopCountDown();
+        gotCoughtEnemyCheating = true;
+        Player.switchCurrentPlayerIndex();
+        playerOneTurn = false;
+        camera.update();
+    }
     public NetworkTrafficReceiver getNetworkTrafficReceiver() {
         return networkTrafficReceiver;
     }
+
+
 }

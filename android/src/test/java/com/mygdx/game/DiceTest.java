@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.dice.Dice;
 
 import org.junit.After;
@@ -7,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
 
 
 /**
@@ -42,7 +42,7 @@ public class DiceTest {
 
         Integer range = dice.rollTheDice();
 
-        assertEquals(dice.getResult(), range);
+        Assert.assertEquals(dice.getResult(), range);
 
     }
 
@@ -54,7 +54,7 @@ public class DiceTest {
 
         Integer range = dice.rollTheDice();
 
-        assertEquals(dice.getResult(), range);
+        Assert.assertEquals(dice.getResult(), range);
 
         Assert.assertNotEquals(null, dice.getResult());
 
@@ -68,6 +68,16 @@ public class DiceTest {
 
         int range = dice.rollTheDice();
 
-        assertEquals(0, range);
+        Assert.assertEquals(0, range);
+    }
+
+    @Test
+    public void testRange() {
+
+        int range = 6;
+
+        dice = new Dice(range, TimeUtils.millis());
+
+        Assert.assertEquals(range, dice.getRange());
     }
 }

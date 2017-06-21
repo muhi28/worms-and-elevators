@@ -5,7 +5,7 @@ package com.mygdx.game.players;
  */
 public class Player {
 
-    private String spielername;
+    private String playerName;
     private PlayerColor farbe;
 
 
@@ -16,29 +16,29 @@ public class Player {
      */
     public Player(String name) {
 
-        this.spielername = name;
+        this.playerName = name;
 
     }
 
     /**
-     * Sets spielername.
+     * Sets playerName.
      *
-     * @param spielername the spielername
+     * @param playerName the playerName
      */
-    public void setSpielername(String spielername) {
+    public void setPlayerName(String playerName) {
 
-        this.spielername = spielername;
+        this.playerName = playerName;
 
     }
 
     /**
-     * Gets spielername.
+     * Gets playerName.
      *
-     * @return the spielername
+     * @return the playerName
      */
-    public String getSpielername() {
+    public String getPlayerName() {
 
-        return spielername;
+        return playerName;
     }
 
 
