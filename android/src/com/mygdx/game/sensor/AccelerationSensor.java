@@ -8,6 +8,9 @@ import com.badlogic.gdx.utils.TimeUtils;
  * Created by muhamed on 19.06.17.
  */
 
+/**
+ * Class which provides the acceleration sensor.
+ */
 public class AccelerationSensor {
 
     /**
@@ -19,11 +22,20 @@ public class AccelerationSensor {
 
     Long lastTimeShaken;
 
+    /**
+     * Constructor.
+     */
     public AccelerationSensor() {
     }
 
-
-
+    /**
+     * Used to check whether the device was accelerated or not.
+     *
+     * @param winnerDecided - the current winner
+     * @param gameStarted - game started or not
+     * @return - true -> acceleration given
+     *           false -> no acceleration
+     */
     public boolean checkAcceleration(boolean winnerDecided, boolean gameStarted){
         if (!winnerDecided && Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
 
@@ -45,6 +57,13 @@ public class AccelerationSensor {
         return false;
     }
 
+    /**
+     * Check whether the device was shaken or not.
+     *
+     * @param lastTimeShaken - the last time the device was shaken
+     * @return - true -> device shaken
+     *           false -> device wasn't shaken
+     */
     public boolean deviceShaken(Long lastTimeShaken){
         return TimeUtils.millis() > (lastTimeShaken + 350);
     }

@@ -14,11 +14,20 @@ import static com.mygdx.game.gui.DisplaySizeRatios.Y_LABEL;
  * Created by muhamed on 14.06.17.
  */
 
+/**
+ * Used to generate the winner screen.
+ */
 public class WinnerScreen {
 
 
     private Label winnerText;
 
+    /**
+     * Constructor.
+     *
+     * @param playerName - current player name
+     * @param stage - current game stage
+     */
     public WinnerScreen(String playerName, Stage stage) {
 
         winnerText = new Label(playerName + " gewinnt!!", getLabelStyle());
@@ -28,6 +37,10 @@ public class WinnerScreen {
         stage.addActor(winnerText);
     }
 
+    /**
+     * This method is used to get the current font.
+     * @return - the current font
+     */
     private BitmapFont getFont() {
 
         BitmapFont font = new BitmapFont();
@@ -35,6 +48,10 @@ public class WinnerScreen {
         return font;
     }
 
+    /**
+     * Used to get the label style.
+     * @return - the current label style
+     */
     private LabelStyle getLabelStyle() {
 
         return new LabelStyle(getFont(), Color.BLACK);
