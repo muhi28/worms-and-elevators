@@ -41,7 +41,7 @@ import static com.mygdx.game.gui.DisplaySizeRatios.Y_DICE;
 import static com.mygdx.game.gui.DisplaySizeRatios.Y_LABEL;
 
 /**
- * The type Main.
+ * Main class which contains the rendering part.
  */
 public class Main extends ApplicationAdapter  {
 
@@ -161,6 +161,9 @@ public class Main extends ApplicationAdapter  {
         lastTimeShaken = TimeUtils.millis();
     }
 
+    /**
+     *
+     */
     @Override
     public void render() {
 
@@ -188,11 +191,18 @@ public class Main extends ApplicationAdapter  {
 
     }
 
+    /**
+     *
+     */
     private void checkIfSinglePlayer() {
         if (Controller.getSinglePlayerBoolean()) {
             stage.addActor(playerTwo);
         }
     }
+
+    /**
+     * Used to switch between two players.
+     */
     private void playerSwitchTextOutput() {
 
         String s1, s2;
@@ -213,6 +223,11 @@ public class Main extends ApplicationAdapter  {
         }
     }
 
+    /**
+     * Show current player turn.
+     * @param p1 - player One
+     * @param p2 - player Two
+     */
     private void showPlayerTurn(String p1, String p2) {
         if (NetworkManager.isMultiplayer() && !Controller.getWinnerDecided()) {
             font.draw(batch, p1, X_LABEL - 5, Y_LABEL);
@@ -221,6 +236,9 @@ public class Main extends ApplicationAdapter  {
         }
     }
 
+    /**
+     * Check whether the device was shaken.
+     */
     private void checkShake() {
 
         if (accelerationSensor.deviceShaken(lastTimeShaken)) {
@@ -231,6 +249,11 @@ public class Main extends ApplicationAdapter  {
         }
     }
 
+    /**
+     * This method is used to render the field textures.
+     *
+     * @param fieldTextures - Map which contains the field textures
+     */
     private void fillFieldTexturesMap(Map<Integer, Texture> fieldTextures) {
 
         fieldTextures.put(1, new Texture(Gdx.files.internal("background_grass.png")));
@@ -241,6 +264,10 @@ public class Main extends ApplicationAdapter  {
 
     }
 
+    /**
+     * Used to fill the Map which contains the dice textures.
+     * @param diceRange - range for the dice
+     */
     private void fillDiceTexturesMap(int diceRange) {
 
         for (int i = 1; i <= diceRange; i++) {
@@ -248,6 +275,11 @@ public class Main extends ApplicationAdapter  {
         }
     }
 
+    /**
+     * Used to set the game field textures.
+     *
+     * @param fields - List which contains the game field fields
+     */
     private void setFieldTextures(List<Field> fields) {
 
         for (int i = 1; i <= fields.size(); i++) {
@@ -257,6 +289,9 @@ public class Main extends ApplicationAdapter  {
 
     }
 
+    /**
+     * Sets the current font.
+     */
     private void setFont() {
         // Font
         font = new BitmapFont();
@@ -264,6 +299,9 @@ public class Main extends ApplicationAdapter  {
         font.getData().setScale(4f, 4f);
     }
 
+    /**
+     * Used to generate the elevator field textures.
+     */
     private void generateElevatorFieldTextures() {
 
         // generiert die Aufzuege und plaziert sie auf dem Spielfeld
@@ -277,6 +315,15 @@ public class Main extends ApplicationAdapter  {
 
     }
 
+    /**
+     * Check whether the current field is the start, goal or a game field.
+     *
+     * @param i - field position
+     * @param renderPositionCalculator - used to calculate the position
+     * @param list - Map which contains the textures
+     *
+     * @return the current matching field
+     */
     private SingleField checkForFieldTexture(int i, RenderPositionCalculator renderPositionCalculator, Map<Integer, Texture> list) {
 
         SingleField fieldColors;
@@ -298,6 +345,14 @@ public class Main extends ApplicationAdapter  {
         return fieldColors;
     }
 
+    /**
+     * Used to set/update the current field color.
+     *
+     * @param list - Map which contains the field textures
+     * @param i - position
+     *
+     * @return - the current matching field
+     */
     private SingleField setFieldColors(Map<Integer, Texture> list, int i) {
         if (!textureBoolean) {
             textureBoolean = i % 10 != 0;

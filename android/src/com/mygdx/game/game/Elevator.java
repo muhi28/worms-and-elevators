@@ -5,6 +5,10 @@ import java.util.Random;
 /**
  * Created by Muhi on 14.04.2017.
  */
+
+/**
+ * Class which provides the elevator functionality.
+ */
 public class Elevator {
 
     private static final int ELEVATORS = 12;
@@ -18,7 +22,7 @@ public class Elevator {
     }
 
     /**
-     * Generate elevator.
+     * Generates the elevator fields.
      */
     public static void generateElevator() {
 
@@ -33,6 +37,12 @@ public class Elevator {
         }
     }
 
+    /**
+     * Check whether the current field is the start or the goal field.
+     *
+     * @param steps - current field number
+     * @return - true -> current field is start/goal
+     */
     private static boolean checkIfGoalOrStart(int steps) {
         return steps == 91 || steps == 1;
     }
