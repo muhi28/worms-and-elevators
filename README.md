@@ -4,4 +4,4 @@
 Android Game
 
 # Singleplayer Mode
-![Screenshot](singleplayer.png)
+
