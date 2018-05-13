@@ -3,5 +3,5 @@
 # Worms and Elevators
 Android Game
 
-# Singleplayer Mode
+
 
