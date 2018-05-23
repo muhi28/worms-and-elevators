@@ -146,8 +146,10 @@ public class Controller implements InputProcessor {
 
         return true;
     }
-
     @Override
+    /**
+     * If screen is released the method will be called
+     */
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if (cheatCountDown.cheatingIsActive()) {
