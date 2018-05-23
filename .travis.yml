@@ -25,6 +25,6 @@ before_script:
 
 script:
   - ./gradlew  jacocoTestReport
-  
+
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 586b642d-00c8-4f85-9650-53cbdf31ae9c
+- bash <(curl -s https://codecov.io/bash) -t 
