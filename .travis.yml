@@ -62,13 +62,8 @@ before_script:
 script:
     - chmod +x ./gradlew
     - ./gradlew test jacocoTestReport
-    - sonar-scanner
+    - ./gradlew sonarqube -Dsonar.organization=muhi28-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=73e39e55fd5a7a3bc7c140bc53e2d0f6790c22f4
 
-addons:
-  sonarcloud:
-    organization: "muhi28-github" # der key der organisation auf sonarcloud.io
-    token:
-      secure: $SONAR_TOKEN       # $SONAR_TOKEN -> Umgebungsvariable auf travis-ci.org
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
