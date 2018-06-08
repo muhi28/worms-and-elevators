@@ -49,6 +49,9 @@ android:
     - extra-android-m2repository        # evt. benötigte m2-repositories
     - $ANDROID_ABI-$ANDROID_API
 
+before_install:
+   - chmod +x gradlew
+   
 # Emulator Management: erzeugen, starten und warten
 before_script:
   - echo yes | $ANDROID_HOME/tools/bin/sdkmanager --update
@@ -60,6 +63,4 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-    - chmod +x ./gradlew
     - ./gradlew test jacocoTestReport
-    - ./gradlew sonarqube -Dsonar.organization=muhi28-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=73e39e55fd5a7a3bc7c140bc53e2d0f6790c22f4
